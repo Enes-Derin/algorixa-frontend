@@ -1,0 +1,151 @@
+/* ========== LOGIN PAGE STYLES ========== */
+
+.login-wrapper {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(135deg, #111 0%, #222 100%);
+    padding: 20px;
+}
+
+.login-card {
+    background: #fff;
+    border-radius: 16px;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+    width: 100%;
+    max-width: 380px;
+    padding: 50px 40px;
+}
+
+.login-header {
+    text-align: center;
+    margin-bottom: 40px;
+}
+
+.login-brand {
+    font-size: 28px;
+    font-weight: 600;
+    letter-spacing: 0.15em;
+    display: block;
+    margin-bottom: 8px;
+    color: #111;
+}
+
+.login-header p {
+    font-size: 14px;
+    color: #777;
+    margin: 0;
+    letter-spacing: 0.05em;
+}
+
+.login-card form {
+    display: flex;
+    flex-direction: column;
+}
+
+.login-card .mb-3 {
+    margin-bottom: 20px;
+}
+
+.login-card .mb-4 {
+    margin-bottom: 24px;
+}
+
+.login-card label {
+    font-size: 13px;
+    font-weight: 500;
+    color: #333;
+    margin-bottom: 8px;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+}
+
+.login-card .form-control {
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    padding: 12px 14px;
+    font-size: 14px;
+    transition: all 0.2s ease;
+    font-family: 'Inter', sans-serif;
+}
+
+.login-card .form-control:focus {
+    border-color: #111;
+    box-shadow: none;
+    outline: none;
+}
+
+.login-card .form-control::placeholder {
+    color: #bbb;
+}
+
+.login-card .btn {
+    padding: 12px 16px;
+    font-size: 14px;
+    font-weight: 500;
+    border-radius: 10px;
+    border: none;
+    transition: all 0.2s ease;
+    cursor: pointer;
+    letter-spacing: 0.05em;
+}
+
+.login-card .btn-dark {
+    background: #111;
+    color: #fff;
+}
+
+.login-card .btn-dark:hover:not(:disabled) {
+    background: #333;
+}
+
+.login-card .btn-dark:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+
+/* ALERT MESSAGES */
+.login-card .alert {
+    border: none;
+    border-radius: 10px;
+    padding: 12px 14px;
+    margin-bottom: 20px;
+    font-size: 13px;
+}
+
+.login-card .alert-danger {
+    background: #f8d7da;
+    color: #721c24;
+}
+
+.login-card .alert-success {
+    background: #d4edda;
+    color: #155724;
+}
+
+/* RESPONSIVE */
+@media (max-width: 480px) {
+    .login-card {
+        padding: 40px 24px;
+        border-radius: 12px;
+    }
+
+    .login-brand {
+        font-size: 24px;
+    }
+
+    .login-card label {
+        font-size: 12px;
+    }
+
+    .login-card .form-control {
+        padding: 10px 12px;
+        font-size: 13px;
+    }
+
+    .login-card .btn {
+        padding: 10px 14px;
+        font-size: 13px;
+    }
+}

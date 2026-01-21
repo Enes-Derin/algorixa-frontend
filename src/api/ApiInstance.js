@@ -1,77 +1,123 @@
 import axios from "axios";
-import tokenService from "../utils/tokenService";
+import {
+    getAccessToken,
+    getRefreshToken,
+    setTokens,
+    clearTokens
+} from "./../utils/tokenService";
 
-const API_BASE_URL = "/api";
+const BASE_URL = "/api";
 
+/* =====================
+   AXIOS INSTANCE
+===================== */
 const apiInstance = axios.create({
-    baseURL: API_BASE_URL,
-    withCredentials: false // JWT header ile çalışacağımız için cookie yok
+    baseURL: BASE_URL,
 });
 
-// REQUEST INTERCEPTOR
+/* =====================
+   MULTIPART HELPERS
+===================== */
+export const postMultipart = async (url, formData) => {
+    const token = getAccessToken();
+    const response = await apiInstance.post(url, formData, {
+        headers: {
+            "Content-Type": "multipart/form-data",
+            ...(token && { Authorization: `Bearer ${token}` }),
+        },
+    });
+    return response.data;
+};
+
+export const putMultipart = async (url, formData) => {
+    const token = getAccessToken();
+    const response = await apiInstance.put(url, formData, {
+        headers: {
+            "Content-Type": "multipart/form-data",
+            ...(token && { Authorization: `Bearer ${token}` }),
+        },
+    });
+    return response.data;
+};
+
+/* =====================
+   REFRESH TOKEN LOGIC
+===================== */
+let isRefreshing = false;
+let failedQueue = [];
+
+const processQueue = (error, token = null) => {
+    failedQueue.forEach(promise =>
+        error ? promise.reject(error) : promise.resolve(token)
+    );
+    failedQueue = [];
+};
+
+/* =====================
+   REQUEST INTERCEPTOR
+===================== */
 apiInstance.interceptors.request.use(
-    async (config) => {
-        // Süresi dolmuş token varsa temizle
-        tokenService.clearExpiredTokenFromStorage();
-
-        // Token yenileme gerekli mi?
-        if (tokenService.shouldRefreshToken() && tokenService.getRefreshToken()) {
-            try {
-                const refreshResponse = await axios.post(
-                    `${API_BASE_URL}/auth/refreshToken`,
-                    { refreshToken: tokenService.getRefreshToken() }
-                );
-
-                const { accessToken, refreshToken } = refreshResponse.data.data;
-                tokenService.updateTokens(accessToken, refreshToken);
-            } catch (error) {
-                console.error("Token refresh başarısız:", error);
-                tokenService.clearAllTokens();
-                return Promise.reject(error);
-            }
-        }
-
-        // Authorization header ekle
-        const token = tokenService.getAccessToken();
+    (config) => {
+        const token = getAccessToken();
         if (token) {
             config.headers.Authorization = `Bearer ${token}`;
         }
-
         return config;
     },
     (error) => Promise.reject(error)
 );
 
-// RESPONSE INTERCEPTOR
+/* =====================
+   RESPONSE INTERCEPTOR
+===================== */
 apiInstance.interceptors.response.use(
     (response) => response,
     async (error) => {
         const originalRequest = error.config;
 
-        // 401 hatası ve refresh token varsa retry
-        if (
-            error.response?.status === 401 &&
-            !originalRequest._retry &&
-            tokenService.getRefreshToken()
-        ) {
-            originalRequest._retry = true;
-            try {
-                const refreshResponse = await axios.post(
-                    `${API_BASE_URL}/auth/refreshToken`,
-                    { refreshToken: tokenService.getRefreshToken() }
-                );
-                const { accessToken, refreshToken } = refreshResponse.data.data;
-                tokenService.updateTokens(accessToken, refreshToken);
-                originalRequest.headers.Authorization = `Bearer ${accessToken}`;
-                return apiInstance(originalRequest);
-            } catch (refreshError) {
-                tokenService.clearAllTokens();
-                return Promise.reject(refreshError);
+        if (error.response?.status === 401 && !originalRequest._retry) {
+            if (isRefreshing) {
+                return new Promise((resolve, reject) => {
+                    failedQueue.push({ resolve, reject });
+                }).then((token) => {
+                    originalRequest.headers.Authorization = `Bearer ${token}`;
+                    return apiInstance(originalRequest);
+                });
             }
-        }
 
-        if (error.response?.status === 401) {
-            tokenService.clearAllTokens();
+            originalRequest._retry = true;
+            isRefreshing = true;
+
+            try {
+                const refreshToken = getRefreshToken();
+
+                const refreshResponse = await axios.post(
+                    `${BASE_URL}/auth/refreshToken`,
+                    { refreshToken }
+                );
+
+                const { accessToken, refreshToken: newRefreshToken } =
+                    refreshResponse.data.payload;
+
+                setTokens(accessToken, newRefreshToken);
+
+                apiInstance.defaults.headers.common.Authorization =
+                    `Bearer ${accessToken}`;
+
+                processQueue(null, accessToken);
+
+                originalRequest.headers.Authorization =
+                    `Bearer ${accessToken}`;
+
+                return apiInstance(originalRequest);
+            } catch (err) {
+                processQueue(err, null);
+                clearTokens();
+                window.location.replace("/login");
+                return Promise.reject(err);
+            } finally {
+                isRefreshing = false;
+            }
         }
 
         return Promise.reject(error);

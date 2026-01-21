@@ -3,9 +3,11 @@ import apiInstance from "../api/ApiInstance";
 
 const Contact = () => {
     const [status, setStatus] = useState("");
+    const [loading, setLoading] = useState(false);
 
     const handleSubmit = async (e) => {
         e.preventDefault();
+        setLoading(true);
 
         const data = {
             name: e.target.name.value,
@@ -15,10 +17,12 @@ const Contact = () => {
 
         try {
             await apiInstance.post("/contact", data);
-            setStatus("Talebiniz başarıyla gönderildi.");
+            setStatus("✅ Talebiniz başarıyla gönderildi!");
             e.target.reset();
         } catch {
-            setStatus("Bir hata oluştu.");
+            setStatus("❌ Bir hata oluştu. Lütfen tekrar deneyin.");
+        } finally {
+            setLoading(false);
         }
     };
 
@@ -42,12 +46,34 @@ const Contact = () => {
                             <input name="email" type="email" className="form-control mb-3" placeholder="E-posta" required />
                             <textarea name="message" className="form-control mb-4" rows="4" placeholder="Mesaj" required />
 
-                            <button className="btn btn-dark w-100">
-                                Teklif Talebi Gönder
+                            <button
+                                type="submit"
+                                disabled={loading}
+                                className="w-100"
+                                style={{
+                                    background: loading ? "#d1d5db" : "linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%)",
+                                    color: "#fff",
+                                    padding: "14px 20px",
+                                    border: "none",
+                                    borderRadius: "8px",
+                                    fontSize: "16px",
+                                    fontWeight: "600",
+                                    cursor: loading ? "not-allowed" : "pointer",
+                                    transition: "all 0.3s ease",
+                                    opacity: loading ? 0.7 : 1
+                                }}
+                            >
+                                {loading ? "🔄 Gönderiliyor..." : "Teklif Talebi Gönder"}
                             </button>
 
                             {status && (
-                                <p className="text-center mt-3 small">{status}</p>
+                                <p style={{
+                                    textAlign: "center",
+                                    marginTop: "16px",
+                                    fontSize: "14px",
+                                    fontWeight: "500",
+                                    color: status.includes("✅") ? "#10b981" : "#ef4444"
+                                }}>{status}</p>
                             )}
                         </form>
 

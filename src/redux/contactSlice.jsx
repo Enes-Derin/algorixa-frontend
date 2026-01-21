@@ -29,6 +29,15 @@ export const markAsRead = createAsyncThunk(
     }
 );
 
+// ADMIN → MESAJ SİL
+export const deleteContactMessage = createAsyncThunk(
+    "contact/delete",
+    async (id) => {
+        await apiInstance.delete(`/contact/${id}`);
+        return id;
+    }
+);
+
 const contactSlice = createSlice({
     name: "contact",
     initialState: {
@@ -80,6 +89,12 @@ const contactSlice = createSlice({
             .addCase(markAsRead.rejected, (state, action) => {
                 state.error = action.error.message;
                 state.markingAsReadId = null;
+            })
+            .addCase(deleteContactMessage.fulfilled, (state, action) => {
+                state.messages = state.messages.filter(m => m.id !== action.payload);
+            })
+            .addCase(deleteContactMessage.rejected, (state, action) => {
+                state.error = action.error.message;
             });
     }
 });

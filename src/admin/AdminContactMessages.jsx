@@ -2,12 +2,13 @@ import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import {
     fetchContactMessages,
-    markAsRead
+    markAsRead,
+    deleteContactMessage
 } from "../redux/contactSlice";
 
 const AdminContactMessages = () => {
     const dispatch = useDispatch();
-    const { messages, loading } = useSelector(state => state.contact);
+    const { messages = [], loading } = useSelector(state => state.contact) || {};
 
     useEffect(() => {
         dispatch(fetchContactMessages());
@@ -26,6 +27,12 @@ const AdminContactMessages = () => {
         });
     };
 
+    const handleDelete = (messageId) => {
+        if (confirm("Bu mesajı silmek istediğinizden emin misiniz?")) {
+            dispatch(deleteContactMessage(messageId));
+        }
+    };
+
     if (loading) {
         return (
             <div className="text-center py-5">
@@ -38,11 +45,11 @@ const AdminContactMessages = () => {
 
     return (
         <>
-            <h1 className="page-title">İletişim Mesajları</h1>
+            <h1 className="page-title">💬 İletişim Mesajları</h1>
 
             {unreadCount > 0 && (
                 <div className="alert alert-warning">
-                    <strong>{unreadCount}</strong> okunmamış mesajınız bulunmaktadır.
+                    <strong>🔔 {unreadCount}</strong> okunmamış mesajınız bulunmaktadır.
                 </div>
             )}
 
@@ -84,15 +91,41 @@ const AdminContactMessages = () => {
                                     <small style={{ color: "#999", display: "block", marginBottom: "8px" }}>
                                         {formatDate(m.createdAt)}
                                     </small>
-                                    {!m.read && (
-                                        <span style={{
-                                            display: "inline-block",
-                                            width: "8px",
-                                            height: "8px",
-                                            backgroundColor: "#111",
-                                            borderRadius: "50%"
-                                        }}></span>
-                                    )}
+                                    <div style={{ display: "flex", gap: "8px", justifyContent: "flex-end", alignItems: "center" }}>
+                                        {!m.read && (
+                                            <span style={{
+                                                display: "inline-block",
+                                                width: "8px",
+                                                height: "8px",
+                                                backgroundColor: "#111",
+                                                borderRadius: "50%"
+                                            }}></span>
+                                        )}
+                                        <button
+                                            onClick={(e) => {
+                                                e.stopPropagation();
+                                                handleDelete(m.id);
+                                            }}
+                                            style={{
+                                                background: "#ef4444",
+                                                color: "#fff",
+                                                border: "none",
+                                                padding: "4px 8px",
+                                                borderRadius: "4px",
+                                                fontSize: "12px",
+                                                cursor: "pointer",
+                                                transition: "all 0.3s ease"
+                                            }}
+                                            onMouseEnter={(e) => {
+                                                e.target.style.background = "#dc2626";
+                                            }}
+                                            onMouseLeave={(e) => {
+                                                e.target.style.background = "#ef4444";
+                                            }}
+                                        >
+                                            🗑️ Sil
+                                        </button>
+                                    </div>
                                 </div>
                             </div>
                         </div>

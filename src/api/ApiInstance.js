@@ -1,123 +1,89 @@
 import axios from "axios";
-import {
-    getAccessToken,
-    getRefreshToken,
-    setTokens,
-    clearTokens
-} from "./../utils/tokenService";
+import tokenService from "../utils/tokenService";
 
-const BASE_URL = "/api";
+const API_BASE_URL = "/api";
 
-/* =====================
-   AXIOS INSTANCE
-===================== */
 const apiInstance = axios.create({
-    baseURL: BASE_URL,
+    baseURL: API_BASE_URL
 });
 
-/* =====================
-   MULTIPART HELPERS
-===================== */
-export const postMultipart = async (url, formData) => {
-    const token = getAccessToken();
-    const response = await apiInstance.post(url, formData, {
-        headers: {
-            "Content-Type": "multipart/form-data",
-            ...(token && { Authorization: `Bearer ${token}` }),
-        },
-    });
-    return response.data;
-};
-
-export const putMultipart = async (url, formData) => {
-    const token = getAccessToken();
-    const response = await apiInstance.put(url, formData, {
-        headers: {
-            "Content-Type": "multipart/form-data",
-            ...(token && { Authorization: `Bearer ${token}` }),
-        },
-    });
-    return response.data;
-};
-
-/* =====================
-   REFRESH TOKEN LOGIC
-===================== */
-let isRefreshing = false;
-let failedQueue = [];
-
-const processQueue = (error, token = null) => {
-    failedQueue.forEach(promise =>
-        error ? promise.reject(error) : promise.resolve(token)
-    );
-    failedQueue = [];
-};
-
-/* =====================
-   REQUEST INTERCEPTOR
-===================== */
+// REQUEST INTERCEPTOR - Token'ı header'a ekle ve süresi dolmak üzerseyse yenile
 apiInstance.interceptors.request.use(
-    (config) => {
-        const token = getAccessToken();
+    async (config) => {
+        // Önce token süresi dolmuşsa temizle
+        tokenService.clearExpiredTokenFromStorage();
+
+        // Yenilenmesi gereken token var mı kontrol et
+        if (tokenService.shouldRefreshToken() && tokenService.getRefreshToken()) {
+            try {
+                // Token'ı yenile
+                const refreshResponse = await axios.post(
+                    `${API_BASE_URL}/auth/refreshToken`,
+                    { refreshToken: tokenService.getRefreshToken() },
+                    { withCredentials: true }
+                );
+
+                const { accessToken, refreshToken } = refreshResponse.data.data;
+                tokenService.updateTokens(accessToken, refreshToken);
+            } catch (error) {
+                console.error("Token refresh başarısız:", error);
+                tokenService.clearAllTokens();
+                return Promise.reject(error);
+            }
+        }
+
+        // Token'ı header'a ekle
+        const token = tokenService.getAccessToken();
         if (token) {
             config.headers.Authorization = `Bearer ${token}`;
         }
+
         return config;
     },
     (error) => Promise.reject(error)
 );
 
-/* =====================
-   RESPONSE INTERCEPTOR
-===================== */
+// RESPONSE INTERCEPTOR - 401 hatası ve token refresh işlemi
 apiInstance.interceptors.response.use(
     (response) => response,
     async (error) => {
         const originalRequest = error.config;
 
-        if (error.response?.status === 401 && !originalRequest._retry) {
-            if (isRefreshing) {
-                return new Promise((resolve, reject) => {
-                    failedQueue.push({ resolve, reject });
-                }).then((token) => {
-                    originalRequest.headers.Authorization = `Bearer ${token}`;
-                    return apiInstance(originalRequest);
-                });
-            }
-
+        // 401 hatası ve daha önce retry yapılmadıysa
+        if (
+            error.response?.status === 401 &&
+            !originalRequest._retry &&
+            tokenService.getRefreshToken()
+        ) {
             originalRequest._retry = true;
-            isRefreshing = true;
 
             try {
-                const refreshToken = getRefreshToken();
-
+                // Backend'e refresh token gönderi
                 const refreshResponse = await axios.post(
-                    `${BASE_URL}/auth/refreshToken`,
-                    { refreshToken }
+                    `${API_BASE_URL}/auth/refreshToken`,
+                    { refreshToken: tokenService.getRefreshToken() },
+                    { withCredentials: true }
                 );
 
-                const { accessToken, refreshToken: newRefreshToken } =
-                    refreshResponse.data.data;
+                const { accessToken, refreshToken } = refreshResponse.data.data;
 
-                setTokens(accessToken, newRefreshToken);
+                // Token'ları güncelle
+                tokenService.updateTokens(accessToken, refreshToken);
 
-                apiInstance.defaults.headers.common.Authorization =
-                    `Bearer ${accessToken}`;
-
-                processQueue(null, accessToken);
-
-                originalRequest.headers.Authorization =
-                    `Bearer ${accessToken}`;
-
+                // Orijinal request'i yeni token ile tekrar gönder
+                originalRequest.headers.Authorization = `Bearer ${accessToken}`;
                 return apiInstance(originalRequest);
-            } catch (err) {
-                processQueue(err, null);
-                clearTokens();
-                window.location.replace("/login");
-                return Promise.reject(err);
-            } finally {
-                isRefreshing = false;
+
+            } catch (refreshError) {
+                // Refresh başarısız → Logout yap ve tüm token'ları temizle
+                tokenService.clearAllTokens();
+                return Promise.reject(refreshError);
             }
+        }
+
+        // Refresh token da yoksa veya başarısız olduysa logout
+        if (error.response?.status === 401) {
+            tokenService.clearAllTokens();
         }
 
         return Promise.reject(error);

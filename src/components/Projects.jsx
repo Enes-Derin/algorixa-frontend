@@ -5,9 +5,9 @@ import { fetchProjects } from "../redux/projectSlice";
 const Projects = () => {
     const dispatch = useDispatch();
 
-    const { projects, loading } = useSelector(
+    const { projects = [], loading } = useSelector(
         (state) => state.project
-    );
+    ) || {};
 
     useEffect(() => {
         dispatch(fetchProjects());
@@ -16,7 +16,7 @@ const Projects = () => {
     return (
         <section id="projects" className="projects-section">
             <div className="container">
-                <h2 className="section-title">Örnek Projeler</h2>
+                <h2 className="section-title">Referanslar</h2>
 
                 {loading && (
                     <p className="text-center text-muted">
@@ -30,50 +30,38 @@ const Projects = () => {
                     </p>
                 )}
 
-                <div className="row g-4">
+                <div className="projects-grid">
                     {projects.map((project) => (
-                        <div className="col-md-4" key={project.id}>
-                            <div className="project-card">
-                                {project.imageUrl ? (
-                                    <div
-                                        className="project-image"
-                                        style={{
-                                            backgroundImage: `url(${project.imageUrl})`,
-                                            backgroundSize: "cover",
-                                            backgroundPosition: "center"
-                                        }}
-                                    />
-                                ) : (
-                                    <div
-                                        className="project-image"
-                                        style={{
-                                            backgroundColor: "#f5f5f5",
-                                            display: "flex",
-                                            alignItems: "center",
-                                            justifyContent: "center",
-                                            color: "#999"
-                                        }}
-                                    >
-                                        Görsel yok
-                                    </div>
-                                )}
+                        <div className="project-item" key={project.id}>
+                            {project.imageUrl ? (
+                                <div
+                                    className="project-image"
+                                    style={{
+                                        backgroundImage: `url(${project.imageUrl})`,
+                                        backgroundSize: "cover",
+                                        backgroundPosition: "center"
+                                    }}
+                                />
+                            ) : (
+                                <div className="project-image">
+                                    📸 Görsel yok
+                                </div>
+                            )}
 
+                            <div className="project-content">
                                 <h5>{project.title}</h5>
                                 <p>{project.description}</p>
 
-                                <div style={{ display: "flex", gap: "8px", marginTop: "12px" }}>
-                                    {project.link && (
-                                        <a
-                                            href={project.link}
-                                            target="_blank"
-                                            rel="noopener noreferrer"
-                                            className="btn btn-sm btn-dark"
-                                            style={{ flex: 1, textAlign: "center" }}
-                                        >
-                                            Projeyi Gör
-                                        </a>
-                                    )}
-                                </div>
+
+                                <a
+                                    href={project.link}
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    className="project-link"
+                                >
+                                    Ziyaret Et
+                                </a>
+
                             </div>
                         </div>
                     ))}

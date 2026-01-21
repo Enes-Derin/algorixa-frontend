@@ -1,7 +1,8 @@
 import { useEffect } from "react";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-dom";
 import "./App.css";
+import { getAccessToken } from "./utils/tokenService";
 
 // Pages
 import Home from "./pages/Home";
@@ -15,9 +16,13 @@ import AdminContactMessages from "./admin/AdminContactMessages";
 
 // Protected Route Component
 const ProtectedRoute = ({ children }) => {
+  const dispatch = useDispatch();
   const { token } = useSelector(state => state.auth);
 
-  if (!token) {
+  // localStorage'daki token'ı kontrol et (page refresh'te kalması için)
+  const localToken = getAccessToken();
+
+  if (!token && !localToken) {
     return <Navigate to="/login" replace />;
   }
 
@@ -25,6 +30,16 @@ const ProtectedRoute = ({ children }) => {
 };
 
 function App() {
+  const dispatch = useDispatch();
+
+  // Uygulama başladığında localStorage'dan token'ı Redux'a yükle
+  useEffect(() => {
+    const savedToken = getAccessToken();
+    if (savedToken) {
+      // Token Redux state'e yüklenmeli (authSlice'da initialState ayarlanmalı)
+    }
+  }, []);
+
   return (
     <Router>
       <Routes>

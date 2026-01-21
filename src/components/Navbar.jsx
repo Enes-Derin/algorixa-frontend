@@ -2,11 +2,10 @@ import Algorixa from "../assets/Algorixa.png";
 
 const Navbar = () => {
     return (
-        <nav className="navbar navbar-expand-lg fixed-top bg-white border-bottom">
+        <nav className="navbar navbar-expand-lg fixed-top navbar-light">
             <div className="container">
-                <a className="navbar-brand fw-semibold" href="#">
-                    <img src={Algorixa} alt="Algorixa Logo" style={{ height: '40px', marginRight: '10px' }} />
-
+                <a className="navbar-brand fw-semibold" href="/">
+                    <img src={Algorixa} alt="Algorixa Logo" style={{ height: '36px', marginRight: '8px' }} />
                 </a>
 
                 <button
@@ -18,7 +17,7 @@ const Navbar = () => {
                 </button>
 
                 <div id="nav" className="collapse navbar-collapse justify-content-end">
-                    <ul className="navbar-nav gap-3">
+                    <ul className="navbar-nav gap-2">
                         <li className="nav-item">
                             <a className="nav-link" href="#services">Hizmetler</a>
                         </li>

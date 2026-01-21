@@ -22,17 +22,19 @@ const Hero = () => {
                         </p>
 
                         <div className="hero-actions">
-                            <a href="#contact" className="btn btn-dark btn-lg">
+                            <a href="#contact" className="btn btn-primary-hero text-white">
                                 Teklif Al
                             </a>
-                            <a href="#services" className="btn btn-outline-dark btn-lg">
+                            <a href="#services" className="btn btn-secondary-hero">
                                 Hizmetler
                             </a>
                         </div>
                     </div>
 
                     <div className="col-lg-6 mt-5 mt-lg-0">
-                        <img src={Algorixa} alt="Softra Digital Solutions" style={{ width: '100%', maxWidth: '500px' }} />
+                        <div className="hero-mockup">
+                            <img src={Algorixa} alt="Softra Digital Solutions" style={{ maxWidth: '100%', height: 'auto' }} />
+                        </div>
                     </div>
                 </div>
             </div>

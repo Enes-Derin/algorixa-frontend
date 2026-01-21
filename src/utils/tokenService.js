@@ -35,3 +35,34 @@ export const shouldRefreshToken = () => {
     const expiryTime = parseInt(expiry);
     return currentTime > (expiryTime - REFRESH_THRESHOLD);
 };
+
+// Süresi dolan token'ı temizle
+export const clearExpiredTokenFromStorage = () => {
+    if (isTokenExpired()) {
+        clearTokens();
+        return true;
+    }
+    return false;
+};
+
+// Tüm token'ları temizle
+export const clearAllTokens = () => {
+    clearTokens();
+};
+
+// Token'ları güncelle
+export const updateTokens = (accessToken, refreshToken) => {
+    setTokens(accessToken, refreshToken);
+};
+
+export default {
+    getAccessToken,
+    getRefreshToken,
+    setTokens,
+    clearTokens,
+    isTokenExpired,
+    shouldRefreshToken,
+    clearExpiredTokenFromStorage,
+    clearAllTokens,
+    updateTokens
+};

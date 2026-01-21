@@ -3,12 +3,13 @@ import { useDispatch, useSelector } from "react-redux";
 import {
     fetchProjects,
     createProject,
+    updateProject,
     deleteProject
 } from "../redux/projectSlice";
 
 const AdminProject = () => {
     const dispatch = useDispatch();
-    const { projects, loading } = useSelector(state => state.project);
+    const { projects = [], loading } = useSelector(state => state.project) || {};
 
     const [form, setForm] = useState({
         title: "",
@@ -17,6 +18,7 @@ const AdminProject = () => {
         image: null
     });
 
+    const [editingId, setEditingId] = useState(null);
     const [success, setSuccess] = useState(null);
     const [error, setError] = useState(null);
 
@@ -37,8 +39,14 @@ const AdminProject = () => {
         setError(null);
         setSuccess(null);
 
-        if (!form.title || !form.description || !form.image) {
-            setError("Lütfen tüm alanları doldurunuz");
+        if (!form.title || !form.description) {
+            setError("Lütfen başlık ve açıklamayı doldurunuz");
+            return;
+        }
+
+        // Yeni proje ekleme durumunda resim zorunlu
+        if (!editingId && !form.image) {
+            setError("Yeni proje eklerken resim zorunludur");
             return;
         }
 
@@ -46,15 +54,25 @@ const AdminProject = () => {
         fd.append("title", form.title);
         fd.append("description", form.description);
         fd.append("link", form.link || "");
-        fd.append("imageUrl", form.image); // Backend "imageUrl" field'ını bekliyor
+        if (form.image) {
+            fd.append("imageUrl", form.image);
+        }
 
         try {
-            await dispatch(createProject(fd)).unwrap();
-            setSuccess("Proje başarıyla eklendi!");
+            if (editingId) {
+                // Update işlemi
+                await dispatch(updateProject({ id: editingId, formData: fd })).unwrap();
+                setSuccess("Proje başarıyla güncellendi!");
+                setEditingId(null);
+            } else {
+                // Create işlemi
+                await dispatch(createProject(fd)).unwrap();
+                setSuccess("Proje başarıyla eklendi!");
+            }
             setForm({ title: "", description: "", link: "", image: null });
             setTimeout(() => setSuccess(null), 3000);
         } catch (err) {
-            setError("Proje eklenirken bir hata oluştu");
+            setError(editingId ? "Proje güncellenirken bir hata oluştu" : "Proje eklenirken bir hata oluştu");
         }
     };
 
@@ -64,13 +82,30 @@ const AdminProject = () => {
         }
     };
 
+    const handleEdit = (project) => {
+        setEditingId(project.id);
+        setForm({
+            title: project.title,
+            description: project.description,
+            link: project.link || "",
+            image: null
+        });
+    };
+
+    const handleCancel = () => {
+        setEditingId(null);
+        setForm({ title: "", description: "", link: "", image: null });
+    };
+
     return (
         <>
             <h1 className="page-title">Projeler</h1>
 
-            {/* CREATE FORM */}
+            {/* CREATE/UPDATE FORM */}
             <div className="admin-form">
-                <h5 style={{ marginBottom: "20px" }}>Yeni Proje Ekle</h5>
+                <h5 style={{ marginBottom: "20px" }}>
+                    {editingId ? "✏️ Projeyi Düzenle" : "➕ Yeni Proje Ekle"}
+                </h5>
 
                 {success && <div className="alert alert-success">{success}</div>}
                 {error && <div className="alert alert-danger">{error}</div>}
@@ -127,8 +162,18 @@ const AdminProject = () => {
                     </div>
 
                     <button type="submit" className="btn btn-dark">
-                        Proje Ekle
+                        {editingId ? "🔄 Güncelle" : "➕ Proje Ekle"}
                     </button>
+                    {editingId && (
+                        <button
+                            type="button"
+                            className="btn btn-outline-dark"
+                            onClick={handleCancel}
+                            style={{ marginLeft: "8px" }}
+                        >
+                            ✕ İptal
+                        </button>
+                    )}
                 </form>
             </div>
 
@@ -172,9 +217,16 @@ const AdminProject = () => {
                             <div className="project-card-actions">
                                 <button
                                     className="btn btn-outline-dark"
+                                    onClick={() => handleEdit(p)}
+                                    style={{ marginRight: "8px" }}
+                                >
+                                    ✏️ Düzenle
+                                </button>
+                                <button
+                                    className="btn btn-outline-danger"
                                     onClick={() => handleDelete(p.id)}
                                 >
-                                    Sil
+                                    🗑️ Sil
                                 </button>
                             </div>
                         </div>

@@ -1,6 +1,6 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import apiInstance from "../api/ApiInstance";
-import { setTokens, clearTokens } from "../utils/tokenService";
+import { setTokens, clearTokens, getAccessToken } from "../utils/tokenService";
 
 export const login = createAsyncThunk(
     "auth/login",
@@ -23,7 +23,7 @@ export const logout = createAsyncThunk("auth/logout", async () => {
 const authSlice = createSlice({
     name: "auth",
     initialState: {
-        token: null,
+        token: getAccessToken() || null, // localStorage'dan yükle
         user: null,
         status: "idle",
         error: null

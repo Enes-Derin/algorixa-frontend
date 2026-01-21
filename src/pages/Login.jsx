@@ -56,7 +56,7 @@ const Login = () => {
         <div className="login-wrapper">
             <div className="login-card">
                 <div className="login-header">
-                    <span className="login-brand">SYNTAXA</span>
+                    <span className="login-brand">Algorixa</span>
                     <p>Yönetim Paneli</p>
                 </div>
 

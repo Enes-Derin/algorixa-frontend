@@ -1,55 +1,74 @@
-import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
-import apiInstance from '../api/ApiInstance';
-import { setTokens, clearTokens } from '../api/tokenService';
+import { createSlice } from "@reduxjs/toolkit";
 
-export const login = createAsyncThunk(
-    'auth/login',
-    async (credentials, { rejectWithValue }) => {
-        try {
-            const res = await apiInstance.post('/auth/login', credentials);
-            const { accessToken, refreshToken, role } = res.data.payload;
-
-            setTokens(accessToken, refreshToken);
-
-            return { accessToken, role };
-        } catch (err) {
-            return rejectWithValue(err.response?.data || err.message);
-        }
-    }
-);
-
-export const logout = createAsyncThunk('auth/logout', async () => {
-    clearTokens();
-});
+const initialState = {
+    accessToken: localStorage.getItem("accessToken") || null,
+    refreshToken: localStorage.getItem("refreshToken") || null,
+    role: localStorage.getItem("role") || null,
+    tokenExpiry: localStorage.getItem("tokenExpiry") || null,
+    isAuthenticated: !!localStorage.getItem("accessToken")
+};
 
 const authSlice = createSlice({
-    name: 'auth',
-    initialState: {
-        token: null,
-        user: null,
-        status: 'idle',
-        error: null,
-    },
-    reducers: {},
-    extraReducers: (builder) => {
-        builder
-            .addCase(login.pending, (state) => {
-                state.status = 'loading';
-            })
-            .addCase(login.fulfilled, (state, action) => {
-                state.status = 'succeeded';
-                state.token = action.payload.accessToken;
-                state.user = { role: action.payload.role };
-            })
-            .addCase(login.rejected, (state, action) => {
-                state.status = 'failed';
-                state.error = action.payload;
-            })
-            .addCase(logout.fulfilled, (state) => {
-                state.token = null;
-                state.user = null;
-            });
-    },
+    name: "auth",
+    initialState,
+    reducers: {
+        // Backend'den login response'ı
+        loginSuccess: (state, action) => {
+            state.accessToken = action.payload.accessToken;
+            state.refreshToken = action.payload.refreshToken;
+            state.role = action.payload.role;
+            state.isAuthenticated = true;
+
+            // localStorage'a kaydet
+            localStorage.setItem("accessToken", action.payload.accessToken);
+            localStorage.setItem("refreshToken", action.payload.refreshToken);
+            localStorage.setItem("role", action.payload.role);
+
+            // Token expiry'ı ayarla (15 dakika sonra)
+            const expiryTime = new Date().getTime() + (15 * 60 * 1000);
+            localStorage.setItem("tokenExpiry", expiryTime);
+            state.tokenExpiry = expiryTime;
+        },
+        setAccessToken: (state, action) => {
+            state.accessToken = action.payload.accessToken;
+            state.refreshToken = action.payload.refreshToken;
+            state.isAuthenticated = true;
+
+            localStorage.setItem("accessToken", action.payload.accessToken);
+            localStorage.setItem("refreshToken", action.payload.refreshToken);
+
+            // Token expiry'ı güncelle (15 dakika sonra)
+            const expiryTime = new Date().getTime() + (15 * 60 * 1000);
+            localStorage.setItem("tokenExpiry", expiryTime);
+            state.tokenExpiry = expiryTime;
+        },
+        logout: (state) => {
+            state.accessToken = null;
+            state.refreshToken = null;
+            state.role = null;
+            state.tokenExpiry = null;
+            state.isAuthenticated = false;
+
+            // localStorage'dan temizle
+            localStorage.removeItem("accessToken");
+            localStorage.removeItem("refreshToken");
+            localStorage.removeItem("role");
+            localStorage.removeItem("tokenExpiry");
+        },
+        clearExpiredToken: (state) => {
+            state.accessToken = null;
+            state.tokenExpiry = null;
+            localStorage.removeItem("accessToken");
+            localStorage.removeItem("tokenExpiry");
+        }
+    }
 });
+
+export const {
+    loginSuccess,
+    setAccessToken,
+    logout,
+    clearExpiredToken
+} = authSlice.actions;
 
 export default authSlice.reducer;

@@ -2,7 +2,7 @@ import { useState } from "react";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import apiInstance from "../api/ApiInstance";
-import { loginSuccess } from "../redux/authSlice";
+import loginSuccess from "../redux/authSlice";
 import "./login.css";
 
 const Login = () => {

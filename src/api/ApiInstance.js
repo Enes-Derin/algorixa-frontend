@@ -1,122 +1,43 @@
+// api/apiInstance.js
 import axios from "axios";
-import {
-    getAccessToken,
-    getRefreshToken,
-    setTokens,
-    clearTokens
-} from "./../utils/tokenService";
+import { getAccessToken, getRefreshToken, setTokens, clearTokens } from "../utils/tokenService";
 
 const BASE_URL = "/api";
 
-/* =====================
-   AXIOS INSTANCE
-===================== */
 const apiInstance = axios.create({
     baseURL: BASE_URL,
+    // withCredentials: true // JWT header kullanıyoruz, gerek yok
 });
 
-/* =====================
-   MULTIPART HELPERS
-===================== */
-export const postMultipart = async (url, formData) => {
+// Request interceptor: JWT header ekle
+apiInstance.interceptors.request.use((config) => {
     const token = getAccessToken();
-    const response = await apiInstance.post(url, formData, {
-        headers: {
-            "Content-Type": "multipart/form-data",
-            ...(token && { Authorization: `Bearer ${token}` }),
-        },
-    });
-    return response.data;
-};
+    if (token) config.headers.Authorization = `Bearer ${token}`;
+    return config;
+});
 
-export const putMultipart = async (url, formData) => {
-    const token = getAccessToken();
-    const response = await apiInstance.put(url, formData, {
-        headers: {
-            "Content-Type": "multipart/form-data",
-            ...(token && { Authorization: `Bearer ${token}` }),
-        },
-    });
-    return response.data;
-};
-
-/* =====================
-   REFRESH TOKEN LOGIC
-===================== */
-let isRefreshing = false;
-let failedQueue = [];
-
-const processQueue = (error, token = null) => {
-    failedQueue.forEach(promise =>
-        error ? promise.reject(error) : promise.resolve(token)
-    );
-    failedQueue = [];
-};
-
-/* =====================
-   REQUEST INTERCEPTOR
-===================== */
-apiInstance.interceptors.request.use(
-    (config) => {
-        const token = getAccessToken();
-        if (token) {
-            config.headers.Authorization = `Bearer ${token}`;
-        }
-        return config;
-    },
-    (error) => Promise.reject(error)
-);
-
-/* =====================
-   RESPONSE INTERCEPTOR
-===================== */
+// Response interceptor: 401 → token refresh
 apiInstance.interceptors.response.use(
     (response) => response,
     async (error) => {
         const originalRequest = error.config;
 
-        if (error.response?.status === 401 && !originalRequest._retry) {
-            if (isRefreshing) {
-                return new Promise((resolve, reject) => {
-                    failedQueue.push({ resolve, reject });
-                }).then((token) => {
-                    originalRequest.headers.Authorization = `Bearer ${token}`;
-                    return apiInstance(originalRequest);
-                });
-            }
-
+        if (error.response?.status === 401 && !originalRequest._retry && getRefreshToken()) {
             originalRequest._retry = true;
-            isRefreshing = true;
-
             try {
-                const refreshToken = getRefreshToken();
+                const refreshResponse = await axios.post(`${BASE_URL}/auth/refreshToken`, {
+                    refreshToken: getRefreshToken()
+                });
 
-                const refreshResponse = await axios.post(
-                    `${BASE_URL}/auth/refreshToken`,
-                    { refreshToken }
-                );
+                const { accessToken, refreshToken } = refreshResponse.data.data;
+                setTokens(accessToken, refreshToken);
 
-                const { accessToken, refreshToken: newRefreshToken } =
-                    refreshResponse.data.payload;
-
-                setTokens(accessToken, newRefreshToken);
-
-                apiInstance.defaults.headers.common.Authorization =
-                    `Bearer ${accessToken}`;
-
-                processQueue(null, accessToken);
-
-                originalRequest.headers.Authorization =
-                    `Bearer ${accessToken}`;
-
+                originalRequest.headers.Authorization = `Bearer ${accessToken}`;
                 return apiInstance(originalRequest);
-            } catch (err) {
-                processQueue(err, null);
+            } catch (refreshError) {
                 clearTokens();
                 window.location.replace("/login");
-                return Promise.reject(err);
-            } finally {
-                isRefreshing = false;
+                return Promise.reject(refreshError);
             }
         }
 

@@ -15,9 +15,9 @@ import AdminContactMessages from "./admin/AdminContactMessages";
 
 // Protected Route Component
 const ProtectedRoute = ({ children }) => {
-  const { isAuthenticated } = useSelector(state => state.auth);
+  const { token } = useSelector(state => state.auth);
 
-  if (!isAuthenticated) {
+  if (!token) {
     return <Navigate to="/login" replace />;
   }
 

@@ -1,7 +1,8 @@
-// utils/tokenService.js
+// Token yönetimi - localStorage ile
+const TOKEN_EXPIRY_KEY = "tokenExpiry";
 const ACCESS_TOKEN_KEY = "accessToken";
 const REFRESH_TOKEN_KEY = "refreshToken";
-const TOKEN_EXPIRY_KEY = "tokenExpiry";
+const REFRESH_THRESHOLD = 2 * 60 * 1000; // 2 dakika önce yenile
 
 export const getAccessToken = () => localStorage.getItem(ACCESS_TOKEN_KEY);
 export const getRefreshToken = () => localStorage.getItem(REFRESH_TOKEN_KEY);
@@ -10,7 +11,8 @@ export const setTokens = (accessToken, refreshToken) => {
     localStorage.setItem(ACCESS_TOKEN_KEY, accessToken);
     localStorage.setItem(REFRESH_TOKEN_KEY, refreshToken);
 
-    const expiryTime = new Date().getTime() + 15 * 60 * 1000; // 15 dk
+    // Token expiry'ı ayarla (15 dakika sonra)
+    const expiryTime = new Date().getTime() + (15 * 60 * 1000);
     localStorage.setItem(TOKEN_EXPIRY_KEY, expiryTime);
 };
 
@@ -30,5 +32,6 @@ export const shouldRefreshToken = () => {
     const expiry = localStorage.getItem(TOKEN_EXPIRY_KEY);
     if (!expiry) return true;
     const currentTime = new Date().getTime();
-    return currentTime > parseInt(expiry) - 2 * 60 * 1000; // 2 dk önce yenile
+    const expiryTime = parseInt(expiry);
+    return currentTime > (expiryTime - REFRESH_THRESHOLD);
 };

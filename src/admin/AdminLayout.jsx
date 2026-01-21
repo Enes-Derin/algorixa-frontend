@@ -7,18 +7,19 @@ const AdminLayout = () => {
     const dispatch = useDispatch();
     const navigate = useNavigate();
     const location = useLocation();
-    const { isAuthenticated } = useSelector(state => state.auth);
+    const { token } = useSelector(state => state.auth);
 
     const handleLogout = () => {
-        dispatch(logout());
-        navigate("/login");
+        dispatch(logout()).then(() => {
+            navigate("/login");
+        });
     };
 
     const isActive = (path) => {
         return location.pathname === path ? "active" : "";
     };
 
-    if (!isAuthenticated) {
+    if (!token) {
         return null;
     }
 

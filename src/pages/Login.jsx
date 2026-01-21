@@ -2,7 +2,7 @@ import { useState } from "react";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import apiInstance from "../api/ApiInstance";
-import loginSuccess from "../redux/authSlice";
+import { login } from "../redux/authSlice";
 import "./login.css";
 
 const Login = () => {
@@ -30,23 +30,10 @@ const Login = () => {
         setError(null);
 
         try {
-            const res = await apiInstance.post("/auth/login", form);
-
-            const { accessToken, role } = res.data.data;
-
-            // Token'ı Redux'a kaydet (memory'de)
-            dispatch(
-                loginSuccess({
-                    accessToken,
-                    role
-                })
-            );
-
-            // Admin paneline yönlendir
+            const result = await dispatch(login(form)).unwrap();
             navigate("/admin");
-
         } catch (err) {
-            setError(err.response?.data?.message || "Kullanıcı adı veya şifre hatalı");
+            setError(err?.message || "Kullanıcı adı veya şifre hatalı");
         } finally {
             setLoading(false);
         }

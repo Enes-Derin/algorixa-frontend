@@ -1,20 +1,42 @@
 import axios from "axios";
 import { store } from "../redux/store";
 import { setAccessToken, logout } from "../redux/authSlice";
+import tokenService from "../utils/tokenService";
 
 const API_BASE_URL = "/api";
 
 const apiInstance = axios.create({
     baseURL: API_BASE_URL,
-    withCredentials: true // HTTP-only cookies otomatik gönderilir
+    withCredentials: true
 });
 
-// REQUEST INTERCEPTOR - Token'ı header'a ekle
+// REQUEST INTERCEPTOR - Token'ı header'a ekle ve süresi dolmak üzerseyse yenile
 apiInstance.interceptors.request.use(
-    (config) => {
-        // Redux state'ten veya sessionStorage'dan token al
-        const token = store.getState().auth.accessToken || sessionStorage.getItem("accessToken");
+    async (config) => {
+        // Önce token süresi dolmuşsa temizle
+        tokenService.clearExpiredTokenFromStorage();
 
+        // Yenilenmesi gereken token var mı kontrol et
+        if (tokenService.shouldRefreshToken() && tokenService.getRefreshToken()) {
+            try {
+                // Token'ı yenile
+                const refreshResponse = await axios.post(
+                    `${API_BASE_URL}auth/refreshToken`,
+                    { refreshToken: tokenService.getRefreshToken() },
+                    { withCredentials: true }
+                );
+
+                const { accessToken, refreshToken } = refreshResponse.data.data;
+                tokenService.updateTokens(accessToken, refreshToken);
+            } catch (error) {
+                console.error("Token refresh başarısız:", error);
+                tokenService.clearAllTokens();
+                return Promise.reject(error);
+            }
+        }
+
+        // Token'ı header'a ekle
+        const token = tokenService.getAccessToken();
         if (token) {
             config.headers.Authorization = `Bearer ${token}`;
         }
@@ -24,7 +46,7 @@ apiInstance.interceptors.request.use(
     (error) => Promise.reject(error)
 );
 
-// RESPONSE INTERCEPTOR - Token refresh
+// RESPONSE INTERCEPTOR - 401 hatası ve token refresh işlemi
 apiInstance.interceptors.response.use(
     (response) => response,
     async (error) => {
@@ -33,32 +55,38 @@ apiInstance.interceptors.response.use(
         // 401 hatası ve daha önce retry yapılmadıysa
         if (
             error.response?.status === 401 &&
-            !originalRequest._retry
+            !originalRequest._retry &&
+            tokenService.getRefreshToken()
         ) {
             originalRequest._retry = true;
 
             try {
-                // Backend'e refresh token gönderi (cookie'de otomatik gider)
+                // Backend'e refresh token gönderi
                 const refreshResponse = await axios.post(
-                    `${API_BASE_URL}/auth/refreshToken`,
-                    {},
+                    `${API_BASE_URL}auth/refreshToken`,
+                    { refreshToken: tokenService.getRefreshToken() },
                     { withCredentials: true }
                 );
 
-                const newAccessToken = refreshResponse.data.data.accessToken;
+                const { accessToken, refreshToken } = refreshResponse.data.data;
 
-                // Yeni token'ı Redux'a kaydet (memory'de tutuluyor)
-                store.dispatch(setAccessToken(newAccessToken));
+                // Token'ları güncelle
+                tokenService.updateTokens(accessToken, refreshToken);
 
                 // Orijinal request'i yeni token ile tekrar gönder
-                originalRequest.headers.Authorization = `Bearer ${newAccessToken}`;
+                originalRequest.headers.Authorization = `Bearer ${accessToken}`;
                 return apiInstance(originalRequest);
 
             } catch (refreshError) {
-                // Refresh başarısız → Logout
-                store.dispatch(logout());
+                // Refresh başarısız → Logout yap ve tüm token'ları temizle
+                tokenService.clearAllTokens();
                 return Promise.reject(refreshError);
             }
+        }
+
+        // Refresh token da yoksa veya başarısız olduysa logout
+        if (error.response?.status === 401) {
+            tokenService.clearAllTokens();
         }
 
         return Promise.reject(error);

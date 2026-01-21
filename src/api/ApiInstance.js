@@ -1,29 +1,25 @@
 import axios from "axios";
-import { store } from "../redux/store";
-import { setAccessToken, logout } from "../redux/authSlice";
 import tokenService from "../utils/tokenService";
 
 const API_BASE_URL = "/api";
 
 const apiInstance = axios.create({
     baseURL: API_BASE_URL,
-    withCredentials: true
+    withCredentials: false // JWT header ile çalışacağımız için cookie yok
 });
 
-// REQUEST INTERCEPTOR - Token'ı header'a ekle ve süresi dolmak üzerseyse yenile
+// REQUEST INTERCEPTOR
 apiInstance.interceptors.request.use(
     async (config) => {
-        // Önce token süresi dolmuşsa temizle
+        // Süresi dolmuş token varsa temizle
         tokenService.clearExpiredTokenFromStorage();
 
-        // Yenilenmesi gereken token var mı kontrol et
+        // Token yenileme gerekli mi?
         if (tokenService.shouldRefreshToken() && tokenService.getRefreshToken()) {
             try {
-                // Token'ı yenile
                 const refreshResponse = await axios.post(
                     `${API_BASE_URL}/auth/refreshToken`,
-                    { refreshToken: tokenService.getRefreshToken() },
-                    { withCredentials: true }
+                    { refreshToken: tokenService.getRefreshToken() }
                 );
 
                 const { accessToken, refreshToken } = refreshResponse.data.data;
@@ -35,7 +31,7 @@ apiInstance.interceptors.request.use(
             }
         }
 
-        // Token'ı header'a ekle
+        // Authorization header ekle
         const token = tokenService.getAccessToken();
         if (token) {
             config.headers.Authorization = `Bearer ${token}`;
@@ -46,45 +42,34 @@ apiInstance.interceptors.request.use(
     (error) => Promise.reject(error)
 );
 
-// RESPONSE INTERCEPTOR - 401 hatası ve token refresh işlemi
+// RESPONSE INTERCEPTOR
 apiInstance.interceptors.response.use(
     (response) => response,
     async (error) => {
         const originalRequest = error.config;
 
-        // 401 hatası ve daha önce retry yapılmadıysa
+        // 401 hatası ve refresh token varsa retry
         if (
             error.response?.status === 401 &&
             !originalRequest._retry &&
             tokenService.getRefreshToken()
         ) {
             originalRequest._retry = true;
-
             try {
-                // Backend'e refresh token gönderi
                 const refreshResponse = await axios.post(
                     `${API_BASE_URL}/auth/refreshToken`,
-                    { refreshToken: tokenService.getRefreshToken() },
-                    { withCredentials: true }
+                    { refreshToken: tokenService.getRefreshToken() }
                 );
-
                 const { accessToken, refreshToken } = refreshResponse.data.data;
-
-                // Token'ları güncelle
                 tokenService.updateTokens(accessToken, refreshToken);
-
-                // Orijinal request'i yeni token ile tekrar gönder
                 originalRequest.headers.Authorization = `Bearer ${accessToken}`;
                 return apiInstance(originalRequest);
-
             } catch (refreshError) {
-                // Refresh başarısız → Logout yap ve tüm token'ları temizle
                 tokenService.clearAllTokens();
                 return Promise.reject(refreshError);
             }
         }
 
-        // Refresh token da yoksa veya başarısız olduysa logout
         if (error.response?.status === 401) {
             tokenService.clearAllTokens();
         }

@@ -23,7 +23,7 @@ const authSlice = createSlice({
             localStorage.setItem("accessToken", action.payload.accessToken);
             localStorage.setItem("refreshToken", action.payload.refreshToken);
             localStorage.setItem("role", action.payload.role);
-            
+
             // Token expiry'ı ayarla (15 dakika sonra)
             const expiryTime = new Date().getTime() + (15 * 60 * 1000);
             localStorage.setItem("tokenExpiry", expiryTime);
@@ -33,10 +33,10 @@ const authSlice = createSlice({
             state.accessToken = action.payload.accessToken;
             state.refreshToken = action.payload.refreshToken;
             state.isAuthenticated = true;
-            
+
             localStorage.setItem("accessToken", action.payload.accessToken);
             localStorage.setItem("refreshToken", action.payload.refreshToken);
-            
+
             // Token expiry'ı güncelle (15 dakika sonra)
             const expiryTime = new Date().getTime() + (15 * 60 * 1000);
             localStorage.setItem("tokenExpiry", expiryTime);

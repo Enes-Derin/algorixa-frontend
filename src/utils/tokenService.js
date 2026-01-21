@@ -58,11 +58,11 @@ export const tokenService = {
     updateTokens: (accessToken, refreshToken) => {
         localStorage.setItem(ACCESS_TOKEN_KEY, accessToken);
         localStorage.setItem(REFRESH_TOKEN_KEY, refreshToken);
-        
+
         // Yeni expiry zamanı (15 dakika)
         const expiryTime = new Date().getTime() + (15 * 60 * 1000);
         localStorage.setItem(TOKEN_EXPIRY_KEY, expiryTime);
-        
+
         // Redux state'i güncelle
         store.dispatch(setAccessToken({
             accessToken,

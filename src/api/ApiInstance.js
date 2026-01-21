@@ -21,7 +21,7 @@ apiInstance.interceptors.request.use(
             try {
                 // Token'ı yenile
                 const refreshResponse = await axios.post(
-                    `${API_BASE_URL}auth/refreshToken`,
+                    `${API_BASE_URL}/auth/refreshToken`,
                     { refreshToken: tokenService.getRefreshToken() },
                     { withCredentials: true }
                 );
@@ -63,7 +63,7 @@ apiInstance.interceptors.response.use(
             try {
                 // Backend'e refresh token gönderi
                 const refreshResponse = await axios.post(
-                    `${API_BASE_URL}auth/refreshToken`,
+                    `${API_BASE_URL}/auth/refreshToken`,
                     { refreshToken: tokenService.getRefreshToken() },
                     { withCredentials: true }
                 );

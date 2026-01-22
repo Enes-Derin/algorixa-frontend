@@ -8,6 +8,7 @@ const Contact = () => {
     const handleSubmit = async (e) => {
         e.preventDefault();
         setLoading(true);
+        setStatus("");
 
         const data = {
             name: e.target.name.value,
@@ -16,11 +17,17 @@ const Contact = () => {
         };
 
         try {
-            await apiInstance.post("/contact", data);
-            setStatus("✅ Talebiniz başarıyla gönderildi!");
+            const response = await apiInstance.post("/contact", data);
+            console.log("API Response:", response);
+            setStatus("✅ Talebiniz başarıyla gönderildi! En kısa sürede size dönüş yapacağız.");
             e.target.reset();
-        } catch {
-            setStatus("❌ Bir hata oluştu. Lütfen tekrar deneyin.");
+
+            // 5 saniye sonra mesajı temizle
+            setTimeout(() => setStatus(""), 5000);
+        } catch (error) {
+            console.error("Submit Error:", error);
+            const errorMsg = error.response?.data?.message || "Bir hata oluştu. Lütfen tekrar deneyin.";
+            setStatus(`❌ ${errorMsg}`);
         } finally {
             setLoading(false);
         }
@@ -72,7 +79,11 @@ const Contact = () => {
                                     marginTop: "16px",
                                     fontSize: "14px",
                                     fontWeight: "500",
-                                    color: status.includes("✅") ? "#10b981" : "#ef4444"
+                                    color: status.includes("✅") ? "#10b981" : "#ef4444",
+                                    padding: "12px",
+                                    backgroundColor: status.includes("✅") ? "#ecfdf5" : "#fef2f2",
+                                    borderRadius: "8px",
+                                    border: `1px solid ${status.includes("✅") ? "#d1fae5" : "#fee2e2"}`
                                 }}>{status}</p>
                             )}
                         </form>

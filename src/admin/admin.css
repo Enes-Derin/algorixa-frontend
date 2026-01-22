@@ -181,11 +181,15 @@
     padding: 12px 14px;
     border: 1px solid #ddd;
     font-size: 14px;
+    background: #ffffff !important;
+    color: #111827 !important;
 }
 
 .admin-form .form-control:focus {
     box-shadow: none;
     border-color: #111;
+    background: #ffffff !important;
+    color: #111827 !important;
 }
 
 .admin-form .form-control::placeholder {
@@ -195,6 +199,8 @@
 .admin-form textarea.form-control {
     resize: vertical;
     min-height: 100px;
+    background: #ffffff !important;
+    color: #111827 !important;
 }
 
 /* ========== BUTTONS ========== */

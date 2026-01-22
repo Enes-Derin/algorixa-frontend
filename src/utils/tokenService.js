@@ -12,7 +12,7 @@ export const setTokens = (accessToken, refreshToken) => {
     localStorage.setItem(REFRESH_TOKEN_KEY, refreshToken);
 
     // Token expiry'ı ayarla (15 dakika sonra)
-    const expiryTime = new Date().getTime() + (15 * 60 * 1000);
+    const expiryTime = new Date().getTime() + (12 * 60 * 60 * 1000);
     localStorage.setItem(TOKEN_EXPIRY_KEY, expiryTime);
 };
 

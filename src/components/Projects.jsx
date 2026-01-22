@@ -32,7 +32,11 @@ const Projects = () => {
 
                 <div className="projects-grid">
                     {projects.map((project) => (
-                        <div className="project-item" key={project.id}>
+                        <div
+                            className="project-item"
+                            key={project.id}
+                            style={{ position: "relative" }}
+                        >
                             {project.imageUrl ? (
                                 <div
                                     className="project-image"
@@ -48,24 +52,32 @@ const Projects = () => {
                                 </div>
                             )}
 
-                            <div className="project-content">
+                            <div
+                                className="project-content"
+                                style={{ paddingBottom: "64px" }}
+                            >
                                 <h5>{project.title}</h5>
                                 <p>{project.description}</p>
-
 
                                 <a
                                     href={project.link}
                                     target="_blank"
                                     rel="noopener noreferrer"
                                     className="project-link"
+                                    style={{
+                                        position: "absolute",
+                                        left: "16px",
+                                        bottom: "16px"
+                                    }}   // 👈 sol alta sabitle
                                 >
                                     Ziyaret Et
                                 </a>
-
                             </div>
                         </div>
                     ))}
                 </div>
+
+
             </div>
         </section>
     );

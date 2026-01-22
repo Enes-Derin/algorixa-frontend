@@ -2,18 +2,18 @@ const Services = () => {
     const services = [
         {
             id: 1,
-            title: "Landing Page Çözümleri",
-            description: "Tek bir hedef için tasarlanmış, sade ve etkili sayfalar.",
+            title: "Landing Page Tasarımı",
+            description: "Reklam ve dönüşüm odaklı, yüksek performanslı landing page sayfaları."
         },
         {
             id: 2,
-            title: "Kurumsal Web Sitesi",
-            description: "Markanızı dijitalde doğru ve güvenilir şekilde temsil edin.",
+            title: "Kurumsal Web Sitesi Geliştirme",
+            description: "SEO uyumlu, hızlı ve yönetilebilir kurumsal web siteleri.",
         },
         {
             id: 3,
-            title: "Admin Panelli Kurumsal Web Sitesi",
-            description: "İçeriğinizi teknik bilgiye ihtiyaç duymadan yönetin.",
+            title: "Admin Panelli Web Uygulamaları",
+            description: "İçeriklerinizi kolayca yönetebileceğiniz özel admin paneller.",
         }
     ];
 

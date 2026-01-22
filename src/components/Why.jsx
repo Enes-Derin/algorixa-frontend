@@ -25,7 +25,14 @@ const Why = () => {
     return (
         <section id="why" className="value-section">
             <div className="container">
-                <h2 className="section-title"> Neden Algorixa?</h2>
+                <h2 className="section-title">
+                    Kurumsal Web Sitesi İçin Neden Algorixa?
+                </h2>
+                <p className="text-center text-muted mt-3">
+                    Algorixa, ajans karmaşası olmadan doğrudan yazılımcı ile
+                    çalışmak isteyen işletmeler için
+                    kurumsal web sitesi ve admin panelli dijital sistemler geliştirir.
+                </p>
 
                 <div className="row g-4">
                     {reasons.map((reason, index) => (

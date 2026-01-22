@@ -11,14 +11,14 @@ const Hero = () => {
                         </span>
 
                         <h1 className="hero-title">
-                            Net kapsamlı,<br />
-                            sürdürülebilir dijital sistemler
+                            Kurumsal Web Sitesi ve<br />
+                            Admin Panelli Dijital Sistemler
                         </h1>
 
                         <p className="hero-text">
-                            Plansız projeler ve yarım teslimatlar yerine;
-                            uzun vadeli, yönetilebilir ve sorunsuz
-                            dijital çözümler sunuyorum.
+                            Küçük ve orta ölçekli işletmeler için
+                            kurumsal web sitesi, admin panelli web uygulamaları
+                            ve sürdürülebilir dijital çözümler geliştiriyorum.
                         </p>
 
                         <div className="hero-actions">

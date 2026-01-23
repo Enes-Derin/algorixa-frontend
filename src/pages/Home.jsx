@@ -13,8 +13,8 @@ const Home = () => {
         <>
             <Navbar />
             <Hero />
-            <SeoContent />
             <Why />
+            <SeoContent />
             <Services />
             <Projects />
             <Contact />

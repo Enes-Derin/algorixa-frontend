@@ -47,11 +47,6 @@ const Why = () => {
                 </div>
 
                 <div style={{ marginTop: "40px", padding: "32px", backgroundColor: "#f3f4f6", borderRadius: "14px", textAlign: "center" }}>
-                    <p style={{ fontSize: "16px", lineHeight: "1.8", color: "var(--text-muted)", margin: 0 }}>
-                        Ajans karmaşası olmadan, net kapsamlı ve kontrollü projeler.
-                        <br />
-                        Abartı yok, belirsizlik yok. <strong>Sadece çözümler.</strong>
-                    </p>
                 </div>
             </div>
         </section>

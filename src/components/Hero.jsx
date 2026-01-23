@@ -18,7 +18,7 @@ const Hero = () => {
                         <p className="hero-text">
                             Küçük ve orta ölçekli işletmeler için
                             kurumsal web sitesi, admin panelli web uygulamaları
-                            ve sürdürülebilir dijital çözümler geliştiriyorum.
+                            ve sürdürülebilir dijital çözümler.
                         </p>
 
                         <div className="hero-actions">

@@ -14,7 +14,6 @@ const Home = () => {
             <Navbar />
             <Hero />
             <Why />
-            <SeoContent />
             <Services />
             <Projects />
             <Contact />

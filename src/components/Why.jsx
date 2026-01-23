@@ -1,3 +1,5 @@
+import SeoContent from "./SeoContent";
+
 const Why = () => {
     const reasons = [
         {
@@ -47,6 +49,7 @@ const Why = () => {
                 </div>
 
                 <div style={{ marginTop: "40px", padding: "32px", backgroundColor: "#f3f4f6", borderRadius: "14px", textAlign: "center" }}>
+                    <SeoContent />
                 </div>
             </div>
         </section>

@@ -1,43 +1,38 @@
-import Algorixa from "../assets/Algorixa.png";
-
 const Hero = () => {
     return (
-        <section className="hero-section">
-            <div className="container">
-                <div className="row align-items-center">
-                    <div className="col-lg-6">
-                        <span className="hero-label">
-                            Dijital Hizmet & Çözüm Ortağınız
-                        </span>
+        <section className="hero">
+            <div className="container hero-grid">
+                <div>
+                    <span className="hero-badge">
+                        Kurumsal Dijital Çözüm Ortağı
+                    </span>
 
-                        <h1 className="hero-title">
-                            Kurumsal Web Sitesi ve<br />
-                            Admin Panelli Dijital Sistemler
-                        </h1>
+                    <h1>
+                        İşinizi Büyüten<br />
+                        Kurumsal Web & Yazılım Sistemleri
+                    </h1>
 
-                        <p className="hero-text">
-                            Küçük ve orta ölçekli işletmeler için
-                            kurumsal web sitesi, admin panelli web uygulamaları
-                            ve sürdürülebilir dijital çözümler.
-                        </p>
+                    <p>
+                        Algorixa, işletmeler için sadece web sitesi değil;
+                        satış, güven ve ölçeklenebilirlik sunar.
+                    </p>
 
-                        <div className="hero-actions">
-                            <a href="#contact" className="btn btn-primary-hero text-white">
-                                Teklif Al
-                            </a>
-                            <a href="#services" className="btn btn-secondary-hero">
-                                Hizmetler
-                            </a>
-                        </div>
-                    </div>
-
-                    <div className="col-lg-6 mt-5 mt-lg-0">
-                        <div className="hero-mockup">
-                            <img src={Algorixa} alt="Softra Digital Solutions" style={{ maxWidth: '100%', height: 'auto' }} />
-                        </div>
+                    <div className="hero-actions">
+                        <a href="#contact" className="btn-primary">
+                            Ücretsiz Teklif Al
+                        </a>
+                        <a href="#projects" className="btn-outline">
+                            Referansları İncele
+                        </a>
                     </div>
                 </div>
+
+                <div className="hero-visual">
+                    <div className="hero-card">Kurumsal UI</div>
+                    <div className="hero-card">Admin Panel</div>
+                </div>
             </div>
+
         </section>
     );
 };

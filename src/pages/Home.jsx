@@ -3,20 +3,24 @@ import Footer from "../components/Footer";
 import Hero from "../components/Hero";
 import Navbar from "../components/Navbar";
 import Projects from "../components/Projects";
-import SeoContent from "../components/SeoContent";
 import Services from "../components/Services";
 import Why from "../components/Why";
-
+import SeoContent from "../components/SeoContent";
 
 const Home = () => {
     return (
         <>
             <Navbar />
-            <Hero />
-            <Why />
-            <Services />
-            <Projects />
-            <Contact />
+
+            <main>
+                <Hero />
+                <Why />
+                <Services />
+                <Projects />
+                <SeoContent />
+                <Contact />
+            </main>
+
             <Footer />
         </>
     );

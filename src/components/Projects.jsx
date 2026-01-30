@@ -4,10 +4,8 @@ import { fetchProjects } from "../redux/projectSlice";
 
 const Projects = () => {
     const dispatch = useDispatch();
-
-    const { projects = [], loading } = useSelector(
-        (state) => state.project
-    ) || {};
+    const { projects = [], loading } =
+        useSelector((state) => state.project) || {};
 
     useEffect(() => {
         dispatch(fetchProjects());
@@ -19,9 +17,7 @@ const Projects = () => {
                 <h2 className="section-title">Referanslar</h2>
 
                 {loading && (
-                    <p className="text-center text-muted">
-                        Yükleniyor...
-                    </p>
+                    <p className="text-center text-muted">Yükleniyor...</p>
                 )}
 
                 {!loading && projects.length === 0 && (
@@ -32,52 +28,71 @@ const Projects = () => {
 
                 <div className="projects-grid">
                     {projects.map((project) => (
-                        <div
-                            className="project-item"
-                            key={project.id}
-                            style={{ position: "relative" }}
-                        >
-                            {project.imageUrl ? (
-                                <div
-                                    className="project-image"
-                                    style={{
-                                        backgroundImage: `url(${project.imageUrl})`,
-                                        backgroundSize: "cover",
-                                        backgroundPosition: "center"
-                                    }}
-                                />
-                            ) : (
-                                <div className="project-image">
-                                    📸 Görsel yok
-                                </div>
-                            )}
-
+                        <article className="project-card" key={project.id}>
+                            {/* IMAGE */}
                             <div
-                                className="project-content"
-                                style={{ paddingBottom: "64px" }}
+                                className="project-cover"
+                                style={{
+                                    backgroundImage: project.imageUrl
+                                        ? `url(${project.imageUrl})`
+                                        : "none",
+                                }}
                             >
-                                <h5>{project.title}</h5>
-                                <p>{project.description}</p>
+                                {!project.imageUrl && (
+                                    <div className="project-no-image">
+                                        Görsel yok
+                                    </div>
+                                )}
 
-                                <a
-                                    href={project.link}
-                                    target="_blank"
-                                    rel="noopener noreferrer"
-                                    className="project-link"
-                                    style={{
-                                        position: "absolute",
-                                        left: "16px",
-                                        bottom: "16px"
-                                    }}   // 👈 sol alta sabitle
-                                >
-                                    Ziyaret Et
-                                </a>
+                                {/* DESKTOP OVERLAY */}
+                                <div className="project-overlay desktop-only">
+                                    <div className="project-meta">
+                                        <h5>{project.title}</h5>
+
+                                        {project.description && (
+                                            <p className="project-desc">
+                                                {project.description}
+                                            </p>
+                                        )}
+
+                                        {project.link && (
+                                            <a
+                                                href={project.link}
+                                                target="_blank"
+                                                rel="noopener noreferrer"
+                                                className="project-btn"
+                                            >
+                                                Siteyi İncele
+                                            </a>
+                                        )}
+                                    </div>
+                                </div>
                             </div>
-                        </div>
+
+                            {/* MOBILE CONTENT */}
+                            <div className="project-mobile-content mobile-only">
+                                <h5>{project.title}</h5>
+
+                                {project.description && (
+                                    <p className="project-desc">
+                                        {project.description}
+                                    </p>
+                                )}
+
+                                {project.link && (
+                                    <a
+                                        href={project.link}
+                                        target="_blank"
+                                        rel="noopener noreferrer"
+                                        className="project-btn"
+                                    >
+                                        Siteyi İncele
+                                    </a>
+                                )}
+                            </div>
+                        </article>
                     ))}
                 </div>
-
-
             </div>
         </section>
     );

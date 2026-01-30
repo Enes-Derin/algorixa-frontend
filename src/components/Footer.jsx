@@ -1,37 +1,59 @@
 const Footer = () => {
     return (
-        <footer className="footer">
-            <div className="container">
-                <div className="row mb-4">
-                    <div className="col-md-4 mb-3 mb-md-0">
-                        <h5>Algorixa</h5>
-                        <p style={{ color: "#d1d5db", fontSize: "14px" }}>
-                            Dijital hizmet ve çözüm ortağınız
-                        </p>
-                    </div>
+        <footer className="footer-modern">
+            <div className="container footer-grid">
 
-                    <div className="col-md-4">
-                        <h5>İletişim</h5>
-                        <a href="mailto:enesderin.contact@gmail.com">
-                            enesderin.contact@gmail.com
-                        </a>
-                        <br />
-                        <a href="tel:+905469705451">
-                            +90 546 970 54 51
-                        </a>
-
-                    </div>
-
-                    <div className="col-md-4">
-                        <h5>Sayfalar</h5>
-                        <a href="#services">Hizmetler</a><br />
-                        <a href="#projects">Projeler</a>
-                    </div>
+                {/* BRAND */}
+                <div className="footer-brand">
+                    <h4>Algorixa</h4>
+                    <p>
+                        İşletmeler için güven veren, satış odaklı
+                        kurumsal web ve yazılım çözümleri.
+                    </p>
                 </div>
 
-                <div className="footer-bottom">
-                    © 2026 Algorixa. Tüm hakları saklıdır.
+                {/* LINKS */}
+                <div className="footer-links">
+                    <h6>Hizmetler</h6>
+                    <a href="#services">Kurumsal Web</a>
+                    <a href="#services">Admin Panel</a>
+                    <a href="#services">Landing Page</a>
                 </div>
+
+                {/* CONTACT */}
+                <div className="footer-links">
+                    <h6>İletişim</h6>
+                    <a href="mailto:enesderin.contact@gmail.com">
+                        enesderin.contact@gmail.com
+                    </a>
+                    <a href="tel:+905469705451">
+                        +90 546 970 54 51
+                    </a>
+
+                    {/* INSTAGRAM */}
+                    <a
+                        href="https://instagram.com/algorixa_"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="footer-social"
+                    >
+                        Instagram
+                    </a>
+                </div>
+
+                {/* CTA */}
+                <div className="footer-cta">
+                    <h6>Teklif Al</h6>
+                    <p>Projenizi 24 saat içinde değerlendirelim.</p>
+                    <a href="#contact" className="footer-btn">
+                        Ücretsiz Teklif
+                    </a>
+                </div>
+
+            </div>
+
+            <div className="footer-bottom-modern">
+                © 2026 Algorixa — Tüm hakları saklıdır.
             </div>
         </footer>
     );

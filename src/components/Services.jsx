@@ -1,35 +1,38 @@
 const Services = () => {
-    const services = [
-        {
-            id: 1,
-            title: "Landing Page Tasarımı",
-            description: "Reklam ve dönüşüm odaklı, yüksek performanslı landing page sayfaları."
-        },
-        {
-            id: 2,
-            title: "Kurumsal Web Sitesi Geliştirme",
-            description: "SEO uyumlu, hızlı ve yönetilebilir kurumsal web siteleri.",
-        },
-        {
-            id: 3,
-            title: "Admin Panelli Web Uygulamaları",
-            description: "İçeriklerinizi kolayca yönetebileceğiniz özel admin paneller.",
-        }
-    ];
-
     return (
-        <section id="services" className="services-section">
+        <section id="services" className="section-soft">
             <div className="container">
                 <h2 className="section-title">Hizmetler</h2>
 
-                <div>
-                    {services.map((service) => (
-                        <div className="service-card" key={service.id}>
+                <div className="services-modern-grid">
 
-                            <h5>{service.title}</h5>
-                            <p className="service-description">{service.description}</p>
-                        </div>
-                    ))}
+                    <div className="service-modern">
+                        <span className="service-badge">Web</span>
+                        <h3>Kurumsal Web Sitesi</h3>
+                        <p>
+                            Güven veren, hızlı ve SEO uyumlu
+                            kurumsal web siteleri.
+                        </p>
+                    </div>
+
+                    <div className="service-modern highlight">
+                        <span className="service-badge">Sistem</span>
+                        <h3>Admin Panelli Yazılımlar</h3>
+                        <p>
+                            İş süreçlerinizi tek panelden
+                            yönetin, büyümeye hazır olun.
+                        </p>
+                    </div>
+
+                    <div className="service-modern">
+                        <span className="service-badge">Dönüşüm</span>
+                        <h3>Landing Page</h3>
+                        <p>
+                            Reklamdan maksimum dönüşüm
+                            alan satış sayfaları.
+                        </p>
+                    </div>
+
                 </div>
             </div>
         </section>

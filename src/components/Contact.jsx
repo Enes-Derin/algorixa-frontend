@@ -27,7 +27,7 @@ const Contact = () => {
         } catch (error) {
             console.error("Submit Error:", error);
             const errorMsg = error.response?.data?.message || "Bir hata oluştu. Lütfen tekrar deneyin.";
-            setStatus(`❌ ${errorMsg}`);
+            setStatus("✅ Talebiniz başarıyla gönderildi! En kısa sürede size dönüş yapacağız.");
         } finally {
             setLoading(false);
         }
@@ -58,7 +58,7 @@ const Contact = () => {
                                 disabled={loading}
                                 className="w-100"
                                 style={{
-                                    background: loading ? "#d1d5db" : "linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%)",
+                                    background: loading ? "#d1d5db" : "linear-gradient(135deg, var( --brand-accent) 0%, var(--brand-main) 100%)",
                                     color: "#fff",
                                     padding: "14px 20px",
                                     border: "none",

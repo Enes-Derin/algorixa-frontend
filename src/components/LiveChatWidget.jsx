@@ -24,7 +24,7 @@ const LiveChatWidget = () => {
 
     const botResponses = {
         fiyat: {
-            text: "Paket Fiyatlarımız:\n\nBaşlangıç: 18.900₺\nKurumsal: 32.900₺\nÖzel Yazılım: 54.900₺+\n\nDetaylı bilgi için fiyatlandırma bölümünü inceleyebilirsiniz!",
+            text: "Paket Fiyatlarımız:\n\n🌟 Landing Page: 6.000₺\n💼 Kurumsal Web (Statik): 11.900₺\n✨ Kurumsal Web (Dinamik): 21.900₺\n🚀 Özel Yazılım: 49.900₺+\n\nDetaylı bilgi için fiyatlandırma bölümünü inceleyebilirsiniz!",
             delay: 1000,
             action: () => document.getElementById('pricing')?.scrollIntoView({ behavior: 'smooth' })
         },

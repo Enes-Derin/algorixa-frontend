@@ -390,7 +390,7 @@ const Contact = () => {
                                 placeholder={quoteData
                                     ? "Ek notlarınız (opsiyonel - özel istekler, sorularınız vb.)"
                                     : "Mesajınız (Proje detayları, bütçe, süre vb.) *"}
-                                required={!quoteData}
+                                required
                                 aria-label="Mesaj"
                                 initial={{ opacity: 0, x: -50 }}
                                 whileInView={{ opacity: 1, x: 0 }}

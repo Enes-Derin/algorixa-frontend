@@ -30,11 +30,7 @@ const HeroPremium = () => {
         mouseY.set((e.clientY - rect.top - rect.height / 2) * 0.05);
     };
 
-    // const stats = [
-    //     { value: "50+", label: "Proje", icon: "🚀" },
-    //     { value: "%98", label: "Memnuniyet", icon: "⭐" },
-    //     { value: "24h", label: "Destek", icon: "⚡" }
-    // ];
+
 
     const trustBadges = [
         { icon: FaShieldAlt, label: "SSL Güvenli" },
@@ -135,23 +131,7 @@ const HeroPremium = () => {
                             viewport={{ once: true }}
                             transition={{ duration: 0.7, delay: 0.4 }}
                         >
-                            {/* {stats.map((stat, index) => (
-                                <motion.div
-                                    key={index}
-                                    className="stat-inline-item"
-                                    initial={{ opacity: 0, scale: 0.8 }}
-                                    whileInView={{ opacity: 1, scale: 1 }}
-                                    viewport={{ once: true }}
-                                    transition={{ delay: 0.5 + index * 0.1 }}
-                                    whileHover={{ scale: 1.05 }}
-                                >
-                                    <span className="stat-icon">{stat.icon}</span>
-                                    <div className="stat-text">
-                                        <div className="stat-value">{stat.value}</div>
-                                        <div className="stat-label">{stat.label}</div>
-                                    </div>
-                                </motion.div>
-                            ))} */}
+
                         </motion.div>
 
                         <motion.div

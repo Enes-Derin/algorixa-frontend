@@ -13,6 +13,7 @@ import AdminLayout from "./admin/AdminLayout";
 import AdminDashboard from "./admin/AdminDashboard";
 import AdminProject from "./admin/AdminProject";
 import AdminContactMessages from "./admin/AdminContactMessages";
+import { HelmetProvider } from "react-helmet-async";
 
 // Protected Route Component
 const ProtectedRoute = ({ children }) => {
@@ -41,30 +42,32 @@ function App() {
   }, []);
 
   return (
-    <Router>
-      <Routes>
-        {/* Public Routes */}
-        <Route path="/" element={<Home />} />
-        <Route path="/login" element={<Login />} />
+    <HelmetProvider>
+      <Router>
+        <Routes>
+          {/* Public Routes */}
+          <Route path="/" element={<Home />} />
+          <Route path="/login" element={<Login />} />
 
-        {/* Admin Routes - Protected */}
-        <Route
-          path="/admin"
-          element={
-            <ProtectedRoute>
-              <AdminLayout />
-            </ProtectedRoute>
-          }
-        >
-          <Route index element={<AdminDashboard />} />
-          <Route path="projects" element={<AdminProject />} />
-          <Route path="messages" element={<AdminContactMessages />} />
-        </Route>
+          {/* Admin Routes - Protected */}
+          <Route
+            path="/admin"
+            element={
+              <ProtectedRoute>
+                <AdminLayout />
+              </ProtectedRoute>
+            }
+          >
+            <Route index element={<AdminDashboard />} />
+            <Route path="projects" element={<AdminProject />} />
+            <Route path="messages" element={<AdminContactMessages />} />
+          </Route>
 
-        {/* Redirect unknown routes to home */}
-        <Route path="*" element={<Navigate to="/" replace />} />
-      </Routes>
-    </Router>
+          {/* Redirect unknown routes to home */}
+          <Route path="*" element={<Navigate to="/" replace />} />
+        </Routes>
+      </Router>
+    </HelmetProvider>
   );
 }
 

@@ -57,7 +57,7 @@ const PricingCalculator = () => {
                 "KVKK & Gizlilik Politikası"
             ],
             features: [
-                "Profesyonel Premium Tasarım",
+                "Profesyonel Tasarım",
                 "❌ Admin Panel Yok (Statik İçerik)",
                 "Gelişmiş SEO Optimizasyonu",
                 "Hızlı Yükleme Garantisi",
@@ -91,7 +91,7 @@ const PricingCalculator = () => {
                 "SSS (Sık Sorulan Sorular)"
             ],
             features: [
-                "Premium Özel Tasarım",
+                "Profesyonel Tasarım",
                 "✅ Tam Özellikli Admin Panel",
                 "İçerik Yönetim Sistemi (CMS)",
                 "Dinamik Blog & Haber Modülü",
@@ -118,7 +118,7 @@ const PricingCalculator = () => {
                 "Özel UI/UX Tasarımı",
                 "İhtiyaca Özel Modüller",
                 "Entegrasyon Gerektiren Sistemler",
-                "API Geliştirme",
+                "API Geliştirme"
             ],
             features: [
                 "Tamamen Özel Yazılım Geliştirme",
@@ -193,7 +193,7 @@ const PricingCalculator = () => {
                 >
                     <strong style={{ color: 'var(--brand-main)' }}>Şeffaf Fiyatlandırma.</strong> Tahmini bütçenizi görün, ihtiyacınıza göre özelleştirin.
                     <br />
-                    <span style={{ fontSize: '14px', color: 'var(--text-muted)' }}>
+                    <span style={{ fontSize: '14px' }} className="text-warning">
                         *Fiyatlar başlangıç fiyatlarıdır ve projenize özel görüşmede netleştirilir.
                     </span>
                 </motion.p>
@@ -262,7 +262,7 @@ const PricingCalculator = () => {
                                             <td style={{ padding: '12px', textAlign: 'center', fontSize: '13px', color: 'var(--text-secondary)' }}>1 Sayfa</td>
                                             <td style={{ padding: '12px', textAlign: 'center', fontSize: '13px', color: 'var(--text-secondary)' }}>7 Sayfa</td>
                                             <td style={{ padding: '12px', textAlign: 'center', fontSize: '13px', color: 'var(--text-secondary)' }}>10 Sayfa</td>
-                                            <td style={{ padding: '12px', textAlign: 'center', fontSize: '13px', color: 'var(--text-secondary)' }}>12+ Sayfa</td>
+                                            <td style={{ padding: '12px', textAlign: 'center', fontSize: '13px', color: 'var(--text-secondary)' }}>Özel</td>
                                         </tr>
                                         <tr>
                                             <td style={{ padding: '12px', color: 'var(--text-secondary)' }}>🎨 Özel Tasarım</td>
@@ -286,7 +286,7 @@ const PricingCalculator = () => {
                                             <td style={{ padding: '12px', textAlign: 'center', fontSize: '20px' }}>✅</td>
                                         </tr>
                                         <tr>
-                                            <td style={{ padding: '12px', color: 'var(--text-secondary)' }}>💼 CRM & Müşteri Takip</td>
+                                            <td style={{ padding: '12px', color: 'var(--text-secondary)' }}>💼 CRM & Özel Sistemler</td>
                                             <td style={{ padding: '12px', textAlign: 'center', fontSize: '20px' }}>❌</td>
                                             <td style={{ padding: '12px', textAlign: 'center', fontSize: '20px' }}>❌</td>
                                             <td style={{ padding: '12px', textAlign: 'center', fontSize: '20px' }}>❌</td>
@@ -299,13 +299,6 @@ const PricingCalculator = () => {
                                                     {pkg.deliveryTime}
                                                 </td>
                                             ))}
-                                        </tr>
-                                        <tr>
-                                            <td style={{ padding: '12px', color: 'var(--text-secondary)' }}>➕ Ek Sayfa Fiyatı</td>
-                                            <td style={{ padding: '12px', textAlign: 'center', fontSize: '11px', color: 'var(--text-muted)' }}>Görüşme</td>
-                                            <td style={{ padding: '12px', textAlign: 'center', fontSize: '12px', color: 'var(--text-secondary)' }}>₺1.500</td>
-                                            <td style={{ padding: '12px', textAlign: 'center', fontSize: '12px', color: 'var(--text-secondary)' }}>₺2.000</td>
-                                            <td style={{ padding: '12px', textAlign: 'center', fontSize: '11px', color: 'var(--text-muted)' }}>Görüşme</td>
                                         </tr>
                                     </tbody>
                                 </table>
@@ -330,13 +323,11 @@ const PricingCalculator = () => {
                             viewport={{ once: true }}
                             transition={{ duration: 0.6, delay: index * 0.1 }}
                             whileHover={{ y: -10 }}
-                            onClick={() => setSelectedPackage(pkg.id)}
                             style={{
                                 background: 'linear-gradient(135deg, var(--bg-card), var(--bg-tertiary))',
                                 border: `2px solid ${selectedPackage === pkg.id ? pkg.color : 'var(--border-subtle)'}`,
                                 borderRadius: '24px',
                                 padding: '36px 28px',
-                                cursor: 'pointer',
                                 position: 'relative',
                                 transition: 'all 0.3s ease',
                                 boxShadow: selectedPackage === pkg.id ? `0 20px 60px ${pkg.color}40` : 'none'
@@ -469,24 +460,47 @@ const PricingCalculator = () => {
                                 </div>
                             )}
 
-                            {/* Seçildi Badge */}
-                            {selectedPackage === pkg.id && (
-                                <div style={{
-                                    padding: '12px',
-                                    background: `${pkg.color}20`,
-                                    borderRadius: '12px',
-                                    textAlign: 'center',
-                                    color: pkg.color,
+                            {/* SEÇ BUTONU - YENİ! */}
+                            <motion.button
+                                onClick={() => setSelectedPackage(pkg.id)}
+                                whileHover={{ scale: 1.03 }}
+                                whileTap={{ scale: 0.97 }}
+                                style={{
+                                    width: '100%',
+                                    padding: '16px',
+                                    background: selectedPackage === pkg.id
+                                        ? `linear-gradient(135deg, ${pkg.color}, ${pkg.color}dd)`
+                                        : 'linear-gradient(135deg, var(--brand-main), var(--brand-accent))',
+                                    color: selectedPackage === pkg.id ? '#fff' : '#000',
+                                    border: 'none',
+                                    borderRadius: '14px',
+                                    fontSize: '15px',
                                     fontWeight: '700',
-                                    fontSize: '14px',
-                                    marginBottom: '16px'
-                                }}>
-                                    ✓ SEÇİLDİ
-                                </div>
-                            )}
+                                    cursor: 'pointer',
+                                    marginBottom: '16px',
+                                    boxShadow: selectedPackage === pkg.id
+                                        ? `0 8px 24px ${pkg.color}60`
+                                        : '0 4px 16px rgba(212, 182, 118, 0.3)',
+                                    transition: 'all 0.3s ease',
+                                    display: 'flex',
+                                    alignItems: 'center',
+                                    justifyContent: 'center',
+                                    gap: '8px'
+                                }}
+                            >
+                                {selectedPackage === pkg.id ? (
+                                    <>
+                                        <FaCheck /> SEÇİLDİ
+                                    </>
+                                ) : (
+                                    <>
+                                        Bu Paketi Seç
+                                    </>
+                                )}
+                            </motion.button>
 
                             {/* Delivery & Support */}
-                            <div style={{ fontSize: '11px', color: 'var(--text-muted)', textAlign: 'center', borderTop: '1px solid var(--border-subtle)', paddingTop: '14px', lineHeight: '1.6' }}>
+                            <div style={{ fontSize: '11px', color: 'var(--text-primary)', textAlign: 'center', borderTop: '1px solid var(--border-subtle)', paddingTop: '14px', lineHeight: '1.6' }}>
                                 <div>⏱️ {pkg.deliveryTime}</div>
                                 <div style={{ marginTop: '4px' }}>🛡️ {pkg.support}</div>
                             </div>
@@ -529,10 +543,10 @@ const PricingCalculator = () => {
                     </motion.button>
 
                     {selectedPackage && (
-                        <p style={{ fontSize: '13px', color: 'var(--text-secondary)', marginTop: '16px', lineHeight: '1.6' }}>
+                        <p style={{ fontSize: '13px', color: 'var(--text-primary)', marginTop: '16px', lineHeight: '1.6' }}>
                             ✅ 24 saat içinde detaylı görüşme ve teklif
                             <br />
-                            <span style={{ fontSize: '11px', color: 'var(--text-muted)' }}>
+                            <span style={{ fontSize: '11px', color: 'var(--text-primary)' }}>
                                 Bağlayıcı değildir. Projenize özel fiyat görüşmede netleştirilir.
                             </span>
                         </p>

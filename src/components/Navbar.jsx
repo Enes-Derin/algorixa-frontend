@@ -31,7 +31,7 @@ const Navbar = () => {
                     transition={{ type: "spring", stiffness: 400 }}
                 >
                     <h1 className="navbar-logo-text">ALGORIXA</h1>
-                    <span className="navbar-logo-tagline">Dijital Çözüm Ortağınız</span>
+                    <span className="navbar-logo-tagline text-white">Dijital Çözüm Ortağınız</span>
                 </motion.a>
 
                 <button

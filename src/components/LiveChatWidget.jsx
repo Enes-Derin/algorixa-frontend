@@ -34,7 +34,7 @@ const LiveChatWidget = () => {
             action: () => window.open("https://wa.me/905469705451", "_blank")
         },
         portfolio: {
-            text: "Projelerimizi görmek için portföy bölümüne bakabilirsiniz!\n\n50+ başarılı proje...",
+            text: "Projelerimizi görmek için portföy bölümüne bakabilirsiniz...",
             delay: 800,
             action: () => {
                 document.getElementById('portfolio')?.scrollIntoView({ behavior: 'smooth' });

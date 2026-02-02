@@ -147,7 +147,7 @@ const HeroPremium = () => {
                                 whileHover={{ scale: 1.05 }}
                                 whileTap={{ scale: 0.98 }}
                             >
-                                Ücretsiz Analiz Al
+                                Teklif Al
                             </motion.a>
                             <motion.a
                                 href="#portfolio"

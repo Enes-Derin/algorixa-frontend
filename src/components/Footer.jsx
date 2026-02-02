@@ -112,7 +112,7 @@ const Footer = () => {
             </div>
 
             <motion.div
-                className="footer-bottom-modern"
+                className="footer-bottom-modern text-white"
                 initial={{ opacity: 0, y: 30 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}

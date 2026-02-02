@@ -34,7 +34,7 @@ const Home = () => {
                 <Services />
                 <PortfolioShowcase />
                 <Projects />
-                <Testimonials />
+                {/* <Testimonials /> */}
                 <PricingCalculator />
                 <SeoContent />
                 <Contact />

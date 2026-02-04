@@ -41,7 +41,7 @@ const PricingCalculator = () => {
         {
             id: "corporate-basic",
             name: "Kurumsal Web (Statik)",
-            price: 11900,
+            price: 12900,
             badge: "Ekonomik",
             color: "#3b82f6",
             icon: "",
@@ -64,7 +64,7 @@ const PricingCalculator = () => {
                 "E-posta Entegrasyonu",
                 "Google Maps Entegrasyonu"
             ],
-            deliveryTime: "10-12 İş Günü",
+            deliveryTime: "8-10 İş Günü",
             support: "Teslim Sonrası Teknik Destek",
             extraPagePrice: "Ek sayfa: ₺1.500/sayfa",
             note: "İçerik güncellemeleri için bize ulaşabilirsiniz"
@@ -72,7 +72,7 @@ const PricingCalculator = () => {
         {
             id: "corporate-admin",
             name: "Kurumsal Web (Dinamik)",
-            price: 21900,
+            price: 17900,
             badge: "En Popüler",
             color: "#f59e0b",
             icon: "",
@@ -100,7 +100,7 @@ const PricingCalculator = () => {
                 "Form Yönetimi & Mail Bildirimleri",
                 "Güvenli Panel Girişi"
             ],
-            deliveryTime: "15-20 İş Günü",
+            deliveryTime: "13-15 İş Günü",
             support: "Teslim Sonrası Teknik Destek + Panel Eğitimi",
             extraPagePrice: "Ek sayfa: ₺2.000/sayfa",
             note: "Tüm içerikleri kendiniz yönetebilirsiniz"
@@ -108,7 +108,7 @@ const PricingCalculator = () => {
         {
             id: "professional",
             name: "Özel Yazılım Çözümü",
-            price: 49900,
+            price: 40900,
             badge: "Premium",
             color: "#8b5cf6",
             icon: "",
@@ -590,7 +590,7 @@ const PricingCalculator = () => {
                         Satış Sonrası Profesyonel Destek
                     </h4>
                     <p style={{ fontSize: '14px', color: 'var(--text-secondary)', maxWidth: '700px', margin: '0 auto', lineHeight: '1.8' }}>
-                        Teslim sonrası teknik destek, hata düzeltmeleri ve sistem güncellemeleri ile yanınızdayız.
+                        Teslim sonrası teknik destek ve sistem güncellemeleri ile yanınızdayız.
                         <br />
                         <strong style={{ color: '#10b981' }}>Başarınız bizim başarımızdır.</strong>
                     </p>

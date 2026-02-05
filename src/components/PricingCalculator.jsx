@@ -316,58 +316,26 @@ const PricingCalculator = () => {
                     </span>
                 </motion.p>
 
-                {/* KAMPANYA BANNER - DAHA PREMIUM & GÖZE BATAN AMA ZARIF */}
+                {/* KAMPANYA BANNER - FULL RESPONSIVE PREMIUM */}
                 {isPromoActive && (
                     <motion.div
                         initial={{ opacity: 0, scale: 0.95 }}
                         animate={{ opacity: 1, scale: 1 }}
                         transition={{ duration: 0.7, ease: "easeOut" }}
-                        style={{
-                            maxWidth: '1100px',
-                            margin: '0 auto 70px',
-                            padding: '48px 52px',
-                            background: 'linear-gradient(135deg, rgba(245, 158, 11, 0.15), rgba(251, 191, 36, 0.08))',
-                            border: '2px solid rgba(245, 158, 11, 0.35)',
-                            borderRadius: '28px',
-                            position: 'relative',
-                            overflow: 'hidden',
-                            boxShadow: '0 20px 60px rgba(245, 158, 11, 0.25), inset 0 1px 0 rgba(255, 255, 255, 0.1)'
-                        }}
+                        className="promo-banner"
                     >
-                        {/* Animated Glow - Daha Soft */}
-                        <div style={{
-                            position: 'absolute',
-                            top: '-50%',
-                            left: '-50%',
-                            right: '-50%',
-                            bottom: '-50%',
-                            background: 'radial-gradient(circle at 30% 50%, rgba(245, 158, 11, 0.15), transparent 60%)',
-                            animation: 'softGlow 8s ease-in-out infinite',
-                            pointerEvents: 'none'
-                        }} />
+                        {/* Animated Glow */}
+                        <div className="promo-glow" />
 
                         {/* Accent Line */}
-                        <div style={{
-                            position: 'absolute',
-                            top: 0,
-                            left: 0,
-                            right: 0,
-                            height: '3px',
-                            background: 'linear-gradient(90deg, transparent, #f59e0b, transparent)',
-                            animation: 'shimmer 3s ease-in-out infinite'
-                        }} />
+                        <div className="promo-accent-line" />
 
-                        <div style={{ position: 'relative', zIndex: 2 }}>
-                            <div style={{
-                                display: 'flex',
-                                alignItems: 'center',
-                                justifyContent: 'space-between',
-                                gap: '40px',
-                                flexWrap: 'wrap'
-                            }}>
+                        <div className="promo-inner">
+                            <div className="promo-content">
+
                                 {/* Sol: Kampanya Bilgisi */}
-                                <div style={{ flex: '1', minWidth: '340px' }}>
-                                    <div style={{ display: 'flex', alignItems: 'center', gap: '16px', marginBottom: '16px' }}>
+                                <div className="promo-left">
+                                    <div className="promo-title-row">
                                         <motion.div
                                             animate={{
                                                 scale: [1, 1.15, 1],
@@ -379,135 +347,381 @@ const PricingCalculator = () => {
                                                 ease: "easeInOut"
                                             }}
                                         >
-                                            <FaFire style={{
-                                                fontSize: '36px',
-                                                color: '#f59e0b',
-                                                filter: 'drop-shadow(0 0 16px rgba(245, 158, 11, 0.6))'
-                                            }} />
+                                            <FaFire className="promo-fire-icon" />
                                         </motion.div>
+
                                         <div>
-                                            <h4 style={{
-                                                fontSize: '22px',
-                                                fontWeight: '900',
-                                                background: 'linear-gradient(135deg, #f59e0b, #fbbf24)',
-                                                WebkitBackgroundClip: 'text',
-                                                WebkitTextFillColor: 'transparent',
-                                                margin: 0,
-                                                letterSpacing: '0.3px'
-                                            }}>
-                                                Fiyatlandırma Yaklaşımımız
+                                            <h4 className="promo-title">
+                                                Sınırlı Süreli Kampanya
                                             </h4>
                                         </div>
                                     </div>
-                                    <p style={{
-                                        fontSize: '15px',
-                                        color: 'var(--text-primary)',
-                                        margin: '0 0 20px 0',
-                                        lineHeight: '1.8',
-                                        fontWeight: '500'
-                                    }}>
+
+                                    <p className="promo-desc-main">
                                         Algorixa'da fiyatlar; proje kapsamı, uzun vadeli sürdürülebilirlik ve karşılıklı memnuniyet esas alınarak belirlenir.
                                     </p>
-                                    <p style={{
-                                        fontSize: '14px',
-                                        color: 'var(--text-secondary)',
-                                        margin: '0 0 20px 0',
-                                        lineHeight: '1.7',
-                                        fontWeight: '500'
-                                    }}>
-                                        Bazı dönemlerde, yeni iş birlikleri için <strong style={{ color: '#f59e0b' }}>sınırlı süreli avantajlı fiyatlandırmalar</strong> sunulur. Bu iş birliklerinde, projenin referans olarak gösterilmesine ve deneyim paylaşımına önem veririz.
+
+                                    <p className="promo-desc-sub">
+                                        Bazı dönemlerde, yeni iş birlikleri için{" "}
+                                        <strong style={{ color: "#f59e0b" }}>
+                                            sınırlı süreli avantajlı fiyatlandırmalar
+                                        </strong>{" "}
+                                        sunulur. Bu iş birliklerinde, projenin referans olarak gösterilmesine ve deneyim paylaşımına önem veririz.
                                     </p>
-                                    <div style={{
-                                        display: 'inline-flex',
-                                        alignItems: 'center',
-                                        gap: '10px',
-                                        padding: '12px 20px',
-                                        background: 'rgba(16, 185, 129, 0.15)',
-                                        border: '1.5px solid rgba(16, 185, 129, 0.3)',
-                                        borderRadius: '14px',
-                                        backdropFilter: 'blur(10px)'
-                                    }}>
-                                        <FaTrophy style={{ fontSize: '16px', color: '#10b981' }} />
-                                        <span style={{ fontSize: '14px', color: '#10b981', fontWeight: '700', letterSpacing: '0.3px' }}>
+
+                                    <div className="promo-highlight">
+                                        <FaTrophy className="promo-trophy-icon" />
+                                        <span className="promo-highlight-text">
                                             Karşılıklı kazanım odaklı, şeffaf çalışma modeli
                                         </span>
                                     </div>
                                 </div>
 
-                                {/* Sağ: Countdown - Daha Göz Alıcı */}
-                                <div style={{
-                                    background: 'linear-gradient(135deg, rgba(15, 15, 15, 0.6), rgba(20, 20, 20, 0.4))',
-                                    padding: '32px 36px',
-                                    borderRadius: '20px',
-                                    border: '2px solid rgba(245, 158, 11, 0.3)',
-                                    boxShadow: '0 10px 40px rgba(0, 0, 0, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.1)',
-                                    backdropFilter: 'blur(20px)'
-                                }}>
-                                    <div style={{
-                                        fontSize: '13px',
-                                        color: '#f59e0b',
-                                        marginBottom: '16px',
-                                        textAlign: 'center',
-                                        fontWeight: '800',
-                                        letterSpacing: '1.5px',
-                                        textTransform: 'uppercase'
-                                    }}>
+                                {/* Sağ: Countdown */}
+                                <div className="promo-right">
+                                    <div className="promo-countdown-label">
                                         ⚡ Kampanya Bitiyor
                                     </div>
-                                    <div style={{
-                                        display: 'flex',
-                                        gap: '12px',
-                                        alignItems: 'center',
-                                        fontFamily: '"SF Mono", "Monaco", monospace'
-                                    }}>
+
+                                    <div className="promo-countdown-row">
                                         {[
-                                            { value: timeLeft.days, label: 'GÜN' },
-                                            { value: timeLeft.hours, label: 'SAAT' },
-                                            { value: timeLeft.minutes, label: 'DAK' },
-                                            { value: timeLeft.seconds, label: 'SN' }
+                                            { value: timeLeft.days, label: "GÜN" },
+                                            { value: timeLeft.hours, label: "SAAT" },
+                                            { value: timeLeft.minutes, label: "DAK" },
+                                            { value: timeLeft.seconds, label: "SN" }
                                         ].map((item, i) => (
-                                            <div key={i} style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
-                                                <div style={{ textAlign: 'center' }}>
+                                            <div key={i} className="promo-countdown-item">
+                                                <div className="promo-countdown-box-wrap">
                                                     <motion.div
                                                         animate={{ scale: [1, 1.05, 1] }}
                                                         transition={{ duration: 1, repeat: Infinity }}
-                                                        style={{
-                                                            background: 'linear-gradient(135deg, rgba(245, 158, 11, 0.2), rgba(245, 158, 11, 0.1))',
-                                                            padding: '14px 16px',
-                                                            borderRadius: '12px',
-                                                            fontSize: '28px',
-                                                            fontWeight: '900',
-                                                            minWidth: '70px',
-                                                            color: '#fbbf24',
-                                                            border: '1px solid rgba(245, 158, 11, 0.3)',
-                                                            boxShadow: '0 4px 16px rgba(245, 158, 11, 0.2), inset 0 1px 0 rgba(255, 255, 255, 0.1)'
-                                                        }}
+                                                        className="promo-countdown-box"
                                                     >
-                                                        {String(item.value).padStart(2, '0')}
+                                                        {String(item.value).padStart(2, "0")}
                                                     </motion.div>
-                                                    <div style={{
-                                                        fontSize: '10px',
-                                                        color: '#9ca3af',
-                                                        marginTop: '6px',
-                                                        fontWeight: '700',
-                                                        letterSpacing: '1px'
-                                                    }}>
+
+                                                    <div className="promo-countdown-text">
                                                         {item.label}
                                                     </div>
                                                 </div>
-                                                {i < 3 && (
-                                                    <span style={{
-                                                        color: 'rgba(245, 158, 11, 0.5)',
-                                                        fontSize: '24px',
-                                                        fontWeight: '300'
-                                                    }}>:</span>
-                                                )}
+
+                                                {i < 3 && <span className="promo-colon">:</span>}
                                             </div>
                                         ))}
                                     </div>
                                 </div>
+
                             </div>
                         </div>
+
+                        <style>{`
+      .promo-banner {
+        max-width: 1100px;
+        margin: 0 auto 70px;
+        padding: 48px 52px;
+        background: linear-gradient(135deg, rgba(245, 158, 11, 0.15), rgba(251, 191, 36, 0.08));
+        border: 2px solid rgba(245, 158, 11, 0.35);
+        border-radius: 28px;
+        position: relative;
+        overflow: hidden;
+        box-shadow: 0 20px 60px rgba(245, 158, 11, 0.25), inset 0 1px 0 rgba(255, 255, 255, 0.1);
+      }
+
+      .promo-glow {
+        position: absolute;
+        top: -50%;
+        left: -50%;
+        right: -50%;
+        bottom: -50%;
+        background: radial-gradient(circle at 30% 50%, rgba(245, 158, 11, 0.15), transparent 60%);
+        animation: softGlow 8s ease-in-out infinite;
+        pointer-events: none;
+      }
+
+      .promo-accent-line {
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 3px;
+        background: linear-gradient(90deg, transparent, #f59e0b, transparent);
+        animation: shimmer 3s ease-in-out infinite;
+      }
+
+      .promo-inner {
+        position: relative;
+        z-index: 2;
+      }
+
+      .promo-content {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 40px;
+        flex-wrap: wrap;
+      }
+
+      .promo-left {
+        flex: 1;
+        min-width: 340px;
+      }
+
+      .promo-title-row {
+        display: flex;
+        align-items: center;
+        gap: 16px;
+        margin-bottom: 16px;
+      }
+
+      .promo-fire-icon {
+        font-size: 36px;
+        color: #f59e0b;
+        filter: drop-shadow(0 0 16px rgba(245, 158, 11, 0.6));
+      }
+
+      .promo-title {
+        font-size: 22px;
+        font-weight: 900;
+        background: linear-gradient(135deg, #f59e0b, #fbbf24);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        margin: 0;
+        letter-spacing: 0.3px;
+      }
+
+      .promo-desc-main {
+        font-size: 15px;
+        color: var(--text-primary);
+        margin: 0 0 20px 0;
+        line-height: 1.8;
+        font-weight: 500;
+      }
+
+      .promo-desc-sub {
+        font-size: 14px;
+        color: var(--text-secondary);
+        margin: 0 0 20px 0;
+        line-height: 1.7;
+        font-weight: 500;
+      }
+
+      .promo-highlight {
+        display: inline-flex;
+        align-items: center;
+        gap: 10px;
+        padding: 12px 20px;
+        background: rgba(16, 185, 129, 0.15);
+        border: 1.5px solid rgba(16, 185, 129, 0.3);
+        border-radius: 14px;
+        backdrop-filter: blur(10px);
+      }
+
+      .promo-trophy-icon {
+        font-size: 16px;
+        color: #10b981;
+      }
+
+      .promo-highlight-text {
+        font-size: 14px;
+        color: #10b981;
+        font-weight: 700;
+        letter-spacing: 0.3px;
+      }
+
+      .promo-right {
+        background: linear-gradient(135deg, rgba(15, 15, 15, 0.6), rgba(20, 20, 20, 0.4));
+        padding: 32px 36px;
+        border-radius: 20px;
+        border: 2px solid rgba(245, 158, 11, 0.3);
+        box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.1);
+        backdrop-filter: blur(20px);
+      }
+
+      .promo-countdown-label {
+        font-size: 13px;
+        color: #f59e0b;
+        margin-bottom: 16px;
+        text-align: center;
+        font-weight: 800;
+        letter-spacing: 1.5px;
+        text-transform: uppercase;
+      }
+
+      .promo-countdown-row {
+        display: flex;
+        gap: 12px;
+        align-items: center;
+        justify-content: center;
+        flex-wrap: wrap;
+        font-family: "SF Mono", "Monaco", monospace;
+      }
+
+      .promo-countdown-item {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+      }
+
+      .promo-countdown-box-wrap {
+        text-align: center;
+      }
+
+      .promo-countdown-box {
+        background: linear-gradient(135deg, rgba(245, 158, 11, 0.2), rgba(245, 158, 11, 0.1));
+        padding: 14px 16px;
+        border-radius: 12px;
+        font-size: 28px;
+        font-weight: 900;
+        min-width: 70px;
+        color: #fbbf24;
+        border: 1px solid rgba(245, 158, 11, 0.3);
+        box-shadow: 0 4px 16px rgba(245, 158, 11, 0.2), inset 0 1px 0 rgba(255, 255, 255, 0.1);
+      }
+
+      .promo-countdown-text {
+        font-size: 10px;
+        color: #9ca3af;
+        margin-top: 6px;
+        font-weight: 700;
+        letter-spacing: 1px;
+      }
+
+      .promo-colon {
+        color: rgba(245, 158, 11, 0.5);
+        font-size: 24px;
+        font-weight: 300;
+      }
+
+      /* ========================= RESPONSIVE ========================= */
+
+      @media (max-width: 1024px) {
+        .promo-banner {
+          padding: 38px 38px;
+        }
+
+        .promo-right {
+          width: 100%;
+          padding: 26px 24px;
+        }
+      }
+
+      @media (max-width: 768px) {
+        .promo-banner {
+          padding: 30px 22px;
+          margin-bottom: 50px;
+        }
+
+        .promo-content {
+          flex-direction: column;
+          align-items: stretch;
+          gap: 30px;
+        }
+
+        .promo-left {
+          min-width: 100%;
+        }
+
+        .promo-title {
+          font-size: 20px;
+        }
+
+        .promo-desc-main {
+          font-size: 14px;
+        }
+
+        .promo-desc-sub {
+          font-size: 13px;
+        }
+
+        .promo-highlight {
+          width: 100%;
+          justify-content: center;
+          text-align: center;
+        }
+
+        .promo-right {
+          width: 100%;
+          text-align: center;
+        }
+
+        .promo-countdown-row {
+          justify-content: center;
+          gap: 10px;
+        }
+
+        .promo-countdown-box {
+          min-width: 60px;
+          font-size: 24px;
+          padding: 12px 14px;
+        }
+      }
+
+      @media (max-width: 480px) {
+        .promo-banner {
+          padding: 22px 16px;
+          border-radius: 22px;
+        }
+
+        .promo-fire-icon {
+          font-size: 30px;
+        }
+
+        .promo-title {
+          font-size: 18px;
+        }
+
+        .promo-desc-main {
+          font-size: 13px;
+          line-height: 1.7;
+        }
+
+        .promo-desc-sub {
+          font-size: 12px;
+          line-height: 1.6;
+        }
+
+        .promo-highlight-text {
+          font-size: 12px;
+        }
+
+        .promo-right {
+          padding: 20px 16px;
+          border-radius: 18px;
+        }
+
+        .promo-countdown-box {
+          min-width: 54px;
+          font-size: 20px;
+          padding: 10px 12px;
+        }
+
+        .promo-colon {
+          display: none;
+        }
+      }
+
+      /* ========================= ANIMATIONS ========================= */
+
+      @keyframes softGlow {
+        0%, 100% {
+          opacity: 0.6;
+          transform: scale(1);
+        }
+        50% {
+          opacity: 0.9;
+          transform: scale(1.08);
+        }
+      }
+
+      @keyframes shimmer {
+        0%, 100% {
+          opacity: 0.5;
+        }
+        50% {
+          opacity: 1;
+        }
+      }
+    `}</style>
                     </motion.div>
                 )}
 
@@ -516,34 +730,58 @@ const PricingCalculator = () => {
                     <motion.div
                         initial={{ opacity: 0, y: -20 }}
                         animate={{ opacity: 1, y: 0 }}
-                        style={{
-                            maxWidth: '700px',
-                            margin: '0 auto 60px',
-                            padding: '24px 32px',
-                            background: 'rgba(245, 158, 11, 0.08)',
-                            border: '1px solid rgba(245, 158, 11, 0.25)',
-                            borderRadius: '18px',
-                            textAlign: 'center'
-                        }}
+                        className="promo-ended"
                     >
-                        <p style={{
-                            fontSize: '15px',
-                            color: '#f59e0b',
-                            margin: '0 0 10px',
-                            fontWeight: '700'
-                        }}>
+                        <p className="promo-ended-title">
                             Kampanya dönemi sona erdi. Normal fiyatlar geçerlidir.
                         </p>
-                        <p style={{
-                            fontSize: '13px',
-                            color: 'var(--text-secondary)',
-                            margin: 0,
-                            lineHeight: '1.6'
-                        }}>
+                        <p className="promo-ended-desc">
                             Toplu proje veya uzun vadeli işbirliği için özel fırsatlar sunabiliriz.
                         </p>
+
+                        <style>{`
+      .promo-ended {
+        max-width: 700px;
+        margin: 0 auto 60px;
+        padding: 24px 32px;
+        background: rgba(245, 158, 11, 0.08);
+        border: 1px solid rgba(245, 158, 11, 0.25);
+        border-radius: 18px;
+        text-align: center;
+      }
+
+      .promo-ended-title {
+        font-size: 15px;
+        color: #f59e0b;
+        margin: 0 0 10px;
+        font-weight: 700;
+      }
+
+      .promo-ended-desc {
+        font-size: 13px;
+        color: var(--text-secondary);
+        margin: 0;
+        line-height: 1.6;
+      }
+
+      @media (max-width: 768px) {
+        .promo-ended {
+          padding: 20px 18px;
+          margin-bottom: 40px;
+        }
+
+        .promo-ended-title {
+          font-size: 14px;
+        }
+
+        .promo-ended-desc {
+          font-size: 12px;
+        }
+      }
+    `}</style>
                     </motion.div>
                 )}
+
 
                 {/* PAKET KARTLARI - HER BİRİ KENDI RENGİYLE */}
                 <div className="packages-grid" style={{

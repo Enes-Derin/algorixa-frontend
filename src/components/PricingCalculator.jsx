@@ -1,137 +1,218 @@
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { FaCheck, FaInfoCircle, FaRocket } from "react-icons/fa";
+import { FaCheck, FaRocket, FaClock, FaStar, FaArrowRight, FaShieldAlt, FaFire, FaCode, FaTrophy } from "react-icons/fa";
 
 const PricingCalculator = () => {
-    const [selectedPackage, setSelectedPackage] = useState(null);
-    const [showComparison, setShowComparison] = useState(false);
+    const [selectedPackage, setSelectedPackage] = useState("corporate-admin");
     const [showPages, setShowPages] = useState(null);
+    const [timeLeft, setTimeLeft] = useState({ days: 0, hours: 0, minutes: 0, seconds: 0 });
+    const [isPromoActive, setIsPromoActive] = useState(true);
 
-    /* ======================= PAKETLER (Satış Odaklı) ======================= */
+    /* ======================= KAMPANYA TARİHİ ======================= */
+    const PROMO_END_DATE = new Date('2026-03-01T23:59:59').getTime();
+    const INFO_PERIOD_DAYS = 14;
+    const INFO_END_DATE = PROMO_END_DATE + (INFO_PERIOD_DAYS * 24 * 60 * 60 * 1000);
+    const [showPromoEndedInfo, setShowPromoEndedInfo] = useState(false);
+
+    /* ======================= COUNTDOWN TIMER ======================= */
+    useEffect(() => {
+        const calculateTimeLeft = () => {
+            const now = new Date().getTime();
+            const difference = PROMO_END_DATE - now;
+            const infoEndDifference = INFO_END_DATE - now;
+
+            if (difference > 0) {
+                setTimeLeft({
+                    days: Math.floor(difference / (1000 * 60 * 60 * 24)),
+                    hours: Math.floor((difference % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)),
+                    minutes: Math.floor((difference % (1000 * 60 * 60)) / (1000 * 60)),
+                    seconds: Math.floor((difference % (1000 * 60)) / 1000)
+                });
+                setIsPromoActive(true);
+                setShowPromoEndedInfo(false);
+            } else if (infoEndDifference > 0) {
+                setIsPromoActive(false);
+                setShowPromoEndedInfo(true);
+            } else {
+                setIsPromoActive(false);
+                setShowPromoEndedInfo(false);
+            }
+        };
+
+        calculateTimeLeft();
+        const timer = setInterval(calculateTimeLeft, 1000);
+
+        return () => clearInterval(timer);
+    }, []);
+
+    /* ======================= PAKET RENK PALETLERİ - PREMIUM & SOFT ======================= */
+    const colorSchemes = {
+        landing: {
+            primary: '#06b6d4',      // Cyan - Hızlı & Dijital
+            secondary: '#0891b2',
+            light: 'rgba(6, 182, 212, 0.12)',
+            border: 'rgba(6, 182, 212, 0.25)',
+            shadow: 'rgba(6, 182, 212, 0.2)'
+        },
+        corporateBasic: {
+            primary: '#6366f1',      // Indigo - Kurumsal & Güvenilir
+            secondary: '#4f46e5',
+            light: 'rgba(99, 102, 241, 0.12)',
+            border: 'rgba(99, 102, 241, 0.25)',
+            shadow: 'rgba(99, 102, 241, 0.2)'
+        },
+        corporateAdmin: {
+            primary: '#f59e0b',      // Amber - Premium & Popüler
+            secondary: '#d97706',
+            light: 'rgba(245, 158, 11, 0.12)',
+            border: 'rgba(245, 158, 11, 0.3)',
+            shadow: 'rgba(245, 158, 11, 0.25)'
+        },
+        professional: {
+            primary: '#8b5cf6',      // Purple - Lüks & Özel
+            secondary: '#7c3aed',
+            light: 'rgba(139, 92, 246, 0.12)',
+            border: 'rgba(139, 92, 246, 0.25)',
+            shadow: 'rgba(139, 92, 246, 0.2)'
+        }
+    };
+
+    /* ======================= PAKETLER ======================= */
     const packages = [
         {
             id: "landing",
             name: "Landing Page",
-            price: 6000,
+            originalPrice: 12500,
+            discountedPrice: 7900,
+            discountPercent: 37,
             badge: "Hızlı Başlangıç",
-            color: "#10b981",
+            tagline: "Dijital dünyada hızlıca yer almak isteyenler için mükemmel başlangıç.",
+            colorScheme: colorSchemes.landing,
             icon: "",
-            description: "Tek sayfalık tanıtım sitesi",
-            ideal: "Yeni başlayanlar, kampanya ve etkinlik siteleri",
+            description: "Tek sayfa. Net mesaj. Hızlı dönüşüm.",
+            ideal: "Yeni işletmeler, kampanyalar ve tek bir hizmeti öne çıkarmak isteyenler.",
             pages: [
-                "Hero Bölümü (Ana Görsel + Başlık)",
-                "Hizmetler/Ürünler Tanıtımı",
-                "Referanslar/Galeri Bölümü",
-                "İletişim Formu",
-                "Sosyal Medya Linkleri"
+                "Hero Alanı: Güçlü başlık, değer önerisi ve aksiyon butonu",
+                "Hizmet / Ürün Tanıtımı: Ne sunduğunuzu sade ve ikna edici şekilde anlatır",
+                "Güven Alanı: Referans, yorum veya görsel galeri",
+                "İletişim Bölümü: Form + WhatsApp + Google Harita",
+                "Footer: İletişim bilgileri ve yasal bağlantılar"
             ],
             features: [
-                "Özel Tasarım",
-                "Mobil Uyumlu & Responsive",
-                "Temel SEO Optimizasyonu",
-                "İletişim Formu Entegrasyonu",
-                "WhatsApp Direkt Bağlantı",
-                "Google Analytics Kurulumu",
-                "SSL Sertifikası Dahil"
+                "Markanıza özel modern tasarım",
+                "Mobil, tablet ve masaüstü uyumlu yapı",
+                "SEO uyumlu altyapı (Google görünürlüğü)",
+                "WhatsApp hızlı iletişim butonu",
+                "Google Analytics kurulum",
+                "SSL güvenlik sertifikası"
             ],
             deliveryTime: "5-7 İş Günü",
-            support: "Teslim Sonrası Teknik Destek",
-            extraPagePrice: "Ek sayfa ihtiyacı için görüşme gerekir"
+            support: "30 Gün Teknik Destek",
+            extraPagePrice: "Ek sayfa: ₺1.800/sayfa"
         },
         {
             id: "corporate-basic",
-            name: "Kurumsal Web (Statik)",
-            price: 12900,
-            badge: "Ekonomik",
-            color: "#3b82f6",
+            name: "Kurumsal Web – Statik",
+            originalPrice: 19900,
+            discountedPrice: 11900,
+            discountPercent: 40,
+            badge: "Bakım Derdi Yok",
+            tagline: "İçeriği sık değişmeyen işletmeler için sade, hızlı ve profesyonel çözüm.",
+            colorScheme: colorSchemes.corporateBasic,
             icon: "",
-            description: "Admin panelsiz, profesyonel kurumsal site",
-            ideal: "Sabit içerikli, küçük-orta ölçekli firmalar",
+            description: "Kurumsal görünüm. Bakım derdi yok.",
+            ideal: "Sabit hizmetleri olan, içerik güncellemesini nadiren yapan firmalar.",
             pages: [
-                "Ana Sayfa",
-                "Hakkımızda",
-                "Hizmetlerimiz/Ürünlerimiz",
-                "Referanslar/Projeler",
-                "Blog (Statik - 5 Yazı)",
-                "İletişim",
-                "KVKK & Gizlilik Politikası"
+                "Ana Sayfa: Kurumsal kimliği yansıtan, güven odaklı yapı",
+                "Hakkımızda: Firma hikayesi ve güven veren anlatım",
+                "Hizmetler / Ürünler: Net açıklamalar, sade sunum",
+                "Referanslar / Projeler: Güven artırıcı örnek çalışmalar",
+                "Blog (Statik): 5 adet SEO uyumlu içerik",
+                "İletişim: Form, harita ve iletişim bilgileri",
+                "KVKK & Gizlilik: Yasal uyumluluk sayfaları"
             ],
             features: [
-                "Profesyonel Tasarım",
-                "❌ Admin Panel Yok (Statik İçerik)",
-                "Gelişmiş SEO Optimizasyonu",
-                "Hızlı Yükleme Garantisi",
-                "E-posta Entegrasyonu",
-                "Google Maps Entegrasyonu"
+                "Kurumsal ve sade tasarım",
+                "Hızlı açılan sayfalar",
+                "SEO uyumlu yapı",
+                "Kurumsal e-posta & harita entegrasyonu",
+                "SSL güvenlik sertifikası"
             ],
             deliveryTime: "8-10 İş Günü",
-            support: "Teslim Sonrası Teknik Destek",
-            extraPagePrice: "Ek sayfa: ₺1.500/sayfa",
-            note: "İçerik güncellemeleri için bize ulaşabilirsiniz"
+            support: "60 Gün Teknik Destek",
+            extraPagePrice: "Ek sayfa: ₺2.000/sayfa",
+            note: "⚠️ İçerik güncellemeleri için geliştirici desteği gerekir (admin panel yok)."
         },
         {
             id: "corporate-admin",
-            name: "Kurumsal Web (Dinamik)",
-            price: 17900,
-            badge: "En Popüler",
-            color: "#f59e0b",
+            name: "Kurumsal Web – Dinamik",
+            originalPrice: 29900,
+            discountedPrice: 16900,
+            discountPercent: 43,
+            badge: "En Çok Tercih Edilen",
+            tagline: "İçeriğini kendin yönetmek isteyen, büyümeyi hedefleyen işletmeler için.",
+            colorScheme: colorSchemes.corporateAdmin,
             icon: "",
-            description: "Admin panelli, tam yönetilebilir site",
-            ideal: "İçerik yönetimi isteyen aktif firmalar",
+            description: "Tam kontrol. Özgür içerik yönetimi.",
+            ideal: "Blog yazan, kampanya yapan, sürekli güncelleme ihtiyacı olan firmalar.",
+            recommended: true,
             pages: [
-                "Ana Sayfa",
-                "Hakkımızda",
-                "Hizmetler/Ürünler (Dinamik)",
-                "Referanslar/Portfolyo (Dinamik)",
-                "Blog Sistemi (Sınırsız Yazı)",
-                "Galeri Yönetimi",
-                "İletişim & Teklif Formu",
-                "KVKK & Yasal Sayfalar",
-                "Duyurular Modülü",
-                "SSS (Sık Sorulan Sorular)"
+                "Ana Sayfa: Dinamik banner, kampanya ve duyuru alanları",
+                "Hakkımızda: Kolayca güncellenebilir içerik",
+                "Hizmetler / Ürünler: Sınırsız ekle-çıkar özelliği",
+                "Referanslar / Portfolyo: Projeleri panelden yönet",
+                "Blog Sistemi: Sınırsız yazı, kategori ve SEO alanları",
+                "Galeri: Fotoğraf & video yönetimi",
+                "İletişim & Teklif Formu: Otomatik e-posta bildirimleri",
+                "SSS & Duyurular: Müşteri sorularını azaltan yapı",
+                "KVKK & Yasal Sayfalar"
             ],
             features: [
-                "Profesyonel Tasarım",
-                "✅ Tam Özellikli Admin Panel",
-                "İçerik Yönetim Sistemi (CMS)",
-                "Dinamik Blog & Haber Modülü",
-                "Galeri & Medya Yönetimi",
-                "Gelişmiş SEO Araçları",
-                "Form Yönetimi & Mail Bildirimleri",
-                "Güvenli Panel Girişi"
+                "Kullanımı kolay admin panel",
+                "Tüm içerikleri bağımsız yönetme",
+                "Gelişmiş SEO araçları",
+                "Form & bildirim yönetimi",
+                "Güvenli yönetici girişi",
+                "Panel kullanım eğitimi"
             ],
-            deliveryTime: "13-15 İş Günü",
-            support: "Teslim Sonrası Teknik Destek + Panel Eğitimi",
-            extraPagePrice: "Ek sayfa: ₺2.000/sayfa",
-            note: "Tüm içerikleri kendiniz yönetebilirsiniz"
+            deliveryTime: "12-15 İş Günü",
+            support: "90 Gün Teknik Destek + Panel Eğitimi",
+            extraPagePrice: "Ek sayfa: ₺2.500/sayfa",
+            note: "✅ Güncelleme için kimseye bağlı kalmazsınız. Uzun vadede en ekonomik çözümdür."
         },
         {
             id: "professional",
             name: "Özel Yazılım Çözümü",
-            price: 40900,
-            badge: "Premium",
-            color: "#8b5cf6",
-            icon: "",
-            description: "İhtiyacınıza özel yazılım geliştirme",
-            ideal: "Özel ihtiyaçları olan işletmeler ve kurumlar",
+            originalPrice: null,
+            discountedPrice: null,
+            discountPercent: 0,
+            badge: "Bana Özel",
+            tagline: "İş modelinize özel, sıfırdan planlanan yazılım çözümleri.",
+            colorScheme: colorSchemes.professional,
+            icon: "🎯",
+            description: "Standart paketler yetmiyorsa.",
+            ideal: "Özel süreçleri olan, entegrasyon ihtiyacı bulunan işletmeler.",
             pages: [
-                "Özel UI/UX Tasarımı",
-                "İhtiyaca Özel Modüller",
-                "Entegrasyon Gerektiren Sistemler",
-                "API Geliştirme"
+                "Özel UI/UX tasarımı",
+                "İhtiyaca özel modüller",
+                "API & üçüncü parti entegrasyonlar",
+                "Özel yönetim panelleri",
+                "Raporlama & otomasyon sistemleri"
             ],
             features: [
-                "Tamamen Özel Yazılım Geliştirme",
-                "Üçüncü Parti API Entegrasyonları",
-                "Özel CRM/ERP Sistemleri",
-                "Mobil Uyumlu Tasarım",
-                "Gelişmiş Güvenlik Özellikleri",
-                "Öncelikli 7/24 Teknik Destek"
+                "Tamamen size özel yazılım",
+                "API entegrasyonları (Ödeme, SMS vb.)",
+                "Özel CRM/ERP sistemleri",
+                "Tüm cihazlarda mükemmel performans",
+                "Kurumsal seviye güvenlik",
+                "7/24 öncelikli destek",
+                "Özel eğitim ve dokümantasyon"
             ],
             deliveryTime: "Proje Bazlı (1-3 Ay)",
-            support: "12 Ay Premium Destek + Bakım Sözleşmesi",
-            extraPagePrice: "Tüm özelleştirmeler proje kapsamında değerlendirilir",
-            note: "Fiyat proje kapsamına göre belirlenir. Bu başlangıç fiyatıdır."
+            support: "Süresiz Premium Destek",
+            extraPagePrice: "Tüm özellikler proje kapsamında değerlendirilir",
+            note: "Detaylı analiz sonrası net teklif hazırlanır.",
+            isCustomQuote: true
         }
     ];
 
@@ -144,9 +225,33 @@ const PricingCalculator = () => {
             return;
         }
 
+        if (pkg.isCustomQuote) {
+            const quoteData = {
+                package: pkg.name,
+                price: "Özel Teklif Gereklidir (40.000₺'den başlar)",
+                pages: pkg.pages,
+                features: pkg.features,
+                deliveryTime: pkg.deliveryTime,
+                support: pkg.support,
+                description: pkg.description,
+                extraPagePrice: pkg.extraPagePrice,
+                note: pkg.note,
+                isCustomQuote: true
+            };
+
+            localStorage.setItem("quoteData", JSON.stringify(quoteData));
+            window.dispatchEvent(new Event("quoteDataUpdated"));
+            document.getElementById("contact")?.scrollIntoView({ behavior: "smooth" });
+            return;
+        }
+
         const quoteData = {
             package: pkg.name,
-            price: pkg.price,
+            price: isPromoActive ? pkg.discountedPrice : pkg.originalPrice,
+            originalPrice: pkg.originalPrice,
+            discountedPrice: pkg.discountedPrice,
+            discount: pkg.discountPercent,
+            isPromoActive: isPromoActive,
             pages: pkg.pages,
             features: pkg.features,
             deliveryTime: pkg.deliveryTime,
@@ -158,16 +263,21 @@ const PricingCalculator = () => {
 
         localStorage.setItem("quoteData", JSON.stringify(quoteData));
         window.dispatchEvent(new Event("quoteDataUpdated"));
-
         document.getElementById("contact")?.scrollIntoView({ behavior: "smooth" });
     };
 
     const formatPrice = (price) => {
+        if (!price) return "Teklif Al";
         return new Intl.NumberFormat('tr-TR', {
             style: 'currency',
             currency: 'TRY',
             minimumFractionDigits: 0
         }).format(price);
+    };
+
+    const getCurrentPrice = (pkg) => {
+        if (pkg.isCustomQuote) return null;
+        return isPromoActive ? pkg.discountedPrice : pkg.originalPrice;
     };
 
     return (
@@ -180,422 +290,963 @@ const PricingCalculator = () => {
                     viewport={{ once: true }}
                     transition={{ duration: 0.9 }}
                 >
-                    Paket & Fiyatlandırma
+                    Paketler & Şeffaf Fiyatlandırma
                 </motion.h2>
 
                 <motion.p
                     className="text-center mb-5"
-                    style={{ fontSize: '17px', maxWidth: '800px', margin: '0 auto 50px', color: 'var(--text-primary)', lineHeight: '1.8' }}
+                    style={{
+                        fontSize: '17px',
+                        maxWidth: '800px',
+                        margin: '0 auto 15px',
+                        color: 'var(--text-primary)',
+                        lineHeight: '1.8'
+                    }}
                     initial={{ opacity: 0, y: 30 }}
                     whileInView={{ opacity: 1, y: 0 }}
                     viewport={{ once: true }}
                     transition={{ duration: 0.8, delay: 0.2 }}
                 >
-                    <strong style={{ color: 'var(--brand-main)' }}>Şeffaf Fiyatlandırma.</strong> Tahmini bütçenizi görün, ihtiyacınıza göre özelleştirin.
+                    Ajans karmaşası olmadan, doğrudan geliştiriciyle çalışın.
                     <br />
-                    <span style={{ fontSize: '14px' }} className="text-warning">
-                        *Fiyatlar başlangıç fiyatlarıdır ve projenize özel görüşmede netleştirilir.
+                    İhtiyacınıza göre net paketler, sürpriz maliyet olmadan.
+                    <br />
+                    <span style={{ fontSize: '13px', color: 'var(--text-secondary)', fontWeight: '500' }}>
+                        Tüm fiyatlar KDV hariçtir. Paket içerikleri nettir, gizli ücret yoktur.
                     </span>
                 </motion.p>
 
-                {/* PAKET KARŞILAŞTIRMA BUTONU */}
-                <div style={{ textAlign: 'center', marginBottom: '60px' }}>
-                    <button
-                        onClick={() => setShowComparison(!showComparison)}
+                {/* KAMPANYA BANNER - DAHA PREMIUM & GÖZE BATAN AMA ZARIF */}
+                {isPromoActive && (
+                    <motion.div
+                        initial={{ opacity: 0, scale: 0.95 }}
+                        animate={{ opacity: 1, scale: 1 }}
+                        transition={{ duration: 0.7, ease: "easeOut" }}
                         style={{
-                            padding: '12px 28px',
-                            background: 'rgba(212, 182, 118, 0.12)',
-                            border: '1px solid var(--border-medium)',
-                            borderRadius: '999px',
-                            color: 'var(--brand-main)',
-                            fontSize: '14px',
-                            fontWeight: '600',
-                            cursor: 'pointer',
-                            transition: 'all 0.3s ease'
+                            maxWidth: '1100px',
+                            margin: '0 auto 70px',
+                            padding: '48px 52px',
+                            background: 'linear-gradient(135deg, rgba(245, 158, 11, 0.15), rgba(251, 191, 36, 0.08))',
+                            border: '2px solid rgba(245, 158, 11, 0.35)',
+                            borderRadius: '28px',
+                            position: 'relative',
+                            overflow: 'hidden',
+                            boxShadow: '0 20px 60px rgba(245, 158, 11, 0.25), inset 0 1px 0 rgba(255, 255, 255, 0.1)'
                         }}
                     >
-                        {showComparison ? '✕ Karşılaştırmayı Kapat' : 'Paketleri Detaylı Karşılaştır'}
-                    </button>
-                </div>
+                        {/* Animated Glow - Daha Soft */}
+                        <div style={{
+                            position: 'absolute',
+                            top: '-50%',
+                            left: '-50%',
+                            right: '-50%',
+                            bottom: '-50%',
+                            background: 'radial-gradient(circle at 30% 50%, rgba(245, 158, 11, 0.15), transparent 60%)',
+                            animation: 'softGlow 8s ease-in-out infinite',
+                            pointerEvents: 'none'
+                        }} />
 
-                {/* PAKET KARŞILAŞTIRMA TABLOSU */}
-                <AnimatePresence>
-                    {showComparison && (
-                        <motion.div
-                            initial={{ opacity: 0, height: 0 }}
-                            animate={{ opacity: 1, height: 'auto' }}
-                            exit={{ opacity: 0, height: 0 }}
-                            style={{ marginBottom: '60px', overflow: 'hidden' }}
-                        >
+                        {/* Accent Line */}
+                        <div style={{
+                            position: 'absolute',
+                            top: 0,
+                            left: 0,
+                            right: 0,
+                            height: '3px',
+                            background: 'linear-gradient(90deg, transparent, #f59e0b, transparent)',
+                            animation: 'shimmer 3s ease-in-out infinite'
+                        }} />
+
+                        <div style={{ position: 'relative', zIndex: 2 }}>
                             <div style={{
-                                background: 'linear-gradient(135deg, var(--bg-card), var(--bg-tertiary))',
-                                border: '1px solid var(--border-medium)',
-                                borderRadius: '20px',
-                                padding: '32px',
-                                overflowX: 'auto'
+                                display: 'flex',
+                                alignItems: 'center',
+                                justifyContent: 'space-between',
+                                gap: '40px',
+                                flexWrap: 'wrap'
                             }}>
-                                <h3 style={{ textAlign: 'center', marginBottom: '24px', color: 'var(--text-primary)' }}>
-                                    Detaylı Paket Karşılaştırması
-                                </h3>
-                                <table style={{ width: '100%', borderCollapse: 'separate', borderSpacing: '0 12px' }}>
-                                    <thead>
-                                        <tr>
-                                            <th style={{ textAlign: 'left', padding: '12px', color: 'var(--text-secondary)', fontSize: '14px' }}>Özellik</th>
-                                            {packages.map(pkg => (
-                                                <th key={pkg.id} style={{ padding: '12px', textAlign: 'center', color: pkg.color, fontSize: '13px' }}>
-                                                    {pkg.name}
-                                                </th>
-                                            ))}
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <tr>
-                                            <td style={{ padding: '12px', color: 'var(--text-secondary)', fontWeight: '600' }}>Başlangıç Fiyatı</td>
-                                            {packages.map(pkg => (
-                                                <td key={pkg.id} style={{ padding: '12px', textAlign: 'center', fontWeight: '700', color: 'var(--brand-main)', fontSize: '16px' }}>
-                                                    {formatPrice(pkg.price)}
-                                                </td>
-                                            ))}
-                                        </tr>
-                                        <tr>
-                                            <td style={{ padding: '12px', color: 'var(--text-secondary)' }}>📄 Standart Sayfa Sayısı</td>
-                                            <td style={{ padding: '12px', textAlign: 'center', fontSize: '13px', color: 'var(--text-secondary)' }}>1 Sayfa</td>
-                                            <td style={{ padding: '12px', textAlign: 'center', fontSize: '13px', color: 'var(--text-secondary)' }}>7 Sayfa</td>
-                                            <td style={{ padding: '12px', textAlign: 'center', fontSize: '13px', color: 'var(--text-secondary)' }}>10 Sayfa</td>
-                                            <td style={{ padding: '12px', textAlign: 'center', fontSize: '13px', color: 'var(--text-secondary)' }}>Özel</td>
-                                        </tr>
-                                        <tr>
-                                            <td style={{ padding: '12px', color: 'var(--text-secondary)' }}>🎨 Özel Tasarım</td>
-                                            <td style={{ padding: '12px', textAlign: 'center', fontSize: '20px' }}>✅</td>
-                                            <td style={{ padding: '12px', textAlign: 'center', fontSize: '20px' }}>✅</td>
-                                            <td style={{ padding: '12px', textAlign: 'center', fontSize: '20px' }}>✅</td>
-                                            <td style={{ padding: '12px', textAlign: 'center', fontSize: '20px' }}>✅</td>
-                                        </tr>
-                                        <tr style={{ background: 'rgba(212, 182, 118, 0.05)' }}>
-                                            <td style={{ padding: '12px', color: 'var(--brand-main)', fontWeight: '600' }}>🔧 Admin Panel</td>
-                                            <td style={{ padding: '12px', textAlign: 'center', fontSize: '20px' }}>❌</td>
-                                            <td style={{ padding: '12px', textAlign: 'center', fontSize: '20px' }}>❌</td>
-                                            <td style={{ padding: '12px', textAlign: 'center', fontSize: '20px' }}>✅</td>
-                                            <td style={{ padding: '12px', textAlign: 'center', fontSize: '20px' }}>✅</td>
-                                        </tr>
-                                        <tr>
-                                            <td style={{ padding: '12px', color: 'var(--text-secondary)' }}>📝 Dinamik Blog</td>
-                                            <td style={{ padding: '12px', textAlign: 'center', fontSize: '20px' }}>❌</td>
-                                            <td style={{ padding: '12px', textAlign: 'center', fontSize: '13px', color: 'var(--text-muted)' }}>Statik</td>
-                                            <td style={{ padding: '12px', textAlign: 'center', fontSize: '20px' }}>✅</td>
-                                            <td style={{ padding: '12px', textAlign: 'center', fontSize: '20px' }}>✅</td>
-                                        </tr>
-                                        <tr>
-                                            <td style={{ padding: '12px', color: 'var(--text-secondary)' }}>💼 CRM & Özel Sistemler</td>
-                                            <td style={{ padding: '12px', textAlign: 'center', fontSize: '20px' }}>❌</td>
-                                            <td style={{ padding: '12px', textAlign: 'center', fontSize: '20px' }}>❌</td>
-                                            <td style={{ padding: '12px', textAlign: 'center', fontSize: '20px' }}>❌</td>
-                                            <td style={{ padding: '12px', textAlign: 'center', fontSize: '20px' }}>✅</td>
-                                        </tr>
-                                        <tr>
-                                            <td style={{ padding: '12px', color: 'var(--text-secondary)' }}>⏱️ Teslimat Süresi</td>
-                                            {packages.map(pkg => (
-                                                <td key={pkg.id} style={{ padding: '12px', textAlign: 'center', fontSize: '12px', color: 'var(--text-secondary)' }}>
-                                                    {pkg.deliveryTime}
-                                                </td>
-                                            ))}
-                                        </tr>
-                                    </tbody>
-                                </table>
-                            </div>
-                        </motion.div>
-                    )}
-                </AnimatePresence>
+                                {/* Sol: Kampanya Bilgisi */}
+                                <div style={{ flex: '1', minWidth: '340px' }}>
+                                    <div style={{ display: 'flex', alignItems: 'center', gap: '16px', marginBottom: '16px' }}>
+                                        <motion.div
+                                            animate={{
+                                                scale: [1, 1.15, 1],
+                                                rotate: [0, 5, -5, 0]
+                                            }}
+                                            transition={{
+                                                duration: 3,
+                                                repeat: Infinity,
+                                                ease: "easeInOut"
+                                            }}
+                                        >
+                                            <FaFire style={{
+                                                fontSize: '36px',
+                                                color: '#f59e0b',
+                                                filter: 'drop-shadow(0 0 16px rgba(245, 158, 11, 0.6))'
+                                            }} />
+                                        </motion.div>
+                                        <div>
+                                            <h4 style={{
+                                                fontSize: '22px',
+                                                fontWeight: '900',
+                                                background: 'linear-gradient(135deg, #f59e0b, #fbbf24)',
+                                                WebkitBackgroundClip: 'text',
+                                                WebkitTextFillColor: 'transparent',
+                                                margin: 0,
+                                                letterSpacing: '0.3px'
+                                            }}>
+                                                Fiyatlandırma Yaklaşımımız
+                                            </h4>
+                                        </div>
+                                    </div>
+                                    <p style={{
+                                        fontSize: '15px',
+                                        color: 'var(--text-primary)',
+                                        margin: '0 0 20px 0',
+                                        lineHeight: '1.8',
+                                        fontWeight: '500'
+                                    }}>
+                                        Algorixa'da fiyatlar; proje kapsamı, uzun vadeli sürdürülebilirlik ve karşılıklı memnuniyet esas alınarak belirlenir.
+                                    </p>
+                                    <p style={{
+                                        fontSize: '14px',
+                                        color: 'var(--text-secondary)',
+                                        margin: '0 0 20px 0',
+                                        lineHeight: '1.7',
+                                        fontWeight: '500'
+                                    }}>
+                                        Bazı dönemlerde, yeni iş birlikleri için <strong style={{ color: '#f59e0b' }}>sınırlı süreli avantajlı fiyatlandırmalar</strong> sunulur. Bu iş birliklerinde, projenin referans olarak gösterilmesine ve deneyim paylaşımına önem veririz.
+                                    </p>
+                                    <div style={{
+                                        display: 'inline-flex',
+                                        alignItems: 'center',
+                                        gap: '10px',
+                                        padding: '12px 20px',
+                                        background: 'rgba(16, 185, 129, 0.15)',
+                                        border: '1.5px solid rgba(16, 185, 129, 0.3)',
+                                        borderRadius: '14px',
+                                        backdropFilter: 'blur(10px)'
+                                    }}>
+                                        <FaTrophy style={{ fontSize: '16px', color: '#10b981' }} />
+                                        <span style={{ fontSize: '14px', color: '#10b981', fontWeight: '700', letterSpacing: '0.3px' }}>
+                                            Karşılıklı kazanım odaklı, şeffaf çalışma modeli
+                                        </span>
+                                    </div>
+                                </div>
 
-                {/* PAKET KARTLARI */}
+                                {/* Sağ: Countdown - Daha Göz Alıcı */}
+                                <div style={{
+                                    background: 'linear-gradient(135deg, rgba(15, 15, 15, 0.6), rgba(20, 20, 20, 0.4))',
+                                    padding: '32px 36px',
+                                    borderRadius: '20px',
+                                    border: '2px solid rgba(245, 158, 11, 0.3)',
+                                    boxShadow: '0 10px 40px rgba(0, 0, 0, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.1)',
+                                    backdropFilter: 'blur(20px)'
+                                }}>
+                                    <div style={{
+                                        fontSize: '13px',
+                                        color: '#f59e0b',
+                                        marginBottom: '16px',
+                                        textAlign: 'center',
+                                        fontWeight: '800',
+                                        letterSpacing: '1.5px',
+                                        textTransform: 'uppercase'
+                                    }}>
+                                        ⚡ Kampanya Bitiyor
+                                    </div>
+                                    <div style={{
+                                        display: 'flex',
+                                        gap: '12px',
+                                        alignItems: 'center',
+                                        fontFamily: '"SF Mono", "Monaco", monospace'
+                                    }}>
+                                        {[
+                                            { value: timeLeft.days, label: 'GÜN' },
+                                            { value: timeLeft.hours, label: 'SAAT' },
+                                            { value: timeLeft.minutes, label: 'DAK' },
+                                            { value: timeLeft.seconds, label: 'SN' }
+                                        ].map((item, i) => (
+                                            <div key={i} style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+                                                <div style={{ textAlign: 'center' }}>
+                                                    <motion.div
+                                                        animate={{ scale: [1, 1.05, 1] }}
+                                                        transition={{ duration: 1, repeat: Infinity }}
+                                                        style={{
+                                                            background: 'linear-gradient(135deg, rgba(245, 158, 11, 0.2), rgba(245, 158, 11, 0.1))',
+                                                            padding: '14px 16px',
+                                                            borderRadius: '12px',
+                                                            fontSize: '28px',
+                                                            fontWeight: '900',
+                                                            minWidth: '70px',
+                                                            color: '#fbbf24',
+                                                            border: '1px solid rgba(245, 158, 11, 0.3)',
+                                                            boxShadow: '0 4px 16px rgba(245, 158, 11, 0.2), inset 0 1px 0 rgba(255, 255, 255, 0.1)'
+                                                        }}
+                                                    >
+                                                        {String(item.value).padStart(2, '0')}
+                                                    </motion.div>
+                                                    <div style={{
+                                                        fontSize: '10px',
+                                                        color: '#9ca3af',
+                                                        marginTop: '6px',
+                                                        fontWeight: '700',
+                                                        letterSpacing: '1px'
+                                                    }}>
+                                                        {item.label}
+                                                    </div>
+                                                </div>
+                                                {i < 3 && (
+                                                    <span style={{
+                                                        color: 'rgba(245, 158, 11, 0.5)',
+                                                        fontSize: '24px',
+                                                        fontWeight: '300'
+                                                    }}>:</span>
+                                                )}
+                                            </div>
+                                        ))}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </motion.div>
+                )}
+
+                {/* Kampanya Bitti Bildirimi */}
+                {!isPromoActive && showPromoEndedInfo && (
+                    <motion.div
+                        initial={{ opacity: 0, y: -20 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        style={{
+                            maxWidth: '700px',
+                            margin: '0 auto 60px',
+                            padding: '24px 32px',
+                            background: 'rgba(245, 158, 11, 0.08)',
+                            border: '1px solid rgba(245, 158, 11, 0.25)',
+                            borderRadius: '18px',
+                            textAlign: 'center'
+                        }}
+                    >
+                        <p style={{
+                            fontSize: '15px',
+                            color: '#f59e0b',
+                            margin: '0 0 10px',
+                            fontWeight: '700'
+                        }}>
+                            Kampanya dönemi sona erdi. Normal fiyatlar geçerlidir.
+                        </p>
+                        <p style={{
+                            fontSize: '13px',
+                            color: 'var(--text-secondary)',
+                            margin: 0,
+                            lineHeight: '1.6'
+                        }}>
+                            Toplu proje veya uzun vadeli işbirliği için özel fırsatlar sunabiliriz.
+                        </p>
+                    </motion.div>
+                )}
+
+                {/* PAKET KARTLARI - HER BİRİ KENDI RENGİYLE */}
                 <div className="packages-grid" style={{
                     display: 'grid',
                     gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))',
-                    gap: '32px',
-                    marginBottom: '60px'
+                    gap: '36px',
+                    marginBottom: '70px'
                 }}>
-                    {packages.map((pkg, index) => (
-                        <motion.div
-                            key={pkg.id}
-                            className={`package-card-modern ${selectedPackage === pkg.id ? 'selected' : ''}`}
-                            initial={{ opacity: 0, y: 50 }}
-                            whileInView={{ opacity: 1, y: 0 }}
-                            viewport={{ once: true }}
-                            transition={{ duration: 0.6, delay: index * 0.1 }}
-                            whileHover={{ y: -10 }}
-                            style={{
-                                background: 'linear-gradient(135deg, var(--bg-card), var(--bg-tertiary))',
-                                border: `2px solid ${selectedPackage === pkg.id ? pkg.color : 'var(--border-subtle)'}`,
-                                borderRadius: '24px',
-                                padding: '36px 28px',
-                                position: 'relative',
-                                transition: 'all 0.3s ease',
-                                boxShadow: selectedPackage === pkg.id ? `0 20px 60px ${pkg.color}40` : 'none'
-                            }}
-                        >
-                            {/* Badge */}
-                            <div style={{
-                                position: 'absolute',
-                                top: '-12px',
-                                right: '20px',
-                                background: pkg.color,
-                                color: '#fff',
-                                padding: '6px 16px',
-                                borderRadius: '999px',
-                                fontSize: '11px',
-                                fontWeight: '700',
-                                textTransform: 'uppercase',
-                                letterSpacing: '0.5px'
-                            }}>
-                                {pkg.badge}
-                            </div>
+                    {packages.map((pkg, index) => {
+                        const isSelected = selectedPackage === pkg.id;
+                        const isRecommended = pkg.recommended;
+                        const colors = pkg.colorScheme;
 
-                            {/* Icon */}
-                            <div style={{ fontSize: '48px', marginBottom: '16px' }}>
-                                {pkg.icon}
-                            </div>
-
-                            {/* Name */}
-                            <h3 style={{ fontSize: '26px', marginBottom: '8px', color: 'var(--text-primary)' }}>
-                                {pkg.name}
-                            </h3>
-
-                            {/* Description */}
-                            <p style={{ fontSize: '13px', color: 'var(--text-muted)', marginBottom: '20px' }}>
-                                {pkg.description}
-                            </p>
-
-                            {/* Price */}
-                            <div style={{ marginBottom: '20px' }}>
-                                <div style={{ fontSize: '14px', color: 'var(--text-muted)', marginBottom: '4px' }}>
-                                    Başlangıç fiyatı*
-                                </div>
-                                <span style={{ fontSize: '38px', fontWeight: '700', color: pkg.color }}>
-                                    {formatPrice(pkg.price)}
-                                </span>
-                            </div>
-
-                            {/* Ideal */}
-                            <p style={{ fontSize: '12px', fontStyle: 'italic', color: 'var(--text-secondary)', marginBottom: '24px', padding: '12px', background: 'rgba(212, 182, 118, 0.08)', borderRadius: '10px', lineHeight: '1.6' }}>
-                                💡 {pkg.ideal}
-                            </p>
-
-                            {/* Features */}
-                            <div style={{ marginBottom: '20px' }}>
-                                <h5 style={{ fontSize: '13px', color: 'var(--brand-main)', marginBottom: '12px', fontWeight: '600' }}>
-                                    ✨ Özellikler:
-                                </h5>
-                                <ul style={{ listStyle: 'none', padding: 0, marginBottom: '0' }}>
-                                    {pkg.features.slice(0, 5).map((feature, i) => (
-                                        <li key={i} style={{ display: 'flex', alignItems: 'flex-start', gap: '10px', padding: '7px 0', fontSize: '13px', color: 'var(--text-secondary)', lineHeight: '1.5' }}>
-                                            <FaCheck style={{ color: pkg.color, fontSize: '12px', marginTop: '2px', flexShrink: 0 }} />
-                                            <span>{feature}</span>
-                                        </li>
-                                    ))}
-                                </ul>
-                            </div>
-
-                            {/* Sayfaları Göster Butonu */}
-                            <button
-                                onClick={(e) => {
-                                    e.stopPropagation();
-                                    setShowPages(showPages === pkg.id ? null : pkg.id);
-                                }}
+                        return (
+                            <motion.div
+                                key={pkg.id}
+                                initial={{ opacity: 0, y: 50 }}
+                                whileInView={{ opacity: 1, y: 0 }}
+                                viewport={{ once: true }}
+                                transition={{ duration: 0.6, delay: index * 0.1 }}
+                                onClick={() => setSelectedPackage(pkg.id)}
                                 style={{
-                                    width: '100%',
-                                    padding: '12px',
-                                    background: 'rgba(212, 182, 118, 0.12)',
-                                    border: '1px solid var(--border-medium)',
-                                    borderRadius: '12px',
-                                    color: 'var(--brand-main)',
-                                    fontSize: '13px',
-                                    fontWeight: '600',
-                                    cursor: 'pointer',
-                                    marginBottom: '16px',
-                                    transition: 'all 0.3s ease'
+                                    background: isRecommended
+                                        ? `linear-gradient(135deg, ${colors.light}, rgba(139, 92, 246, 0.03))`
+                                        : `linear-gradient(135deg, var(--bg-card), ${colors.light})`,
+                                    border: isSelected
+                                        ? `2px solid ${colors.primary}`
+                                        : isRecommended
+                                            ? `2px solid ${colors.border}`
+                                            : '2px solid var(--border-subtle)',
+                                    borderRadius: '26px',
+                                    padding: '40px 32px',
+                                    position: 'relative',
+                                    transition: 'all 0.4s cubic-bezier(0.4, 0, 0.2, 1)',
+                                    boxShadow: isSelected
+                                        ? `0 24px 60px ${colors.shadow}`
+                                        : '0 4px 16px rgba(0, 0, 0, 0.1)',
+                                    cursor: 'pointer'
+                                }}
+                                whileHover={{
+                                    y: -12,
+                                    boxShadow: `0 28px 70px ${colors.shadow}`
                                 }}
                             >
-                                {showPages === pkg.id ? '▲ Sayfaları Gizle' : '▼ Hangi Sayfalar Dahil?'}
-                            </button>
+                                {/* Subtle Accent Gradient */}
+                                <div style={{
+                                    position: 'absolute',
+                                    top: 0,
+                                    left: 0,
+                                    right: 0,
+                                    height: '4px',
+                                    background: `linear-gradient(90deg, transparent, ${colors.primary}, transparent)`,
+                                    borderRadius: '26px 26px 0 0',
+                                    opacity: isSelected ? 1 : 0.5
+                                }} />
 
-                            {/* Sayfalar Listesi */}
-                            <AnimatePresence>
-                                {showPages === pkg.id && (
-                                    <motion.div
-                                        initial={{ opacity: 0, height: 0 }}
-                                        animate={{ opacity: 1, height: 'auto' }}
-                                        exit={{ opacity: 0, height: 0 }}
-                                        style={{
-                                            marginBottom: '16px',
-                                            padding: '16px',
-                                            background: 'rgba(10, 10, 10, 0.6)',
-                                            borderRadius: '12px',
-                                            border: '1px solid var(--border-subtle)'
-                                        }}
-                                    >
-                                        <h5 style={{ fontSize: '12px', color: 'var(--brand-main)', marginBottom: '12px', fontWeight: '600' }}>
-                                            📄 Paket İçeriği ({pkg.pages.length} Sayfa):
-                                        </h5>
-                                        <ul style={{ listStyle: 'none', padding: 0, margin: 0 }}>
-                                            {pkg.pages.map((page, i) => (
-                                                <li key={i} style={{ fontSize: '11px', color: 'var(--text-secondary)', padding: '6px 0', display: 'flex', alignItems: 'flex-start', gap: '8px', lineHeight: '1.4' }}>
-                                                    <span style={{ color: pkg.color, marginTop: '2px', fontSize: '10px' }}>●</span>
-                                                    {page}
-                                                </li>
-                                            ))}
-                                        </ul>
-                                        <div style={{ marginTop: '12px', padding: '8px', background: 'rgba(212, 182, 118, 0.08)', borderRadius: '6px', fontSize: '10px', color: 'var(--text-muted)' }}>
-                                            {pkg.extraPagePrice}
-                                        </div>
-                                    </motion.div>
+                                {/* Recommended Badge */}
+                                {isRecommended && (
+                                    <div style={{
+                                        position: 'absolute',
+                                        top: '-14px',
+                                        left: '50%',
+                                        transform: 'translateX(-50%)',
+                                        background: `linear-gradient(135deg, ${colors.primary}, ${colors.secondary})`,
+                                        color: '#fff',
+                                        padding: '8px 24px',
+                                        borderRadius: '999px',
+                                        fontSize: '12px',
+                                        fontWeight: '800',
+                                        textTransform: 'uppercase',
+                                        letterSpacing: '0.8px',
+                                        display: 'flex',
+                                        alignItems: 'center',
+                                        gap: '8px',
+                                        boxShadow: `0 6px 20px ${colors.shadow}`
+                                    }}>
+                                        <FaStar style={{ fontSize: '11px' }} />
+                                        {pkg.badge}
+                                    </div>
                                 )}
-                            </AnimatePresence>
 
-                            {/* Note */}
-                            {pkg.note && (
-                                <div style={{ padding: '10px', background: 'rgba(59, 130, 246, 0.1)', borderRadius: '8px', marginBottom: '16px' }}>
-                                    <p style={{ fontSize: '11px', color: '#3b82f6', margin: 0, lineHeight: '1.5' }}>
-                                        ℹ️ {pkg.note}
+                                {/* Badge (non-recommended packages) */}
+                                {!isRecommended && (
+                                    <div style={{
+                                        position: 'absolute',
+                                        top: '-14px',
+                                        right: '24px',
+                                        background: `linear-gradient(135deg, ${colors.primary}, ${colors.secondary})`,
+                                        color: '#fff',
+                                        padding: '7px 18px',
+                                        borderRadius: '999px',
+                                        fontSize: '11px',
+                                        fontWeight: '800',
+                                        textTransform: 'uppercase',
+                                        letterSpacing: '0.7px',
+                                        boxShadow: `0 4px 16px ${colors.shadow}`
+                                    }}>
+                                        {pkg.badge}
+                                    </div>
+                                )}
+
+                                {/* Discount Badge */}
+                                {isPromoActive && !pkg.isCustomQuote && (
+                                    <div style={{
+                                        position: 'absolute',
+                                        top: '24px',
+                                        right: '24px',
+                                        background: 'rgba(16, 185, 129, 0.15)',
+                                        border: '1.5px solid rgba(16, 185, 129, 0.35)',
+                                        color: '#10b981',
+                                        padding: '6px 14px',
+                                        borderRadius: '10px',
+                                        fontSize: '12px',
+                                        fontWeight: '800',
+                                        letterSpacing: '0.5px',
+                                        backdropFilter: 'blur(10px)',
+                                    }}>
+                                        %{pkg.discountPercent}
+                                    </div>
+                                )}
+
+                                {/* Icon & Name */}
+                                <div style={{ marginBottom: '24px', marginTop: isRecommended ? '12px' : '0' }}>
+                                    <div style={{ fontSize: '48px', marginBottom: '14px' }}>{pkg.icon}</div>
+                                    <h3 style={{
+                                        fontSize: '26px',
+                                        fontWeight: '800',
+                                        color: 'var(--text-primary)',
+                                        marginBottom: '10px',
+                                        letterSpacing: '-0.3px',
+                                        marginTop: 30
+                                    }}>
+                                        {pkg.name}
+                                    </h3>
+                                    <p style={{
+                                        fontSize: '14px',
+                                        color: colors.primary,
+                                        marginBottom: '18px',
+                                        fontWeight: '600'
+                                    }}>
+                                        {pkg.description}
+                                    </p>
+                                    <p style={{
+                                        fontSize: '13px',
+                                        color: 'var(--text-secondary)',
+                                        fontStyle: 'italic',
+                                        lineHeight: '1.6',
+                                        padding: '14px',
+                                        background: colors.light,
+                                        borderRadius: '12px',
+                                        borderLeft: `3px solid ${colors.primary}`
+                                    }}>
+                                        {pkg.tagline}
                                     </p>
                                 </div>
-                            )}
 
-                            {/* SEÇ BUTONU - YENİ! */}
-                            <motion.button
-                                onClick={() => setSelectedPackage(pkg.id)}
-                                whileHover={{ scale: 1.03 }}
-                                whileTap={{ scale: 0.97 }}
-                                style={{
-                                    width: '100%',
-                                    padding: '16px',
-                                    background: selectedPackage === pkg.id
-                                        ? `linear-gradient(135deg, ${pkg.color}, ${pkg.color}dd)`
-                                        : 'linear-gradient(135deg, var(--brand-main), var(--brand-accent))',
-                                    color: selectedPackage === pkg.id ? '#fff' : '#000',
-                                    border: 'none',
-                                    borderRadius: '14px',
-                                    fontSize: '15px',
-                                    fontWeight: '700',
-                                    cursor: 'pointer',
-                                    marginBottom: '16px',
-                                    boxShadow: selectedPackage === pkg.id
-                                        ? `0 8px 24px ${pkg.color}60`
-                                        : '0 4px 16px rgba(212, 182, 118, 0.3)',
-                                    transition: 'all 0.3s ease',
-                                    display: 'flex',
-                                    alignItems: 'center',
-                                    justifyContent: 'center',
-                                    gap: '8px'
-                                }}
-                            >
-                                {selectedPackage === pkg.id ? (
-                                    <>
-                                        <FaCheck /> SEÇİLDİ
-                                    </>
-                                ) : (
-                                    <>
-                                        Bu Paketi Seç
-                                    </>
+                                {/* Price */}
+                                <div style={{ marginBottom: '28px' }}>
+                                    {!pkg.isCustomQuote ? (
+                                        <>
+                                            {isPromoActive && (
+                                                <div style={{
+                                                    fontSize: '19px',
+                                                    color: 'var(--text-secondary)',
+                                                    textDecoration: 'line-through',
+                                                    marginBottom: '8px',
+                                                    fontWeight: '500'
+                                                }}>
+                                                    {formatPrice(pkg.originalPrice)}
+                                                </div>
+                                            )}
+                                            <div style={{
+                                                fontSize: '46px',
+                                                fontWeight: '900',
+                                                color: isPromoActive ? '#10b981' : colors.primary,
+                                                lineHeight: '1',
+                                                marginBottom: '10px',
+                                                letterSpacing: '-1px'
+                                            }}>
+                                                {formatPrice(getCurrentPrice(pkg))}
+                                            </div>
+                                            {isPromoActive && (
+                                                <div style={{
+                                                    fontSize: '13px',
+                                                    color: '#10b981',
+                                                    fontWeight: '700'
+                                                }}>
+                                                    ✓ {formatPrice(pkg.originalPrice - pkg.discountedPrice)} tasarruf
+                                                </div>
+                                            )}
+                                        </>
+                                    ) : (
+                                        <div style={{
+                                            fontSize: '26px',
+                                            fontWeight: '800',
+                                            color: colors.primary
+                                        }}>
+                                            Özel Teklif
+                                        </div>
+                                    )}
+                                </div>
+
+                                {/* Features Preview */}
+                                <div style={{ marginBottom: '24px' }}>
+                                    <div style={{
+                                        fontSize: '12px',
+                                        color: colors.primary,
+                                        marginBottom: '14px',
+                                        fontWeight: '700',
+                                        textTransform: 'uppercase',
+                                        letterSpacing: '0.8px'
+                                    }}>
+                                        ✨ Öne Çıkan Özellikler
+                                    </div>
+                                    <ul style={{ listStyle: 'none', padding: 0, margin: 0 }}>
+                                        {pkg.features.slice(0, 4).map((feature, i) => (
+                                            <li key={i} style={{
+                                                display: 'flex',
+                                                alignItems: 'flex-start',
+                                                gap: '12px',
+                                                padding: '8px 0',
+                                                fontSize: '13px',
+                                                color: 'var(--text-secondary)',
+                                                lineHeight: '1.6'
+                                            }}>
+                                                <FaCheck style={{
+                                                    color: colors.primary,
+                                                    fontSize: '12px',
+                                                    marginTop: '4px',
+                                                    flexShrink: 0
+                                                }} />
+                                                <span>{feature}</span>
+                                            </li>
+                                        ))}
+                                    </ul>
+                                </div>
+
+                                {/* Expand Button */}
+                                <button
+                                    onClick={(e) => {
+                                        e.stopPropagation();
+                                        setShowPages(showPages === pkg.id ? null : pkg.id);
+                                    }}
+                                    style={{
+                                        width: '100%',
+                                        padding: '14px',
+                                        background: colors.light,
+                                        border: `1px solid ${colors.border}`,
+                                        borderRadius: '14px',
+                                        color: colors.primary,
+                                        fontSize: '14px',
+                                        fontWeight: '700',
+                                        cursor: 'pointer',
+                                        marginBottom: '20px',
+                                        transition: 'all 0.3s ease'
+                                    }}
+                                >
+                                    {showPages === pkg.id ? '▲ Detayları Gizle' : '▼ Tüm Detayları Gör'}
+                                </button>
+
+                                {/* Expanded Details */}
+                                <AnimatePresence>
+                                    {showPages === pkg.id && (
+                                        <motion.div
+                                            initial={{ opacity: 0, height: 0 }}
+                                            animate={{ opacity: 1, height: 'auto' }}
+                                            exit={{ opacity: 0, height: 0 }}
+                                            style={{
+                                                marginBottom: '24px',
+                                                padding: '20px',
+                                                background: 'rgba(10, 10, 10, 0.5)',
+                                                borderRadius: '14px',
+                                                border: `1px solid ${colors.border}`
+                                            }}
+                                        >
+                                            <div style={{
+                                                fontSize: '12px',
+                                                color: colors.primary,
+                                                marginBottom: '10px',
+                                                fontWeight: '700',
+                                                textTransform: 'uppercase',
+                                                letterSpacing: '0.7px'
+                                            }}>
+                                                📋 Paket İçeriği ({pkg.pages.length} {pkg.isCustomQuote ? 'Özellik' : 'Bölüm'})
+                                            </div>
+                                            <p style={{
+                                                fontSize: '12px',
+                                                color: 'var(--text-muted)',
+                                                marginBottom: '14px',
+                                                fontStyle: 'italic',
+                                                lineHeight: '1.6'
+                                            }}>
+                                                ✓ {pkg.ideal}
+                                            </p>
+                                            <ul style={{ listStyle: 'none', padding: 0, margin: '0 0 14px 0' }}>
+                                                {pkg.pages.map((page, i) => (
+                                                    <li key={i} style={{
+                                                        fontSize: '12px',
+                                                        color: 'var(--text-secondary)',
+                                                        padding: '6px 0',
+                                                        display: 'flex',
+                                                        gap: '10px',
+                                                        alignItems: 'flex-start',
+                                                        lineHeight: '1.6'
+                                                    }}>
+                                                        <span style={{
+                                                            color: colors.primary,
+                                                            fontSize: '10px',
+                                                            marginTop: '5px'
+                                                        }}>●</span>
+                                                        {page}
+                                                    </li>
+                                                ))}
+                                            </ul>
+                                            <div style={{
+                                                fontSize: '11px',
+                                                color: 'var(--text-muted)',
+                                                padding: '10px',
+                                                background: colors.light,
+                                                borderRadius: '8px',
+                                                borderLeft: `2px solid ${colors.primary}`
+                                            }}>
+                                                💡 {pkg.extraPagePrice}
+                                            </div>
+
+                                            {/* Tüm Özellikler Listesi */}
+                                            <div style={{ marginTop: '16px', paddingTop: '16px', borderTop: `1px solid ${colors.border}` }}>
+                                                <div style={{
+                                                    fontSize: '12px',
+                                                    color: colors.primary,
+                                                    marginBottom: '10px',
+                                                    fontWeight: '700'
+                                                }}>
+                                                    ✨ Tüm Teknik Özellikler:
+                                                </div>
+                                                <ul style={{ listStyle: 'none', padding: 0, margin: 0 }}>
+                                                    {pkg.features.map((feature, i) => (
+                                                        <li key={i} style={{
+                                                            fontSize: '11px',
+                                                            color: 'var(--text-secondary)',
+                                                            padding: '5px 0',
+                                                            display: 'flex',
+                                                            gap: '8px',
+                                                            alignItems: 'flex-start',
+                                                            lineHeight: '1.5'
+                                                        }}>
+                                                            <FaCheck style={{
+                                                                color: colors.primary,
+                                                                fontSize: '9px',
+                                                                marginTop: '3px',
+                                                                flexShrink: 0
+                                                            }} />
+                                                            {feature}
+                                                        </li>
+                                                    ))}
+                                                </ul>
+                                            </div>
+                                        </motion.div>
+                                    )}
+                                </AnimatePresence>
+
+                                {/* Note */}
+                                {pkg.note && (
+                                    <div style={{
+                                        padding: '12px',
+                                        background: 'rgba(59, 130, 246, 0.1)',
+                                        borderRadius: '10px',
+                                        marginBottom: '20px',
+                                        border: '1px solid rgba(59, 130, 246, 0.2)'
+                                    }}>
+                                        <p style={{
+                                            fontSize: '12px',
+                                            color: '#3b82f6',
+                                            margin: 0,
+                                            lineHeight: '1.6',
+                                            fontWeight: '500'
+                                        }}>
+                                            💡 {pkg.note}
+                                        </p>
+                                    </div>
                                 )}
-                            </motion.button>
 
-                            {/* Delivery & Support */}
-                            <div style={{ fontSize: '11px', color: 'var(--text-primary)', textAlign: 'center', borderTop: '1px solid var(--border-subtle)', paddingTop: '14px', lineHeight: '1.6' }}>
-                                <div>⏱️ {pkg.deliveryTime}</div>
-                                <div style={{ marginTop: '4px' }}>🛡️ {pkg.support}</div>
-                            </div>
-                        </motion.div>
-                    ))}
+                                {/* Select Button */}
+                                <motion.button
+                                    whileTap={{ scale: 0.98 }}
+                                    style={{
+                                        width: '100%',
+                                        padding: '16px',
+                                        background: isSelected
+                                            ? `linear-gradient(135deg, ${colors.primary}, ${colors.secondary})`
+                                            : `linear-gradient(135deg, ${colors.light}, ${colors.light})`,
+                                        color: isSelected ? '#fff' : colors.primary,
+                                        border: isSelected ? 'none' : `2px solid ${colors.border}`,
+                                        borderRadius: '16px',
+                                        fontSize: '16px',
+                                        fontWeight: '800',
+                                        cursor: 'pointer',
+                                        marginBottom: '18px',
+                                        boxShadow: isSelected
+                                            ? `0 10px 30px ${colors.shadow}`
+                                            : 'none',
+                                        transition: 'all 0.3s ease',
+                                        display: 'flex',
+                                        alignItems: 'center',
+                                        justifyContent: 'center',
+                                        gap: '10px',
+                                        letterSpacing: '0.3px'
+                                    }}
+                                >
+                                    {isSelected ? (
+                                        <>
+                                            <FaCheck /> SEÇİLDİ
+                                        </>
+                                    ) : (
+                                        'Bu Paketi Seç'
+                                    )}
+                                </motion.button>
+
+                                {/* Delivery & Support */}
+                                <div style={{
+                                    fontSize: '12px',
+                                    color: 'var(--text-secondary)',
+                                    textAlign: 'center',
+                                    borderTop: '1px solid var(--border-subtle)',
+                                    paddingTop: '16px',
+                                    lineHeight: '1.7'
+                                }}>
+                                    <div>⏱️ Teslimat: <strong style={{ color: 'var(--text-primary)' }}>{pkg.deliveryTime}</strong></div>
+                                    <div style={{ marginTop: '6px' }}>🛡️ Destek: <strong style={{ color: 'var(--text-primary)' }}>{pkg.support}</strong></div>
+                                </div>
+                            </motion.div>
+                        );
+                    })}
                 </div>
 
-                {/* CTA BUTON */}
-                <div style={{ textAlign: 'center', marginBottom: '50px' }}>
+                {/* CTA Section */}
+                <div style={{ textAlign: 'center', marginBottom: '90px' }}>
                     <motion.button
                         onClick={handleGetQuote}
                         disabled={!selectedPackage}
-                        whileHover={{ scale: selectedPackage ? 1.05 : 1 }}
-                        whileTap={{ scale: selectedPackage ? 0.98 : 1 }}
+                        whileHover={{ scale: selectedPackage ? 1.04 : 1 }}
+                        whileTap={{ scale: selectedPackage ? 0.96 : 1 }}
                         style={{
-                            padding: '20px 50px',
+                            padding: '20px 56px',
                             background: selectedPackage
                                 ? 'linear-gradient(135deg, var(--brand-main), var(--brand-accent))'
                                 : 'rgba(100, 100, 100, 0.3)',
                             color: selectedPackage ? '#000' : 'var(--text-muted)',
                             border: 'none',
                             borderRadius: '999px',
-                            fontSize: '17px',
-                            fontWeight: '700',
+                            fontSize: '18px',
+                            fontWeight: '800',
                             cursor: selectedPackage ? 'pointer' : 'not-allowed',
-                            boxShadow: selectedPackage ? '0 8px 32px rgba(212, 182, 118, 0.5)' : 'none',
-                            transition: 'all 0.3s ease',
+                            boxShadow: selectedPackage
+                                ? '0 10px 40px rgba(212, 182, 118, 0.5)'
+                                : 'none',
+                            transition: 'all 0.4s ease',
                             display: 'inline-flex',
                             alignItems: 'center',
-                            gap: '10px'
+                            gap: '12px',
+                            letterSpacing: '0.3px'
                         }}
                     >
                         {selectedPackage ? (
                             <>
-                                <FaRocket /> Hemen Teklif Al
+                                Detaylı Görüşelim <FaArrowRight style={{ fontSize: '16px' }} />
                             </>
                         ) : (
-                            '👆 Önce Bir Paket Seçin'
+                            'Önce Bir Paket Seçin'
                         )}
                     </motion.button>
 
                     {selectedPackage && (
-                        <p style={{ fontSize: '13px', color: 'var(--text-primary)', marginTop: '16px', lineHeight: '1.6' }}>
-                            ✅ 24 saat içinde detaylı görüşme ve teklif
+                        <motion.p
+                            initial={{ opacity: 0 }}
+                            animate={{ opacity: 1 }}
+                            style={{
+                                fontSize: '14px',
+                                color: 'var(--text-secondary)',
+                                marginTop: '18px',
+                                lineHeight: '1.7',
+                                maxWidth: '600px',
+                                margin: '18px auto 0'
+                            }}
+                        >
+                            ✓ 24 saat içinde detaylı görüşme ve net teklif
                             <br />
-                            <span style={{ fontSize: '11px', color: 'var(--text-primary)' }}>
-                                Bağlayıcı değildir. Projenize özel fiyat görüşmede netleştirilir.
+                            <span style={{ fontSize: '12px', color: 'var(--text-muted)' }}>
+                                Bağlayıcı değildir. Ek özellik talepleri görüşmede netleştirilir.
                             </span>
-                        </p>
+                        </motion.p>
                     )}
                 </div>
 
-                {/* Bilgilendirme Kutusu */}
+                {/* Trust Indicators - Revize */}
                 <div style={{
-                    padding: '28px',
-                    background: 'rgba(59, 130, 246, 0.12)',
-                    border: '1px solid rgba(59, 130, 246, 0.3)',
-                    borderRadius: '20px',
-                    maxWidth: '800px',
-                    margin: '0 auto 50px'
+                    display: 'grid',
+                    gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))',
+                    gap: '28px',
+                    marginBottom: '70px'
                 }}>
-                    <div style={{ textAlign: 'center', marginBottom: '20px' }}>
-                        <FaInfoCircle style={{ color: '#3b82f6', fontSize: '32px' }} />
+                    {[
+                        {
+                            icon: <FaCode />,
+                            title: 'Doğrudan Geliştiriciyle Çalışın',
+                            desc: 'Tek muhatap, hızlı iletişim ve net süreç yönetimi'
+                        },
+                        {
+                            icon: <FaClock />,
+                            title: 'Planlı & Zamanında Teslim',
+                            desc: 'Kapsamı baştan belirlenen, takvimli proje yönetimi'
+                        },
+                        {
+                            icon: <FaShieldAlt />,
+                            title: 'Şeffaf Fiyatlandırma',
+                            desc: 'Başından belli kapsam, sürpriz maliyet yok'
+                        }
+                    ].map((item, i) => (
+                        <motion.div
+                            key={i}
+                            initial={{ opacity: 0, y: 20 }}
+                            whileInView={{ opacity: 1, y: 0 }}
+                            viewport={{ once: true }}
+                            transition={{ delay: i * 0.12 }}
+                            style={{
+                                padding: '28px',
+                                background: 'linear-gradient(135deg, rgba(212, 182, 118, 0.08), rgba(212, 182, 118, 0.03))',
+                                border: '1px solid var(--border-subtle)',
+                                borderRadius: '18px',
+                                textAlign: 'center',
+                                transition: 'all 0.3s ease'
+                            }}
+                            whileHover={{
+                                boxShadow: '0 8px 24px rgba(212, 182, 118, 0.15)'
+                            }}
+                        >
+                            <div style={{
+                                fontSize: '36px',
+                                color: 'var(--brand-main)',
+                                marginBottom: '14px'
+                            }}>
+                                {item.icon}
+                            </div>
+                            <h4 style={{
+                                fontSize: '17px',
+                                fontWeight: '800',
+                                color: 'var(--text-primary)',
+                                marginBottom: '10px',
+                                letterSpacing: '-0.2px'
+                            }}>
+                                {item.title}
+                            </h4>
+                            <p style={{
+                                fontSize: '14px',
+                                color: 'var(--text-secondary)',
+                                margin: 0,
+                                lineHeight: '1.6'
+                            }}>
+                                {item.desc}
+                            </p>
+                        </motion.div>
+                    ))}
+                </div>
+
+                {/* Şeffaf Fiyatlandırma Politikası - Revize */}
+                <div style={{
+                    padding: '36px',
+                    background: 'rgba(59, 130, 246, 0.1)',
+                    border: '1.5px solid rgba(59, 130, 246, 0.25)',
+                    borderRadius: '22px',
+                    maxWidth: '900px',
+                    margin: '0 auto 60px'
+                }}>
+                    <div style={{ textAlign: 'center', marginBottom: '28px' }}>
+                        <FaShieldAlt style={{ color: '#3b82f6', fontSize: '40px' }} />
                     </div>
-                    <h4 style={{ color: '#3b82f6', fontSize: '18px', marginBottom: '12px', textAlign: 'center', fontWeight: '600' }}>
+                    <h4 style={{
+                        color: '#3b82f6',
+                        fontSize: '22px',
+                        marginBottom: '20px',
+                        textAlign: 'center',
+                        fontWeight: '800',
+                        letterSpacing: '-0.3px'
+                    }}>
                         Şeffaf Fiyatlandırma Politikamız
                     </h4>
                     <ul style={{ listStyle: 'none', padding: 0, margin: 0 }}>
-                        <li style={{ padding: '8px 0', fontSize: '14px', color: 'var(--text-secondary)', lineHeight: '1.7' }}>
-                            • Yukarıdaki fiyatlar <strong style={{ color: 'var(--text-primary)' }}>başlangıç/temel fiyatlardır</strong>
+                        <li style={{ padding: '12px 0', fontSize: '15px', color: 'var(--text-secondary)', lineHeight: '1.8' }}>
+                            • Paket fiyatları, tanımlı kapsamlar için belirlenmiştir
                         </li>
-                        <li style={{ padding: '8px 0', fontSize: '14px', color: 'var(--text-secondary)', lineHeight: '1.7' }}>
-                            • Projenize özel ihtiyaçlar görüşmede <strong style={{ color: 'var(--text-primary)' }}>net olarak belirlenir</strong>
+                        <li style={{ padding: '12px 0', fontSize: '15px', color: 'var(--text-secondary)', lineHeight: '1.8' }}>
+                            • Projenize özel ihtiyaçlar görüşmede netleştirilir
                         </li>
-                        <li style={{ padding: '8px 0', fontSize: '14px', color: 'var(--text-secondary)', lineHeight: '1.7' }}>
-                            • Ek sayfalar, özel entegrasyonlar ve modüller <strong style={{ color: 'var(--text-primary)' }}>ayrıca ücretlendirilir</strong>
+                        <li style={{ padding: '12px 0', fontSize: '15px', color: 'var(--text-secondary)', lineHeight: '1.8' }}>
+                            • Ek sayfa, özel entegrasyon ve modüller ayrıca planlanır
                         </li>
-                        <li style={{ padding: '8px 0', fontSize: '14px', color: 'var(--text-secondary)', lineHeight: '1.7' }}>
-                            • Teklif görüşmesinde <strong style={{ color: 'var(--text-primary)' }}>kesin fiyat</strong> ve ödeme planı belirlenir
+                        <li style={{ padding: '12px 0', fontSize: '15px', color: 'var(--text-secondary)', lineHeight: '1.8' }}>
+                            • Nihai fiyat ve ödeme planı teklif görüşmesinde belirlenir
                         </li>
                     </ul>
+                    <div style={{
+                        marginTop: '20px',
+                        padding: '14px',
+                        background: 'rgba(59, 130, 246, 0.08)',
+                        borderRadius: '12px',
+                        textAlign: 'center'
+                    }}>
+                        <p style={{
+                            fontSize: '15px',
+                            color: '#3b82f6',
+                            margin: 0,
+                            fontWeight: '700'
+                        }}>
+                            ✓ Net kapsam, net fiyat. Sonradan sürpriz yok.
+                        </p>
+                    </div>
                 </div>
 
-                {/* Profesyonel Yaklaşım */}
-                <div style={{ textAlign: 'center', padding: '32px 24px', background: 'linear-gradient(135deg, rgba(16, 185, 129, 0.1), rgba(16, 185, 129, 0.05))', borderRadius: '20px', border: '1px solid rgba(16, 185, 129, 0.2)' }}>
-                    <h4 style={{ color: '#10b981', fontSize: '20px', marginBottom: '16px', fontWeight: '700' }}>
-                        Satış Sonrası Profesyonel Destek
+                {/* Birebir Çalışma Avantajı - Revize */}
+                <motion.div
+                    initial={{ opacity: 0 }}
+                    whileInView={{ opacity: 1 }}
+                    viewport={{ once: true }}
+                    style={{
+                        textAlign: 'center',
+                        padding: '40px 32px',
+                        background: 'linear-gradient(135deg, rgba(212, 182, 118, 0.12), rgba(212, 182, 118, 0.05))',
+                        borderRadius: '22px',
+                        border: '1.5px solid rgba(212, 182, 118, 0.25)',
+                        maxWidth: '900px',
+                        margin: '0 auto'
+                    }}
+                >
+                    <h4 style={{
+                        color: 'var(--brand-main)',
+                        fontSize: '22px',
+                        marginBottom: '20px',
+                        fontWeight: '800',
+                        letterSpacing: '-0.3px'
+                    }}>
+                        Birebir Çalışma Avantajı
                     </h4>
-                    <p style={{ fontSize: '14px', color: 'var(--text-secondary)', maxWidth: '700px', margin: '0 auto', lineHeight: '1.8' }}>
-                        Teslim sonrası teknik destek ve sistem güncellemeleri ile yanınızdayız.
-                        <br />
-                        <strong style={{ color: '#10b981' }}>Başarınız bizim başarımızdır.</strong>
+                    <p style={{
+                        fontSize: '15px',
+                        color: 'var(--text-secondary)',
+                        maxWidth: '700px',
+                        margin: '0 auto 24px',
+                        lineHeight: '1.9'
+                    }}>
+                        Ajans süreçlerinin karmaşıklığı olmadan, projeyi geliştiren kişiyle doğrudan iletişim kurarsınız.
                     </p>
-                </div>
+                    <div style={{
+                        display: 'flex',
+                        justifyContent: 'center',
+                        gap: '32px',
+                        flexWrap: 'wrap',
+                        marginBottom: '20px'
+                    }}>
+                        {['Daha hızlı geri dönüş', 'Daha net karar alma süreci', 'İhtiyaca göre esnek çözümler'].map((text, i) => (
+                            <div key={i} style={{
+                                padding: '10px 20px',
+                                background: 'rgba(212, 182, 118, 0.15)',
+                                borderRadius: '12px',
+                                fontSize: '14px',
+                                color: 'var(--brand-main)',
+                                fontWeight: '600'
+                            }}>
+                                ✓ {text}
+                            </div>
+                        ))}
+                    </div>
+                    <p style={{
+                        fontSize: '14px',
+                        color: 'var(--text-primary)',
+                        fontWeight: '600',
+                        margin: 0
+                    }}>
+                        Teslim sonrası teknik destek ve güncellemelerle süreç devam eder.
+                    </p>
+                </motion.div>
             </div>
+
+            <style>{`
+                @keyframes softGlow {
+                    0%, 100% {
+                        opacity: 0.4;
+                        transform: scale(1) rotate(0deg);
+                    }
+                    50% {
+                        opacity: 0.6;
+                        transform: scale(1.1) rotate(180deg);
+                    }
+                }
+
+                @keyframes shimmer {
+                    0%, 100% {
+                        opacity: 0.3;
+                    }
+                    50% {
+                        opacity: 0.8;
+                    }
+                }
+            `}</style>
         </section>
     );
 };

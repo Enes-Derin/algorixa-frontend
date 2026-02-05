@@ -25,7 +25,7 @@ const Home = () => {
 
             <Navbar />
             <FloatingSocial />
-            <LiveChatWidget />
+            {/* <LiveChatWidget /> */}
 
             <main>
                 <HeroPremium />

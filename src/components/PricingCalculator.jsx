@@ -290,7 +290,7 @@ const PricingCalculator = () => {
                     viewport={{ once: true }}
                     transition={{ duration: 0.9 }}
                 >
-                    Paketler & Şeffaf Fiyatlandırma
+                    Paketler & Fiyatlandırma
                 </motion.h2>
 
                 <motion.p
@@ -963,6 +963,15 @@ const PricingCalculator = () => {
                                             }}>
                                                 {formatPrice(getCurrentPrice(pkg))}
                                             </div>
+                                            <div style={{
+                                                fontSize: '12px',
+                                                color: 'var(--text-muted)',
+                                                fontWeight: '600',
+                                                marginBottom: '8px',
+                                                fontStyle: 'italic'
+                                            }}>
+                                                başlayan fiyatlarla
+                                            </div>
                                             {isPromoActive && (
                                                 <div style={{
                                                     fontSize: '13px',
@@ -974,13 +983,24 @@ const PricingCalculator = () => {
                                             )}
                                         </>
                                     ) : (
-                                        <div style={{
-                                            fontSize: '26px',
-                                            fontWeight: '800',
-                                            color: colors.primary
-                                        }}>
-                                            Özel Teklif
-                                        </div>
+                                        <>
+                                            <div style={{
+                                                fontSize: '26px',
+                                                fontWeight: '800',
+                                                color: colors.primary
+                                            }}>
+                                                Özel Teklif
+                                            </div>
+                                            <div style={{
+                                                fontSize: '12px',
+                                                color: 'var(--text-muted)',
+                                                fontWeight: '600',
+                                                marginTop: '8px',
+                                                fontStyle: 'italic'
+                                            }}>
+                                                projeye özel fiyatlandırma
+                                            </div>
+                                        </>
                                     )}
                                 </div>
 

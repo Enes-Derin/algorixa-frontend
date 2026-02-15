@@ -1,7 +1,7 @@
 import { Helmet } from "react-helmet-async";
 
 const SEO = ({
-    title = "Algorixa - Kurumsal Web Sitesi, Yazılım ve Admin Panel Çözümleri | İstanbul",
+    title = "Algorixa",
     description = "İstanbul'da kurumsal web sitesi tasarımı, admin panelli web uygulamaları ve özel yazılım geliştirme hizmetleri. SEO uyumlu, hızlı, güvenilir ve satış odaklı dijital çözümler. İşletmenizi dijitalde büyütün.",
     keywords = "algorixa, algorixa web sitesi, kurumsal web sitesi, web tasarım istanbul, yazılım şirketi istanbul, admin panel geliştirme, landing page tasarımı, SEO uyumlu web sitesi, e-ticaret sitesi, özel yazılım geliştirme, react web sitesi, dijital ajans istanbul, web yazılım hizmetleri, kurumsal web tasarım, responsive web tasarım, mobil uyumlu web sitesi, profesyonel web tasarım, web sitesi yaptırma, freelance yazılım geliştirici, web uygulama geliştirme, online sipariş sistemi, randevu sistemi, üye yönetim sistemi, CRM yazılımı, işletme yazılımı, dijital dönüşüm, web tabanlı yazılım, bulut tabanlı sistem, API entegrasyonu, modern web teknolojileri, full stack geliştirme",
     ogImage = "https://algorixa.com.tr/og-image.jpg",

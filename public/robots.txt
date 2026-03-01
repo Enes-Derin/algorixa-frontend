@@ -4,12 +4,14 @@
 User-agent: *
 Allow: /
 
-# Sitemaps
-Sitemap: https://www.algorixa.com.tr/sitemap.xml
-
-# Disallow admin pages
+# Admin ve login sayfaları indexlenmesin
 Disallow: /admin/
 Disallow: /login/
+Disallow: /admin
+Disallow: /login
 
-# Crawl-delay
+# Sitemap
+Sitemap: https://www.algorixa.com.tr/sitemap.xml
+
+# Crawl-delay — 0 bırak, Googlebot'u yavaşlatma
 Crawl-delay: 0

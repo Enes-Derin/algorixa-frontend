@@ -5,6 +5,7 @@ import {
     Mail, Phone, Instagram, MessageCircle, ChevronRight,
     Code2
 } from "lucide-react";
+import SEO from "../components/Seo";
 
 function useReveal() {
     const ref = useRef(null);
@@ -90,6 +91,13 @@ export default function About() {
 
     return (
         <>
+            <SEO
+                title="Hakkımızda — İstanbul Merkezli Web Tasarım & Yazılım | Algorixa"
+                description="İstanbul merkezli Algorixa ile doğrudan geliştiriciyle çalışın. Ajans karmaşası yok, tek muhatap — tasarım, geliştirme, sunucu ve SEO tek elden. 150+ tamamlanan proje, 7+ yıl deneyim. Tanışalım."
+                keywords="algorixa hakkında, web tasarım şirketi istanbul, freelance web geliştirici istanbul, doğrudan geliştiriciyle web sitesi, güvenilir web tasarım hizmeti, tek muhatap web tasarım, ajansız web sitesi yaptırma, enes derin web geliştirici, istanbul yazılım geliştirici, kurumsal web tasarım deneyimi, 150 proje web tasarım"
+                url="https://www.algorixa.com.tr/hakkimizda"
+                canonical="https://www.algorixa.com.tr/hakkimizda"
+            />
             {/* ── Hero ── */}
             <section className="page-hero abt-hero">
                 <VideoHero />

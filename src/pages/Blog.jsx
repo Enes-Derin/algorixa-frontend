@@ -8,6 +8,7 @@ import {
     incrementViewCount
 } from "../redux/blogSlice";
 import { ArrowLeft, ArrowRight, BookOpen, Clock, Tag, Sparkles, ExternalLink } from "lucide-react";
+import SEO from "../components/Seo";
 
 const DEFAULT_POSTS = [
     {
@@ -207,6 +208,13 @@ function BlogList() {
 
     return (
         <>
+            <SEO
+                title="Web Tasarım, SEO & Dijital Büyüme Blogu | Algorixa"
+                description="Web sitesi performansı, SEO stratejisi, Google sıralamaları ve dijital büyüme üzerine uygulanabilir rehberler. Teorisiz, doğrudan işe yarayan bilgi. İstanbul'da web geliştirici perspektifinden güncel içerikler."
+                keywords="web tasarım blogu, seo rehberi türkçe, web sitesi hız optimizasyonu, google sıralaması nasıl çıkılır, dijital pazarlama ipuçları, lighthouse skoru artırma, core web vitals nedir, web sitesi performans rehberi, react seo optimizasyonu, kurumsal web sitesi rehberi, landing page dönüşüm artırma, mobil uyumluluk testi"
+                url="https://www.algorixa.com.tr/blog"
+                canonical="https://www.algorixa.com.tr/blog"
+            />
             <section className="page-hero">
                 <VideoHero />
                 <div style={{
@@ -332,6 +340,13 @@ function BlogPost() {
     const { slug } = useParams();
     const navigate = useNavigate();
     const dispatch = useDispatch();
+    const catKeywords = {
+        Teknik: "web sitesi teknik seo, lighthouse optimizasyonu, site hızı artırma",
+        SEO: "seo stratejisi 2025, google sıralaması, organik trafik artırma",
+        Rehber: "web sitesi kurma rehberi, kurumsal site nasıl yapılır",
+        Strateji: "dijital büyüme stratejisi, web sitesi ile müşteri kazanma",
+        Tasarım: "modern web tasarımı, ui ux tasarım ipuçları, mobil uyumlu tasarım",
+    };
 
     const { currentPost, posts: backendPosts, loading } = useSelector(s => s.blog);
     const posts = backendPosts.length > 0 ? backendPosts : DEFAULT_POSTS;
@@ -382,6 +397,20 @@ function BlogPost() {
 
     return (
         <>
+            <SEO
+                title={`${post.title} | Algorixa Blog`}
+                description={
+                    post.excerpt
+                        ? post.excerpt.slice(0, 155)
+                        : `${post.title} — Algorixa blog'unda web tasarım ve SEO üzerine uygulanabilir rehber.`
+                }
+                keywords={`${post.title.toLowerCase()}, ${post.category?.toLowerCase()}, ${catKeywords[post.category] ?? "web tasarım istanbul"}, algorixa blog`}
+                url={`https://www.algorixa.com.tr/blog/${post.slug}`}
+                canonical={`https://www.algorixa.com.tr/blog/${post.slug}`}
+                ogImage={post.imageUrl || "https://www.algorixa.com.tr/og-image.jpg"}
+                type="article"
+            />
+
             <ReadingProgress />
             <div className="blog-post-page">
                 <div className="container--sm">

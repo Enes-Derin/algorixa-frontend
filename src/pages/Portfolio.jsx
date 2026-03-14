@@ -6,6 +6,7 @@ import {
     ArrowRight, ExternalLink, X, Check, ChevronRight, Layers,
     Filter, Star, Lightbulb, AlertCircle, Users, Award, Zap
 } from "lucide-react";
+import SEO from "../components/Seo";
 
 /* ── VideoHero ── */
 function VideoHero() {
@@ -93,6 +94,13 @@ function ProjectModal({ project, onClose }) {
 
     return (
         <>
+            <SEO
+                title="Web Tasarım Referansları & Portfolyo — Gerçek Projeler | Algorixa"
+                description="İstanbul'da tamamlanan web tasarım ve yazılım projeleri: sanayi B2B kataloğu, restoran sitesi, kişisel portfolyo, inşaat kurumsal sitesi ve özel yazılım. Her proje somut iş sonuçlarıyla teslim edildi. Projeleri inceleyin."
+                keywords="web tasarım referansları istanbul, web sitesi örnekleri, kurumsal web sitesi örnekleri, portfolyo web tasarım, başarılı web projeleri istanbul, sanayi firması web sitesi örneği, restoran web sitesi tasarımı, inşaat firması web sitesi, b2b katalog web sitesi, admin panelli web sitesi örneği, özel yazılım projesi, servis yönetim sistemi, react web projesi istanbul"
+                url="https://www.algorixa.com.tr/referanslar"
+                canonical="https://www.algorixa.com.tr/referanslar"
+            />
             <style>{`
                 .prt-modal-backdrop {
                     position: fixed; inset: 0; z-index: 1000;

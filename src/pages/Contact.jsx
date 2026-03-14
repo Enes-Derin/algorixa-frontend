@@ -6,6 +6,7 @@ import {
     CheckCircle2, AlertCircle, ChevronRight, Shield, User, Building2
 } from "lucide-react";
 import { Link } from "react-router-dom";
+import SEO from "../components/Seo";
 
 // Fiyatlandırma sayfasındaki paketlerle eşleşen servis seçenekleri
 const SERVICES_OPTS = [
@@ -159,6 +160,13 @@ export default function Contact() {
 
     return (
         <>
+            <SEO
+                title="İletişim — Ücretsiz Web Tasarım Teklifi Alın | Algorixa İstanbul"
+                description="Web siteniz için 24 saat içinde ücretsiz teklif alın. İstanbul'da yüz yüze veya online görüşme. Landing page, kurumsal site, admin panel veya özel yazılım — ihtiyacınızı analiz edip net fiyat sunuyoruz."
+                keywords="web tasarım teklif al istanbul, ücretsiz web sitesi analizi, web sitesi fiyat teklifi, kurumsal web sitesi teklifi, istanbul web geliştirici iletişim, web tasarım görüşme, landing page teklif, admin panelli site teklifi, algorixa iletişim, web tasarım whatsapp istanbul"
+                url="https://www.algorixa.com.tr/iletisim"
+                canonical="https://www.algorixa.com.tr/iletisim"
+            />
             <style>{`
                 .cnt-page { font-family: inherit; }
 

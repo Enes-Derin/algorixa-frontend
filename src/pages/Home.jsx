@@ -2,6 +2,7 @@ import { Link } from "react-router-dom";
 import { useEffect, useRef, useState, useMemo } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchPublishedProjects } from "../redux/portfolioSlice";
+import SEO from "../components/Seo";
 
 /* ─── Scroll-triggered fade-in hook ─── */
 function useReveal() {
@@ -114,6 +115,13 @@ export default function Home() {
 
     return (
         <>
+            <SEO
+                title="Kurumsal Web Sitesi & Yazılım Çözümleri İstanbul | Algorixa"
+                description="İstanbul'da kurumsal web sitesi, admin panelli yazılım ve landing page. 7.900₺'den başlayan fiyatlar, 5-7 iş günü teslimat. Ajans karmaşası yok — doğrudan geliştiriciyle çalışın. Ücretsiz teklif alın."
+                keywords="web tasarım istanbul, kurumsal web sitesi istanbul, web sitesi yaptırma istanbul, admin panelli web sitesi, landing page tasarımı, özel yazılım geliştirme istanbul, web sitesi yaptırma fiyatı, profesyonel web tasarım, mobil uyumlu web sitesi, SEO uyumlu web sitesi, algorixa, dijital çözümler istanbul, KOBİ web sitesi istanbul, sanayi firması web sitesi, full stack geliştirici istanbul, web tasarım fiyatları 2025"
+                url="https://www.algorixa.com.tr/"
+                canonical="https://www.algorixa.com.tr/"
+            />
             <style>{`
                 /* ══════════════════════════════════════════
                    HOME PAGE — RESPONSIVE SYSTEM

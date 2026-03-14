@@ -9,6 +9,7 @@ import {
     Star, Package, Code2, Cpu, Layout, Server, Timer,
     BarChart3, RefreshCw, AlertCircle
 } from "lucide-react";
+import SEO from "../components/Seo";
 
 function VideoHero() {
     const videoRef = useRef(null);
@@ -461,6 +462,13 @@ export default function Pricing() {
 
     return (
         <>
+            <SEO
+                title="Web Sitesi Fiyatları 2025: Landing Page, Kurumsal Site & Bakım | Algorixa"
+                description="Şeffaf fiyatlarla web tasarım: Landing page 7.900₺, kurumsal statik site 14.900₺, admin panelli dinamik site 22.900₺, aylık bakım 1.500₺'den başlıyor. KDV hariç, gizli ücret yok. İstanbul'da net kapsam, net fiyat."
+                keywords="web sitesi fiyatları 2025, landing page kaç para, kurumsal web sitesi fiyatı, admin panelli site fiyatı, web tasarım fiyat listesi istanbul, web sitesi yaptırma maliyeti, aylık web bakım paketi fiyatı, hosting ssl yedekleme paketi, ucuz web tasarım istanbul, uygun fiyatlı web sitesi, web tasarım teklif al, web sitesi ne kadar tutar, şeffaf fiyatlı web tasarım, landing page 7900 tl, kurumsal site 14900 tl"
+                url="https://www.algorixa.com.tr/fiyatlandirma"
+                canonical="https://www.algorixa.com.tr/fiyatlandirma"
+            />
             <section className="page-hero">
                 <VideoHero />
                 <div className="container">

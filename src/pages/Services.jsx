@@ -5,6 +5,7 @@ import {
     Check, Search, Pencil, Wrench, Rocket,
     Timer, DollarSign, ArrowRight
 } from "lucide-react";
+import SEO from "../components/Seo";
 
 function useReveal() {
     const ref = useRef(null);
@@ -238,6 +239,13 @@ export default function Services() {
 
     return (
         <>
+            <SEO
+                title="Web Tasarım Hizmetleri: Landing Page, Kurumsal Site & Yazılım | Algorixa"
+                description="Landing page (7.900₺), kurumsal web sitesi (14.900₺), admin panelli dinamik site (22.900₺) ve özel yazılım çözümleri. İstanbul'da 5 iş günü teslim. Tasarım, geliştirme ve SEO tek elden. Ücretsiz analiz için hemen arayın."
+                keywords="web tasarım hizmetleri istanbul, landing page tasarımı istanbul, kurumsal web sitesi tasarımı, admin panelli web sitesi fiyatı, özel yazılım geliştirme istanbul, SEO uyumlu web sitesi tasarımı, hızlı web sitesi tasarımı, mobil uyumlu web tasarım, web uygulama geliştirme istanbul, full stack geliştirici istanbul, react web sitesi, restoran web sitesi, inşaat firması web sitesi, sanayi web sitesi istanbul"
+                url="https://www.algorixa.com.tr/hizmetler"
+                canonical="https://www.algorixa.com.tr/hizmetler"
+            />
             {/* ── Hero ── */}
             <section className="page-hero">
                 <VideoHero />

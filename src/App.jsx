@@ -1,73 +1,97 @@
-import { useEffect } from "react";
-import { useSelector, useDispatch } from "react-redux";
-import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-dom";
-import "./App.css";
-import { getAccessToken } from "./utils/tokenService";
+// App.jsx - COMPLETE REVİZE
+import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
+import { useSelector } from "react-redux";
+import { ThemeProvider } from "./context/ThemeContext";
 
-// Pages
+// Layouts
+import Navbar from "./components/Navbar";
+import Footer from "./components/Footer";
+import FloatingSocial from "./components/FloatingSocial";
+
+// Public Pages
 import Home from "./pages/Home";
-import Login from "./pages/Login";
+import Services from "./pages/Services";
+import Portfolio from "./pages/Portfolio";
+import Pricing from "./pages/Pricing";
+import About from "./pages/About";
+import Contact from "./pages/Contact";
+import Blog from "./pages/Blog";
 
-// Admin Layout & Components
+// Admin Pages
+import Login from "./pages/Login";
 import AdminLayout from "./admin/AdminLayout";
 import AdminDashboard from "./admin/AdminDashboard";
-import AdminProject from "./admin/AdminProject";
+import AdminBlog from "./admin/AdminBlog";
+import AdminPortfolio from "./admin/AdminPortfolio";
+import AdminPricing from "./admin/AdminPricing";
+import AdminMaintenance from "./admin/AdminMaintenance";
+import AdminCampaign from "./admin/AdminCampaign";
 import AdminContactMessages from "./admin/AdminContactMessages";
-import { HelmetProvider } from "react-helmet-async";
+
+
+import "./App.css";
+import ScrollToTop from "./components/ScrollToTop";
 
 // Protected Route Component
-const ProtectedRoute = ({ children }) => {
-  const dispatch = useDispatch();
-  const { token } = useSelector(state => state.auth);
+const PrivateRoute = ({ children }) => {
+  const { token } = useSelector((state) => state.auth);
+  return token ? children : <Navigate to="/admin/login" replace />;
+};
 
-  // localStorage'daki token'ı kontrol et (page refresh'te kalması için)
-  const localToken = getAccessToken();
-
-  if (!token && !localToken) {
-    return <Navigate to="/login" replace />;
-  }
-
-  return children;
+// Public Layout Wrapper
+const PublicLayout = ({ children }) => {
+  return (
+    <>
+      <Navbar />
+      <FloatingSocial />
+      {children}
+      <Footer />
+    </>
+  );
 };
 
 function App() {
-  const dispatch = useDispatch();
-
-  // Uygulama başladığında localStorage'dan token'ı Redux'a yükle
-  useEffect(() => {
-    const savedToken = getAccessToken();
-    if (savedToken) {
-      // Token Redux state'e yüklenmeli (authSlice'da initialState ayarlanmalı)
-    }
-  }, []);
-
   return (
-    <HelmetProvider>
-      <Router>
+    <ThemeProvider>
+      <BrowserRouter>
+        <ScrollToTop />
         <Routes>
-          {/* Public Routes */}
-          <Route path="/" element={<Home />} />
-          <Route path="/login" element={<Login />} />
+          {/* PUBLIC ROUTES */}
+          <Route path="/" element={<PublicLayout><Home /></PublicLayout>} />
+          <Route path="/hizmetler" element={<PublicLayout><Services /></PublicLayout>} />
+          <Route path="/referanslar" element={<PublicLayout><Portfolio /></PublicLayout>} />
+          <Route path="/fiyatlandirma" element={<PublicLayout><Pricing /></PublicLayout>} />
+          <Route path="/hakkimizda" element={<PublicLayout><About /></PublicLayout>} />
+          <Route path="/iletisim" element={<PublicLayout><Contact /></PublicLayout>} />
+          <Route path="/blog" element={<PublicLayout><Blog /></PublicLayout>} />
+          <Route path="/blog/:slug" element={<PublicLayout><Blog /></PublicLayout>} />
 
-          {/* Admin Routes - Protected */}
+          {/* ADMIN LOGIN */}
+          <Route path="/admin/login" element={<Login />} />
+
+          {/* ADMIN PROTECTED ROUTES */}
           <Route
             path="/admin"
             element={
-              <ProtectedRoute>
+              <PrivateRoute>
                 <AdminLayout />
-              </ProtectedRoute>
+              </PrivateRoute>
             }
           >
             <Route index element={<AdminDashboard />} />
-            <Route path="projects" element={<AdminProject />} />
+            <Route path="blog" element={<AdminBlog />} />
+            <Route path="portfolio" element={<AdminPortfolio />} />
+            <Route path="pricing" element={<AdminPricing />} />
+            <Route path="maintenance" element={<AdminMaintenance />} />
+            <Route path="campaign" element={<AdminCampaign />} />
             <Route path="messages" element={<AdminContactMessages />} />
           </Route>
 
-          {/* Redirect unknown routes to home */}
+          {/* 404 */}
           <Route path="*" element={<Navigate to="/" replace />} />
         </Routes>
-      </Router>
-    </HelmetProvider>
+      </BrowserRouter>
+    </ThemeProvider>
   );
 }
 

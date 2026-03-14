@@ -1,40 +1,56 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import apiInstance from "../api/ApiInstance";
 
-// KULLANICI → MESAJ GÖNDER
-export const sendMessage = createAsyncThunk(
+// PUBLIC - Mesaj gönder
+export const sendContactMessage = createAsyncThunk(
     "contact/send",
-    async (messageData) => {
-        const res = await apiInstance.post("/contact", messageData);
-        return res.data.data;
+    async (messageData, { rejectWithValue }) => {
+        try {
+            const res = await apiInstance.post("/contact", messageData);
+            return res.data.data;
+        } catch (err) {
+            return rejectWithValue(err.response?.data?.errorMessage || "Mesaj gönderilemedi");
+        }
     }
 );
 
-// ADMIN → TÜM MESAJLARI LİSTELE
+// ADMIN - Tüm mesajlar
 export const fetchContactMessages = createAsyncThunk(
-    "contact/fetchAll",
-    async () => {
-        const res = await apiInstance.get("/contact/admin");
-        return res.data.data;
+    "contact/admin/fetchAll",
+    async (_, { rejectWithValue }) => {
+        try {
+            const res = await apiInstance.get("/contact/admin");
+            return res.data.data;
+        } catch (err) {
+            return rejectWithValue(err.response?.data?.errorMessage || "Mesajlar getirilemedi");
+        }
     }
 );
 
-// ADMIN → MESAJ OKUNDU OLARAK İŞARETLE
-export const markAsRead = createAsyncThunk(
-    "contact/markAsRead",
-    async (id) => {
-        const res = await apiInstance.put(`/contact/admin/read/${id}`);
-        // Backend'den yanıt gelmiş demektir
-        return id;
+// ADMIN - Okundu işaretle
+// Backend void döndürüyor, sadece id kullanıyoruz
+export const markMessageAsRead = createAsyncThunk(
+    "contact/admin/markAsRead",
+    async (id, { rejectWithValue }) => {
+        try {
+            await apiInstance.put(`/contact/admin/read/${id}`);
+            return id;
+        } catch (err) {
+            return rejectWithValue(err.response?.data?.errorMessage || "İşaretlenemedi");
+        }
     }
 );
 
-// ADMIN → MESAJ SİL
+// ADMIN - Mesaj sil
 export const deleteContactMessage = createAsyncThunk(
-    "contact/delete",
-    async (id) => {
-        await apiInstance.delete(`/contact/${id}`);
-        return id;
+    "contact/admin/delete",
+    async (id, { rejectWithValue }) => {
+        try {
+            await apiInstance.delete(`/contact/${id}`);
+            return id;
+        } catch (err) {
+            return rejectWithValue(err.response?.data?.errorMessage || "Mesaj silinemedi");
+        }
     }
 );
 
@@ -44,59 +60,39 @@ const contactSlice = createSlice({
         messages: [],
         loading: false,
         error: null,
-        sendStatus: null,
-        markingAsReadId: null
+        sendStatus: null  // null | "loading" | "success" | "error"
     },
-    reducers: {},
+    reducers: {
+        clearSendStatus: (state) => { state.sendStatus = null; },
+        clearError: (state) => { state.error = null; }
+    },
     extraReducers: (builder) => {
         builder
-            .addCase(sendMessage.fulfilled, (state) => {
-                state.sendStatus = "success";
-            })
-            .addCase(sendMessage.rejected, (state, action) => {
+            .addCase(sendContactMessage.pending, (state) => { state.sendStatus = "loading"; })
+            .addCase(sendContactMessage.fulfilled, (state) => { state.sendStatus = "success"; })
+            .addCase(sendContactMessage.rejected, (state, action) => {
                 state.sendStatus = "error";
-                state.error = action.error.message;
+                state.error = action.payload;
             })
-            .addCase(fetchContactMessages.pending, (state) => {
-                state.loading = true;
-            })
+            .addCase(fetchContactMessages.pending, (state) => { state.loading = true; state.error = null; })
             .addCase(fetchContactMessages.fulfilled, (state, action) => {
-                // Backend'den gelen mesajları al
-                let messages = action.payload;
-
-                // Eğer markingAsReadId varsa (son işaretlenen mesaj), o mesajı force olarak read: true yap
-                if (state.markingAsReadId) {
-                    messages = messages.map(m =>
-                        m.id === state.markingAsReadId ? { ...m, read: true } : m
-                    );
-                }
-
-                state.messages = messages;
+                state.messages = action.payload;
                 state.loading = false;
             })
             .addCase(fetchContactMessages.rejected, (state, action) => {
                 state.loading = false;
-                state.error = action.error.message;
+                state.error = action.payload;
             })
-            .addCase(markAsRead.pending, (state, action) => {
-                state.markingAsReadId = action.meta.arg;
-            })
-            .addCase(markAsRead.fulfilled, (state, action) => {
-                const msg = state.messages.find(m => m.id === action.payload);
-                if (msg) msg.read = true;
-                state.markingAsReadId = null;
-            })
-            .addCase(markAsRead.rejected, (state, action) => {
-                state.error = action.error.message;
-                state.markingAsReadId = null;
+            // Backend void döndürdüğü için payload sadece id
+            .addCase(markMessageAsRead.fulfilled, (state, action) => {
+                const index = state.messages.findIndex(m => m.id === action.payload);
+                if (index !== -1) state.messages[index] = { ...state.messages[index], read: true };
             })
             .addCase(deleteContactMessage.fulfilled, (state, action) => {
                 state.messages = state.messages.filter(m => m.id !== action.payload);
-            })
-            .addCase(deleteContactMessage.rejected, (state, action) => {
-                state.error = action.error.message;
             });
     }
 });
 
+export const { clearSendStatus, clearError } = contactSlice.actions;
 export default contactSlice.reducer;

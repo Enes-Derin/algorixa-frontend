@@ -1,127 +1,155 @@
-import { motion } from "framer-motion";
-import { FiPhone } from "react-icons/fi";
-import { FaWhatsapp, FaInstagram, FaEnvelope } from "react-icons/fa";
+import { Link } from "react-router-dom";
+import {
+    Mail, Phone, MapPin, Instagram, MessageCircle,
+    ArrowRight, Code2, Cpu, Globe,
+    ShieldCheck, Clock
+} from "lucide-react";
 
-const Footer = () => {
-    const currentYear = new Date().getFullYear();
+const SERVICES_LINKS = [
+    ["Landing Page", "/hizmetler"],
+    ["Kurumsal Web Sitesi", "/hizmetler"],
+    ["Admin Panelli Yazılım", "/hizmetler"],
+    ["Özel Yazılım & B2B", "/hizmetler"],
+];
 
-    const itemVariants = {
-        hidden: { opacity: 0, y: 60, rotateX: 20 },
-        visible: (i) => ({
-            opacity: 1,
-            y: 0,
-            rotateX: 0,
-            transition: {
-                duration: 0.9,
-                delay: i * 0.15,
-                ease: [0.6, -0.05, 0.01, 0.99]
-            }
-        })
-    };
+const COMPANY_LINKS = [
+    ["Hakkımızda", "/hakkimizda"],
+    ["Referanslar", "/referanslar"],
+    ["Blog", "/blog"],
+    ["Fiyatlandırma", "/fiyatlandirma"],
+    ["İletişim", "/iletisim"],
+];
 
+const CONTACT_ITEMS = [
+    { Icon: Mail, href: "mailto:enesderin.contact@gmail.com", label: "enesderin.contact@gmail.com" },
+    { Icon: Phone, href: "tel:+905469705451", label: "+90 546 970 54 51" },
+    { Icon: MapPin, href: null, label: "İstanbul, Türkiye" },
+    { Icon: Clock, href: null, label: "24 saat içinde yanıt" },
+];
+
+const SOCIALS = [
+    { Icon: Instagram, href: "#", label: "Instagram" },
+    { Icon: MessageCircle, href: "#", label: "WhatsApp" },
+    { Icon: Mail, href: "mailto:enesderin.contact@gmail.com", label: "E-posta" },
+];
+
+const LEGAL_LINKS = [
+    ["Gizlilik Politikası", "/gizlilik"],
+    ["Kullanım Şartları", "/kullanim-sartlari"],
+    ["KVKK", "/kvkk"],
+];
+
+export default function Footer() {
+    const year = new Date().getFullYear();
     return (
-        <footer className="footer-modern">
-            <div className="container footer-grid">
-                {/* BRAND */}
-                <motion.div
-                    className="footer-brand"
-                    custom={0}
-                    initial="hidden"
-                    whileInView="visible"
-                    viewport={{ once: true, amount: 0.3 }}
-                    variants={itemVariants}
-                >
-                    <h4>Algorixa</h4>
-                    <p>
-                        İşletmeler için güven veren, satış odaklı
-                        kurumsal web ve yazılım çözümleri. Modern teknolojilerle
-                        dijital dönüşümünüzde yanınızdayız.
-                    </p>
-                </motion.div>
+        <footer className="footer">
+            <div className="container">
+                <div className="footer__grid">
 
-                {/* LINKS */}
-                <motion.div
-                    className="footer-links"
-                    custom={1}
-                    initial="hidden"
-                    whileInView="visible"
-                    viewport={{ once: true, amount: 0.3 }}
-                    variants={itemVariants}
-                >
-                    <h6>Hizmetler</h6>
-                    <a href="#services">Kurumsal Web Sitesi</a>
-                    <a href="#services">Admin Panel Sistemleri</a>
-                    <a href="#services">Landing Page Tasarımı</a>
-                    <a href="#services">Özel Yazılım Geliştirme</a>
-                </motion.div>
+                    {/* ── Brand column ── */}
+                    <div className="footer__brand-col">
+                        <Link to="/" className="footer__logo-lockup">
+                            <span className="footer__logo-text">ALGORIXA</span>
+                            <span className="footer__logo-sub">Dijital Çözüm Ortağınız</span>
+                        </Link>
+                        <p className="footer__desc">
+                            Markanızı dijital dünyada zirveye taşıyan, sonuç odaklı
+                            web tasarım ve geliştirme ajansı.
+                            İstanbul merkezli, global vizyonlu.
+                        </p>
+                        <div className="footer__socials">
+                            {SOCIALS.map(({ Icon, href, label }) => (
+                                <a key={label} href={href} className="footer__social-btn" aria-label={label}>
+                                    <Icon size={15} strokeWidth={1.5} />
+                                </a>
+                            ))}
+                        </div>
+                    </div>
 
-                {/* CONTACT */}
-                <motion.div
-                    className="footer-links"
-                    custom={2}
-                    initial="hidden"
-                    whileInView="visible"
-                    viewport={{ once: true, amount: 0.3 }}
-                    variants={itemVariants}
-                >
-                    <h6>İletişim</h6>
-                    <a href="mailto:enesderin.contact@gmail.com">
-                        <FaEnvelope />enesderin.contact@gmail.com
-                    </a>
-                    <a href="tel:+905469705451">
-                        <FiPhone /> +90 546 970 54 51
-                    </a>
-                    <a
-                        href="https://instagram.com/algorixa_"
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="footer-social"
-                    >
-                        <FaInstagram /> Instagram
-                    </a>
-                    <a
-                        href="https://wa.me/905469705451"
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="footer-social"
-                    >
-                        <FaWhatsapp /> WhatsApp
-                    </a>
-                </motion.div>
+                    {/* ── Services column ── */}
+                    <div>
+                        <p className="footer__col-title">
+                            <Code2 size={13} strokeWidth={1.5} style={{ display: "inline", marginRight: 7, verticalAlign: "middle" }} />
+                            Hizmetler
+                        </p>
+                        <nav className="footer__nav">
+                            {SERVICES_LINKS.map(([label, to]) => (
+                                <Link key={label} to={to} className="footer__link">
+                                    <ArrowRight size={11} strokeWidth={2} style={{ flexShrink: 0 }} />
+                                    {label}
+                                </Link>
+                            ))}
+                        </nav>
+                    </div>
 
-                {/* CTA */}
-                <motion.div
-                    className="footer-cta"
-                    custom={3}
-                    initial="hidden"
-                    whileInView="visible"
-                    viewport={{ once: true, amount: 0.3 }}
-                    variants={itemVariants}
-                >
-                    <h6>Teklif Al</h6>
-                    <p>Projenizi 24 saat içinde değerlendirelim.</p>
-                    <motion.a
-                        href="#contact"
-                        className="footer-btn"
-                        whileHover={{ scale: 1.05, y: -3 }}
-                        whileTap={{ scale: 0.98 }}
-                    >
-                        Ücretsiz Teklif
-                    </motion.a>
-                </motion.div>
+                    {/* ── Company column ── */}
+                    <div>
+                        <p className="footer__col-title">
+                            <Globe size={13} strokeWidth={1.5} style={{ display: "inline", marginRight: 7, verticalAlign: "middle" }} />
+                            Şirket
+                        </p>
+                        <nav className="footer__nav">
+                            {COMPANY_LINKS.map(([label, to]) => (
+                                <Link key={label} to={to} className="footer__link">
+                                    <ArrowRight size={11} strokeWidth={2} style={{ flexShrink: 0 }} />
+                                    {label}
+                                </Link>
+                            ))}
+                        </nav>
+                    </div>
+
+                    {/* ── CTA + Contact column ── */}
+                    <div>
+                        <p className="footer__col-title">
+                            <Cpu size={13} strokeWidth={1.5} style={{ display: "inline", marginRight: 7, verticalAlign: "middle" }} />
+                            Bir Proje Mi Var?
+                        </p>
+                        <div className="footer__cta-box">
+                            <p>
+                                Markanız için doğru dijital stratejiyi birlikte belirleyelim.
+                                Ücretsiz ön görüşme için bize ulaşın.
+                            </p>
+                            <Link to="/iletisim" className="btn btn--primary btn--mono btn--sm footer__cta-btn">
+                                Teklif Al
+                                <ArrowRight size={12} strokeWidth={2} />
+                            </Link>
+                        </div>
+
+                        <p className="footer__col-title" style={{ marginTop: "28px" }}>
+                            <MapPin size={13} strokeWidth={1.5} style={{ display: "inline", marginRight: 7, verticalAlign: "middle" }} />
+                            İletişim
+                        </p>
+                        <div className="footer__contact-list">
+                            {CONTACT_ITEMS.map(({ Icon, href, label }) => (
+                                href ? (
+                                    <a key={label} href={href} className="footer__contact-item">
+                                        <Icon size={13} strokeWidth={1.5} style={{ flexShrink: 0, color: "var(--primary)" }} />
+                                        {label}
+                                    </a>
+                                ) : (
+                                    <div key={label} className="footer__contact-item">
+                                        <Icon size={13} strokeWidth={1.5} style={{ flexShrink: 0, color: "var(--primary)" }} />
+                                        {label}
+                                    </div>
+                                )
+                            ))}
+                        </div>
+                    </div>
+                </div>
+
+                {/* ── Bottom bar ── */}
+                <div className="footer__bottom">
+                    <div className="footer__bottom-left">
+                        <ShieldCheck size={13} strokeWidth={1.5} style={{ color: "var(--primary)" }} />
+                        <span>© {year} Algorixa. Tüm hakları saklıdır.</span>
+                    </div>
+                    <div className="footer__bottom-links">
+                        {LEGAL_LINKS.map(([label, to]) => (
+                            <Link key={label} to={to} className="footer__bottom-link">{label}</Link>
+                        ))}
+                    </div>
+                </div>
             </div>
-
-            <motion.div
-                className="footer-bottom-modern text-white"
-                initial={{ opacity: 0, y: 30 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.8, delay: 0.6 }}
-            >
-                © {currentYear} Algorixa — Tüm hakları saklıdır. | İstanbul, Türkiye
-            </motion.div>
         </footer>
     );
-};
-
-export default Footer;
+}

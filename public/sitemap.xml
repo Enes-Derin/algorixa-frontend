@@ -4,12 +4,44 @@
         xsi:schemaLocation="http://www.sitemaps.org/schemas/sitemap/0.9
         http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd">
 
-    <!-- Ana Sayfa — tek URL, tek sayfa yapısı -->
+    <!-- Ana Sayfa -->
     <url>
         <loc>https://www.algorixa.com.tr/</loc>
         <lastmod>2026-03-01</lastmod>
         <changefreq>weekly</changefreq>
         <priority>1.0</priority>
+    </url>
+
+    <!-- Portfolyo -->
+    <url>
+        <loc>https://www.algorixa.com.tr/portfolyo</loc>
+        <lastmod>2026-03-01</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.9</priority>
+    </url>
+
+    <!-- Blog -->
+    <url>
+        <loc>https://www.algorixa.com.tr/blog</loc>
+        <lastmod>2026-03-01</lastmod>
+        <changefreq>daily</changefreq>
+        <priority>0.8</priority>
+    </url>
+
+    <!-- Fiyatlandırma -->
+    <url>
+        <loc>https://www.algorixa.com.tr/fiyatlandirma</loc>
+        <lastmod>2026-03-01</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.8</priority>
+    </url>
+
+    <!-- İletişim -->
+    <url>
+        <loc>https://www.algorixa.com.tr/iletisim</loc>
+        <lastmod>2026-03-01</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>0.7</priority>
     </url>
 
 </urlset>

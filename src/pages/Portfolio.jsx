@@ -80,7 +80,6 @@ function ProjectModal({ project, onClose }) {
         return () => { document.body.style.overflow = ""; };
     }, [project]);
 
-    // Proje değişince tab'ı geçerli ilk içeriğe sıfırla
     useEffect(() => {
         if (!project) return;
         const hasProblemSolution = !!(project.problemStatement || project.solutionStatement);
@@ -106,21 +105,18 @@ function ProjectModal({ project, onClose }) {
     const accent = project.accentColor || "var(--gold)";
     const hasImage = !!project.imageUrl;
 
-    // İçerik varlık kontrolleri
     const hasProblemSolution = !!(project.problemStatement || project.solutionStatement);
     const hasTechStack = project.techStack?.length > 0;
     const hasOverviewContent = hasProblemSolution || hasTechStack;
     const hasFeatures = project.features?.length > 0;
     const hasResults = project.results?.length > 0;
 
-    // Sadece içeriği olan tab'ları göster
     const visibleTabs = [
         hasOverviewContent && { key: "overview", label: "Genel Bakış" },
         hasFeatures && { key: "features", label: "Özellikler" },
         hasResults && { key: "results", label: "Kazanımlar" },
     ].filter(Boolean);
 
-    // Aktif tab geçersizse ilk geçerli tab'a düş
     const activeTab = visibleTabs.find(t => t.key === tab) ? tab : visibleTabs[0]?.key ?? "overview";
 
     return (
@@ -143,6 +139,7 @@ function ProjectModal({ project, onClose }) {
                     .prt-modal-backdrop { align-items: center; justify-content: center; padding: 24px; }
                 }
                 @keyframes prtFadeIn { from { opacity: 0; } to { opacity: 1; } }
+
                 .prt-modal-sheet {
                     background: #0e0e0e; border: 1px solid rgba(255,255,255,0.08);
                     width: 100%; max-height: 92vh; border-radius: 24px 24px 0 0;
@@ -157,11 +154,13 @@ function ProjectModal({ project, onClose }) {
                 }
                 @keyframes prtSlideUp { from { transform: translateY(60px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
                 @keyframes prtScaleIn { from { transform: scale(0.95); opacity: 0; } to { transform: scale(1); opacity: 1; } }
+
                 .prt-modal-handle {
                     width: 40px; height: 4px; border-radius: 4px;
                     background: rgba(255,255,255,0.2); margin: 12px auto 0; flex-shrink: 0;
                 }
                 @media (min-width: 768px) { .prt-modal-handle { display: none; } }
+
                 .prt-modal-close {
                     position: absolute; top: 14px; right: 14px; z-index: 20;
                     width: 34px; height: 34px; border-radius: 50%;
@@ -172,29 +171,39 @@ function ProjectModal({ project, onClose }) {
                 }
                 .prt-modal-close:hover { background: rgba(255,255,255,0.15); color: #fff; }
 
+                /* ── Hero: masaüstü = yan yana, mobil = sadece bilgi ── */
                 .prt-modal-hero {
-                    flex-shrink: 0; display: grid;
+                    flex-shrink: 0;
+                    display: grid;
                     grid-template-columns: 220px 1fr;
-                    min-height: 220px;
                     border-bottom: 1px solid rgba(255,255,255,0.07);
                 }
-                 @media (max-width: 600px) {
-    .prt-modal-hero { grid-template-columns: 1fr !important; }
-    .prt-modal-hero__visual { display: none !important; }
-}
-                .prt-modal-hero__visual--gradient { aspect-ratio: unset; min-height: 180px; }
                 @media (max-width: 600px) {
-                    .prt-modal-hero__visual { aspect-ratio: 1 / 1; align-self: auto; }
-                    .prt-modal-hero__visual--gradient { aspect-ratio: 3 / 1; min-height: unset; }
+                    .prt-modal-hero {
+                        grid-template-columns: 1fr;
+                    }
+                    .prt-modal-hero__visual {
+                        display: none !important;
+                    }
                 }
+
+                /* ── Görsel: her zaman 1:1 ── */
+                .prt-modal-hero__visual {
+                    position: relative;
+                    aspect-ratio: 1 / 1;
+                    width: 220px;
+                    overflow: hidden;
+                    flex-shrink: 0;
+                    align-self: stretch;
+                }
+                /* gradient modda min-height koruması */
+                .prt-modal-hero__visual--gradient {
+                    min-height: 220px;
+                }
+
                 .prt-modal-hero__visual-overlay {
                     position: absolute; inset: 0; z-index: 2;
-                    background: linear-gradient(to right, rgba(14,14,14,0) 70%, rgba(14,14,14,0.5) 100%);
-                }
-                @media (max-width: 600px) {
-                    .prt-modal-hero__visual-overlay {
-                        background: linear-gradient(to bottom, rgba(14,14,14,0) 60%, rgba(14,14,14,0.7) 100%);
-                    }
+                    background: linear-gradient(to right, rgba(14,14,14,0) 60%, rgba(14,14,14,0.55) 100%);
                 }
                 .prt-modal-hero__badge {
                     position: absolute; top: 12px; left: 12px; z-index: 5;
@@ -204,12 +213,16 @@ function ProjectModal({ project, onClose }) {
                     background: rgba(200,168,75,0.18); border: 1px solid rgba(200,168,75,0.45);
                     color: var(--gold);
                 }
+
                 .prt-modal-hero__info {
-                    padding: 28px 40px 24px 28px;
+                    padding: 28px 40px 24px 24px;
                     display: flex; flex-direction: column; justify-content: center;
                     background: rgba(255,255,255,0.01);
+                    min-width: 0;
                 }
-                @media (max-width: 600px) { .prt-modal-hero__info { padding: 20px; } }
+                @media (max-width: 600px) {
+                    .prt-modal-hero__info { padding: 20px; }
+                }
 
                 .prt-modal-tags { display: flex; gap: 7px; flex-wrap: wrap; margin-bottom: 10px; }
                 .prt-modal-tag {
@@ -218,23 +231,27 @@ function ProjectModal({ project, onClose }) {
                     letter-spacing: 0.08em; border: 1px solid currentColor; opacity: 0.75;
                 }
                 .prt-modal-title {
-                    font-size: clamp(16px, 2.8vw, 22px); font-weight: 800;
+                    font-size: clamp(15px, 2.5vw, 21px); font-weight: 800;
                     line-height: 1.2; color: #fff; margin-bottom: 8px;
                     font-family: var(--f-display, serif);
                 }
-                .prt-modal-desc { font-size: 13px; color: rgba(255,255,255,0.5); line-height: 1.65; }
+                .prt-modal-desc {
+                    font-size: 13px; color: rgba(255,255,255,0.5); line-height: 1.65;
+                    display: -webkit-box; -webkit-line-clamp: 3;
+                    -webkit-box-orient: vertical; overflow: hidden;
+                }
                 .prt-modal-impacts {
-                    display: flex; margin-top: 18px; border-radius: 11px;
+                    display: flex; margin-top: 16px; border-radius: 11px;
                     overflow: hidden; border: 1px solid rgba(255,255,255,0.08);
                 }
                 .prt-modal-impact {
-                    flex: 1; padding: 10px 12px; text-align: center;
+                    flex: 1; padding: 9px 10px; text-align: center;
                     border-right: 1px solid rgba(255,255,255,0.08);
                     background: rgba(255,255,255,0.025);
                 }
                 .prt-modal-impact:last-child { border-right: none; }
-                .prt-modal-impact__val { font-size: 13px; font-weight: 800; line-height: 1.2; margin-bottom: 3px; }
-                .prt-modal-impact__sub { font-size: 10px; color: rgba(255,255,255,0.35); text-transform: uppercase; letter-spacing: 0.06em; }
+                .prt-modal-impact__val { font-size: 12px; font-weight: 800; line-height: 1.2; margin-bottom: 2px; }
+                .prt-modal-impact__sub { font-size: 9px; color: rgba(255,255,255,0.35); text-transform: uppercase; letter-spacing: 0.05em; }
 
                 .prt-modal-tabs {
                     display: flex; padding: 0 24px;
@@ -336,8 +353,9 @@ function ProjectModal({ project, onClose }) {
                         <X size={14} strokeWidth={2} />
                     </button>
 
-                    {/* Hero: sol görsel + sağ bilgi */}
+                    {/* Hero: sol 1:1 görsel + sağ bilgi */}
                     <div className="prt-modal-hero">
+                        {/* Görsel — masaüstünde görünür, mobilde gizlenir */}
                         <div className={`prt-modal-hero__visual${!hasImage ? " prt-modal-hero__visual--gradient" : ""}`}>
                             <ProjectVisualBg
                                 imageUrl={project.imageUrl}
@@ -360,6 +378,7 @@ function ProjectModal({ project, onClose }) {
                             )}
                         </div>
 
+                        {/* Bilgi — her zaman görünür */}
                         <div className="prt-modal-hero__info">
                             <div className="prt-modal-tags">
                                 {project.category && (
@@ -379,7 +398,6 @@ function ProjectModal({ project, onClose }) {
                             {project.description && (
                                 <p className="prt-modal-desc">{project.description}</p>
                             )}
-                            {/* Impact bar — sadece results varsa göster */}
                             {hasResults && (
                                 <div className="prt-modal-impacts">
                                     {project.results.slice(0, 3).map((r, i) => {
@@ -400,7 +418,6 @@ function ProjectModal({ project, onClose }) {
                         </div>
                     </div>
 
-                    {/* Tabs — sadece içeriği olanlar */}
                     {visibleTabs.length > 0 && (
                         <div className="prt-modal-tabs">
                             {visibleTabs.map(t => (
@@ -413,13 +430,9 @@ function ProjectModal({ project, onClose }) {
                         </div>
                     )}
 
-                    {/* Body */}
                     <div className="prt-modal-body" ref={scrollRef}>
-
-                        {/* Genel Bakış */}
                         {activeTab === "overview" && (
                             <>
-                                {/* Sorun/Çözüm — ikisi de boşsa hiç gösterme */}
                                 {hasProblemSolution && (
                                     <div className="prt-ps-grid">
                                         {project.problemStatement && (
@@ -440,7 +453,6 @@ function ProjectModal({ project, onClose }) {
                                         )}
                                     </div>
                                 )}
-                                {/* Teknoloji stack — boşsa hiç gösterme */}
                                 {hasTechStack && (
                                     <>
                                         <div className="prt-section-title">
@@ -456,7 +468,6 @@ function ProjectModal({ project, onClose }) {
                             </>
                         )}
 
-                        {/* Özellikler — boşsa hiç gösterme */}
                         {activeTab === "features" && hasFeatures && (
                             <>
                                 <div className="prt-section-title">
@@ -473,7 +484,6 @@ function ProjectModal({ project, onClose }) {
                             </>
                         )}
 
-                        {/* Kazanımlar — boşsa hiç gösterme */}
                         {activeTab === "results" && hasResults && (
                             <>
                                 <div className="prt-section-title">
@@ -491,7 +501,6 @@ function ProjectModal({ project, onClose }) {
                         )}
                     </div>
 
-                    {/* Footer */}
                     <div className="prt-modal-footer">
                         <Link to="/iletisim" className="prt-modal-cta prt-modal-cta--primary" onClick={onClose}>
                             Benzer Proje İstiyorum <ArrowRight size={14} strokeWidth={2} />

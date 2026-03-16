@@ -63,7 +63,7 @@ const VALUES = [
 ];
 
 const NUMBERS = [
-    { n: "150+", l: "Tamamlanan Proje", Icon: Star },
+    { n: "Başarı İle", l: "Tamamlanan Projeler", Icon: Star },
     { n: "7+", l: "Yıl Deneyim", Icon: Clock },
     { n: "24s", l: "Yanıt Süresi", Icon: Zap },
     { n: "30dk", l: "Ücretsiz Görüşme", Icon: User },
@@ -79,8 +79,8 @@ const SECTORS = [
 const CONTACTS = [
     { Icon: Mail, href: "mailto:enesderin.contact@gmail.com", label: "E-posta" },
     { Icon: Phone, href: "tel:+905469705451", label: "+90 546 970 54 51" },
-    { Icon: Instagram, href: "#", label: "Instagram" },
-    { Icon: MessageCircle, href: "#", label: "WhatsApp" },
+    { Icon: Instagram, href: "https://www.instagram.com/algorixa_/", label: "Instagram" },
+    { Icon: MessageCircle, href: "https://wa.me/905469705451", label: "WhatsApp" },
 ];
 
 export default function About() {
@@ -93,7 +93,7 @@ export default function About() {
         <>
             <SEO
                 title="Hakkımızda — İstanbul Merkezli Web Tasarım & Yazılım | Algorixa"
-                description="İstanbul merkezli Algorixa ile doğrudan geliştiriciyle çalışın. Ajans karmaşası yok, tek muhatap — tasarım, geliştirme, sunucu ve SEO tek elden. 150+ tamamlanan proje, 7+ yıl deneyim. Tanışalım."
+                description="İstanbul merkezli Algorixa ile doğrudan geliştiriciyle çalışın. Ajans karmaşası yok, tek muhatap — tasarım, geliştirme, sunucu ve SEO tek elden. başarı ile tamamlanan projeler, 5+ yıl deneyim. Tanışalım."
                 keywords="algorixa hakkında, web tasarım şirketi istanbul, freelance web geliştirici istanbul, doğrudan geliştiriciyle web sitesi, güvenilir web tasarım hizmeti, tek muhatap web tasarım, ajansız web sitesi yaptırma, enes derin web geliştirici, istanbul yazılım geliştirici, kurumsal web tasarım deneyimi, 150 proje web tasarım"
                 url="https://www.algorixa.com.tr/hakkimizda"
                 canonical="https://www.algorixa.com.tr/hakkimizda"
@@ -171,9 +171,7 @@ export default function About() {
                 <div className="abt-values-grid">
                     {VALUES.map(({ n, title, desc, icon: Icon }, i) => (
                         <div key={n} className="abt-val-card" style={{ transitionDelay: `${i * 90}ms` }}>
-                            <div className="abt-val-card__icon-wrap">
-                                <Icon size={20} strokeWidth={1.5} />
-                            </div>
+
                             <div className="abt-val-card__num">{n}</div>
                             <h3 className="abt-val-card__title">{title}</h3>
                             <p className="abt-val-card__desc">{desc}</p>
@@ -189,7 +187,7 @@ export default function About() {
                     <h2 className="t-heading" style={{ marginBottom: "52px" }}>Doğrudan Geliştiriciyle Çalışın</h2>
                     <div className="abt-founder">
                         <div className="abt-founder__left">
-                            <div className="abt-founder__av">A<div className="abt-founder__av-ring" /></div>
+                            <div className="abt-founder__av">E<div className="abt-founder__av-ring" /></div>
                             <div className="abt-founder__socials">
                                 {CONTACTS.map(({ Icon, href, label }) => (
                                     <a key={label} href={href} className="abt-social-btn">
@@ -200,11 +198,10 @@ export default function About() {
                             </div>
                         </div>
                         <div className="abt-founder__right">
-                            <div className="abt-founder__name">Algorixa</div>
+                            <div className="abt-founder__name">Enes Derin</div>
                             <div className="abt-founder__role">
-                                <Code2 size={13} strokeWidth={1.5} />
-                                Kurucu & Baş Geliştirici
-                                <span style={{ opacity: .4, margin: "0 6px" }}>·</span>
+
+                                <span style={{ opacity: .4 }}>·</span>
                                 <MapPin size={13} strokeWidth={1.5} />
                                 İstanbul, Türkiye
                             </div>

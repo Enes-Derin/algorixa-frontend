@@ -52,6 +52,8 @@ Bu adımları uygulayarak Lighthouse skorunuzu 90+ seviyesine çıkarabilirsiniz
 
 const DEFAULT_CATEGORIES = ["Rehber", "Strateji", "Teknik", "SEO", "Tasarım"];
 
+
+
 const CAT_COLORS = {
     "Rehber": "var(--accent)",
     "Strateji": "var(--primary)",
@@ -146,7 +148,6 @@ function ReadingProgress() {
     return <div className="reading-progress" style={{ width: `${progress}%` }} />;
 }
 
-// ── Kart görseli: varsa gerçek görsel, yoksa gradient ──
 function CardBg({ imageUrl, category, size = "normal" }) {
     const color = CAT_COLORS[category] ?? 'rgba(59,130,246,.25)';
     if (imageUrl) {
@@ -166,7 +167,7 @@ function CardBg({ imageUrl, category, size = "normal" }) {
                 background: `radial-gradient(ellipse 80% 80% at 40% 50%, ${color}33 0%, transparent 65%)`
             }} />
             <BookOpen
-                size={size === "featured" ? 80 : size === "post" ? 88 : 36}
+                size={size === "featured" ? 48 : size === "post" ? 88 : 36}
                 strokeWidth={size === "post" ? 0.45 : 0.7}
                 style={{ color: color, opacity: size === "post" ? .18 : .2, position: 'relative', zIndex: 1 }}
             />
@@ -234,17 +235,57 @@ function BlogList() {
                         SEO, web tasarım ve dijital pazarlama hakkında uygulanabilir içerikler.
                         Teorisiz, doğrudan işe yarayan bilgi.
                     </p>
-                    <div style={{ display: 'flex', gap: '8px', flexWrap: 'wrap', opacity: 0, transform: 'translateY(16px)', animation: 'heroFadeUp .7s var(--ease) .6s forwards' }}>
-                        {CATS.filter(c => c !== "Tümü").map(c => (
-                            <span key={c} className="hero-badge-pill" style={{
-                                color: CAT_COLORS[c] ?? 'var(--accent)',
-                                borderColor: `${CAT_COLORS[c] ?? 'var(--accent)'}44`,
-                                background: `${CAT_COLORS[c] ?? 'var(--accent)'}18`
-                            }}>{c}</span>
-                        ))}
-                    </div>
+
                 </div>
             </section>
+
+            <style>{`
+                .blg-featured {
+                    display: grid;
+                    grid-template-columns: 260px 1fr;
+                    border: 1px solid rgba(255,255,255,0.08);
+                    border-radius: 20px;
+                    overflow: hidden;
+                    margin-bottom: 32px;
+                    cursor: pointer;
+                    transition: border-color 0.25s, transform 0.25s;
+                }
+                .blg-featured:hover {
+                    border-color: rgba(255,255,255,0.18);
+                    transform: translateY(-2px);
+                }
+                .blg-featured__img {
+                    width: 260px !important;
+                    aspect-ratio: 1 / 1 !important;
+                    min-height: unset !important;
+                    height: unset !important;
+                    flex-shrink: 0;
+                    position: relative;
+                    overflow: hidden;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                }
+                @media (max-width: 768px) {
+                    .blg-featured {
+                        grid-template-columns: 1fr !important;
+                    }
+                    .blg-featured__img {
+                        width: 100% !important;
+                        aspect-ratio: 16 / 7 !important;
+                    }
+                }
+                .blg-card__img {
+                    aspect-ratio: 1 / 1 !important;
+                    height: unset !important;
+                    width: 100%;
+                    position: relative;
+                    overflow: hidden;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                }
+            `}</style>
 
             <section className="page-section section-border-top" style={{ paddingTop: "60px" }}>
                 <div className="container">
@@ -261,13 +302,12 @@ function BlogList() {
                     {/* Featured */}
                     {featured && (
                         <div className="blg-featured" onClick={() => navigate(`/blog/${featured.slug}`)}>
+                            {/* 1:1 küçük görsel — sol */}
                             <div className="blg-featured__img">
                                 <CardBg imageUrl={featured.imageUrl} category={featured.category} size="featured" />
-                                {/* Görsel varsa üzerine hafif karartma katmanı */}
                                 {featured.imageUrl && (
                                     <div style={{ position: 'absolute', inset: 0, background: 'rgba(6,10,20,.45)', zIndex: 1 }} />
                                 )}
-                                {/* Grid overlay - sadece gradient modda */}
                                 {!featured.imageUrl && (
                                     <div style={{
                                         position: 'absolute', inset: 0,
@@ -413,79 +453,123 @@ function BlogPost() {
 
             <ReadingProgress />
             <div className="blog-post-page">
-                <div className="container--sm">
+                <div className="container--sm" style={{ maxWidth: '1100px' }}>
+
                     <button className="blg-back-btn" onClick={() => navigate("/blog")}>
                         <ArrowLeft size={15} strokeWidth={1.5} /> Blog'a Dön
                     </button>
 
-                    <div className="blog-post__header">
-                        <div className="blg-post__cat-row">
-                            <span className="blog-post__cat" style={{
-                                background: `${catColor}18`, borderColor: `${catColor}44`, color: catColor
-                            }}>
-                                <Tag size={11} strokeWidth={2} style={{ display: "inline", marginRight: 5 }} />
-                                {post.category}
-                            </span>
+                    {/* ── İki kolonlu layout: sol görsel, sağ içerik ── */}
+                    <div style={{
+                        display: 'grid',
+                        gridTemplateColumns: '1fr 1fr',
+                        gap: '48px',
+                        alignItems: 'start',
+                        marginTop: '32px',
+                    }}
+                        className="blg-post__two-col"
+                    >
+                        {/* SOL: 1:1 cover görseli — sticky */}
+                        <div
+                            className="blg-post__cover"
+                            style={{
+                                aspectRatio: '1 / 1',
+                                width: '100%',
+                                height: 'unset',
+                                position: 'sticky',
+                                top: '80px',
+                                borderRadius: '16px',
+                                overflow: 'hidden',
+                                display: 'flex',
+                                alignItems: 'center',
+                                justifyContent: 'center',
+                                flexShrink: 0,
+                            }}
+                        >
+                            {post.imageUrl ? (
+                                <>
+                                    <div style={{
+                                        position: 'absolute', inset: 0,
+                                        backgroundImage: `url(${post.imageUrl})`,
+                                        backgroundSize: 'cover', backgroundPosition: 'center',
+                                        borderRadius: 'inherit'
+                                    }} />
+                                    <div style={{
+                                        position: 'absolute', inset: 0,
+                                        background: 'rgba(6,10,20,.3)',
+                                        borderRadius: 'inherit'
+                                    }} />
+                                </>
+                            ) : (
+                                <>
+                                    <div style={{
+                                        position: 'absolute', inset: 0,
+                                        background: `linear-gradient(135deg, #0B1120, #111827)`,
+                                        borderRadius: 'inherit'
+                                    }} />
+                                    <div style={{
+                                        position: 'absolute', inset: 0,
+                                        background: `radial-gradient(ellipse 70% 70% at 50% 50%, ${catColor}22 0%, transparent 70%)`,
+                                        borderRadius: 'inherit'
+                                    }} />
+                                    <BookOpen size={88} strokeWidth={0.45}
+                                        style={{ color: catColor, opacity: .18, position: 'relative', zIndex: 2 }} />
+                                </>
+                            )}
+                            <div className="blg-post__cover-cat" style={{ zIndex: 3 }}>
+                                <Tag size={11} strokeWidth={2} /> {post.category}
+                            </div>
                         </div>
-                        <h1 className="blog-post__title">{post.title}</h1>
-                        <div className="blog-post__meta">
-                            <span>{post.author}</span>
-                            <span>·</span>
-                            <Clock size={12} strokeWidth={1.5} />
-                            <span>{new Date(post.publishedDate).toLocaleDateString('tr-TR')}</span>
-                            <span>·</span>
-                            <span>{post.readTime}</span>
+
+                        {/* SAĞ: başlık + meta + içerik + cta */}
+                        <div>
+                            <div className="blog-post__header" style={{ marginTop: 0 }}>
+                                <div className="blg-post__cat-row">
+                                    <span className="blog-post__cat" style={{
+                                        background: `${catColor}18`, borderColor: `${catColor}44`, color: catColor
+                                    }}>
+                                        <Tag size={11} strokeWidth={2} style={{ display: "inline", marginRight: 5 }} />
+                                        {post.category}
+                                    </span>
+                                </div>
+                                <h1 className="blog-post__title">{post.title}</h1>
+                                <div className="blog-post__meta">
+                                    <span>{post.author}</span>
+                                    <span>·</span>
+                                    <Clock size={12} strokeWidth={1.5} />
+                                    <span>{new Date(post.publishedDate).toLocaleDateString('tr-TR')}</span>
+                                    <span>·</span>
+                                    <span>{post.readTime}</span>
+                                </div>
+                            </div>
+
+                            <article className="blog-post__content"
+                                dangerouslySetInnerHTML={{ __html: `<p>${html}</p>` }} />
+
+                            <div className="blog-post__cta">
+                                <h3>Bu Konuda Yardıma mı İhtiyacınız Var?</h3>
+                                <p>Projeniz için ücretsiz analiz ve teklif alın. Ortalama 4 saatte yanıt veriyoruz.</p>
+                                <Link to="/iletisim" className="btn btn--primary btn--lg">
+                                    <ExternalLink size={15} strokeWidth={1.5} style={{ display: "inline", marginRight: 8 }} />
+                                    Ücretsiz Teklif Al →
+                                </Link>
+                            </div>
                         </div>
                     </div>
 
-                    {/* Cover: gerçek görsel varsa göster, yoksa gradient placeholder */}
-                    <div className="blg-post__cover">
-                        {post.imageUrl ? (
-                            <>
-                                <div style={{
-                                    position: 'absolute', inset: 0,
-                                    backgroundImage: `url(${post.imageUrl})`,
-                                    backgroundSize: 'cover', backgroundPosition: 'center',
-                                    borderRadius: 'inherit'
-                                }} />
-                                <div style={{
-                                    position: 'absolute', inset: 0,
-                                    background: 'rgba(6,10,20,.3)',
-                                    borderRadius: 'inherit'
-                                }} />
-                            </>
-                        ) : (
-                            <>
-                                <div style={{
-                                    position: 'absolute', inset: 0,
-                                    background: `linear-gradient(135deg, #0B1120, #111827)`,
-                                    borderRadius: 'inherit'
-                                }} />
-                                <div style={{
-                                    position: 'absolute', inset: 0,
-                                    background: `radial-gradient(ellipse 70% 70% at 50% 50%, ${catColor}22 0%, transparent 70%)`,
-                                    borderRadius: 'inherit'
-                                }} />
-                                <BookOpen size={88} strokeWidth={0.45}
-                                    style={{ color: catColor, opacity: .18, position: 'relative', zIndex: 2 }} />
-                            </>
-                        )}
-                        <div className="blg-post__cover-cat" style={{ zIndex: 3 }}>
-                            <Tag size={11} strokeWidth={2} /> {post.category}
-                        </div>
-                    </div>
-
-                    <article className="blog-post__content"
-                        dangerouslySetInnerHTML={{ __html: `<p>${html}</p>` }} />
-
-                    <div className="blog-post__cta">
-                        <h3>Bu Konuda Yardıma mı İhtiyacınız Var?</h3>
-                        <p>Projeniz için ücretsiz analiz ve teklif alın. Ortalama 4 saatte yanıt veriyoruz.</p>
-                        <Link to="/iletisim" className="btn btn--primary btn--lg">
-                            <ExternalLink size={15} strokeWidth={1.5} style={{ display: "inline", marginRight: 8 }} />
-                            Ücretsiz Teklif Al →
-                        </Link>
-                    </div>
+                    {/* Mobil responsive: tek kolon */}
+                    <style>{`
+                        @media (max-width: 768px) {
+                            .blg-post__two-col {
+                                grid-template-columns: 1fr !important;
+                                gap: 24px !important;
+                            }
+                            .blg-post__cover {
+                                position: relative !important;
+                                top: unset !important;
+                            }
+                        }
+                    `}</style>
                 </div>
             </div>
 
@@ -495,7 +579,16 @@ function BlogPost() {
                     <div className="blg-grid">
                         {related.map(p => (
                             <Link key={p.id} to={`/blog/${p.slug}`} className="blg-card">
-                                <div className="blg-card__img">
+                                <div className="blg-card__img" style={{
+                                    aspectRatio: '1 / 1',
+                                    height: 'unset',
+                                    width: '100%',
+                                    position: 'relative',
+                                    overflow: 'hidden',
+                                    display: 'flex',
+                                    alignItems: 'center',
+                                    justifyContent: 'center',
+                                }}>
                                     <CardBg imageUrl={p.imageUrl} category={p.category} size="card" />
                                     {p.imageUrl && (
                                         <div style={{ position: 'absolute', inset: 0, background: 'rgba(6,10,20,.35)', zIndex: 1 }} />

@@ -498,56 +498,6 @@ export default function Home() {
                 </div>
             </section>
 
-            {/* ════════════ PORTFÖY ════════════ */}
-            <section ref={portRef} className={`home-portfolio${portVisible ? " is-visible" : ""}`}>
-                <div className="container home-portfolio__head">
-                    <div className="t-section-label"><span className="t-label">Referanslar</span></div>
-                    <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-end", flexWrap: "wrap", gap: "16px" }}>
-                        <h2 className="t-heading">Seçkin Projeler</h2>
-                        <Link to="/referanslar" className="btn btn--outline btn--mono btn--sm">Tüm Projeler →</Link>
-                    </div>
-                </div>
-
-                <div className="home-port-grid">
-                    {randomProjects.length === 0 ? (
-                        <div className="home-port-empty">Projeler yükleniyor…</div>
-                    ) : (
-                        randomProjects.map((project, i) => {
-                            const bg = project.backgroundGradientA && project.backgroundGradientB
-                                ? `linear-gradient(135deg, ${project.backgroundGradientA} 0%, ${project.backgroundGradientB} 100%)`
-                                : "linear-gradient(135deg,#1b1916 0%,#2a2518 100%)";
-                            return (
-                                <Link
-                                    key={project.id}
-                                    to="/referanslar"
-                                    className="home-port-card"
-                                    style={{ background: bg, transitionDelay: `${i * 120}ms` }}
-                                >
-                                    {/* Gerçek görsel varsa arka plana bindiriliyor */}
-                                    {project.imageUrl && (
-                                        <div
-                                            className="home-port-card__img"
-                                            style={{ backgroundImage: `url(${project.imageUrl})` }}
-                                        />
-                                    )}
-                                    <div className="home-port-card__grid" />
-                                    <div className="home-port-card__body">
-                                        <span className="home-port-card__label">{project.category}</span>
-                                        <h3 className="home-port-card__title">{project.title}</h3>
-                                        <p className="home-port-card__sub">{project.description}</p>
-                                        <span className="home-port-card__cta">
-                                            İncele
-                                            <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden>
-                                                <path d="M2 7h10M8 3l4 4-4 4" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round" />
-                                            </svg>
-                                        </span>
-                                    </div>
-                                </Link>
-                            );
-                        })
-                    )}
-                </div>
-            </section>
 
             {/* ════════════ CTA ════════════ */}
             <section ref={ctaRef} className={`home-cta${ctaVisible ? " is-visible" : ""}`}>

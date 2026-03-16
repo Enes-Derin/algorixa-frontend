@@ -28,16 +28,12 @@ const CONTACT_ITEMS = [
 ];
 
 const SOCIALS = [
-    { Icon: Instagram, href: "#", label: "Instagram" },
-    { Icon: MessageCircle, href: "#", label: "WhatsApp" },
+    { Icon: Instagram, href: "https://www.instagram.com/algorixa_/", label: "Instagram" },
+    { Icon: MessageCircle, href: "https://wa.me/905469705451", label: "WhatsApp" },
     { Icon: Mail, href: "mailto:enesderin.contact@gmail.com", label: "E-posta" },
 ];
 
-const LEGAL_LINKS = [
-    ["Gizlilik Politikası", "/gizlilik"],
-    ["Kullanım Şartları", "/kullanim-sartlari"],
-    ["KVKK", "/kvkk"],
-];
+
 
 export default function Footer() {
     const year = new Date().getFullYear();
@@ -143,11 +139,7 @@ export default function Footer() {
                         <ShieldCheck size={13} strokeWidth={1.5} style={{ color: "var(--primary)" }} />
                         <span>© {year} Algorixa. Tüm hakları saklıdır.</span>
                     </div>
-                    <div className="footer__bottom-links">
-                        {LEGAL_LINKS.map(([label, to]) => (
-                            <Link key={label} to={to} className="footer__bottom-link">{label}</Link>
-                        ))}
-                    </div>
+
                 </div>
             </div>
         </footer>

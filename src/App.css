@@ -188,6 +188,7 @@ a {
 img {
   display: block;
   max-width: 100%;
+
 }
 
 button {
@@ -5301,6 +5302,58 @@ select.form-input option {
   background: var(--bg-1);
 }
 
+/* ════════════════════════════════════════════════════════
+   PORTFOLIO KARE GÖRSEL — GLOBAL OVERRIDE
+   Bu blok, global img reset ve .prt-card__visual'ın
+   .pc__frame üzerindeki etkisini tamamen engeller.
+   Öncelik sırası: !important ile garantilenir.
+════════════════════════════════════════════════════════ */
+
+/* Global img reset'i sadece .pc__img dışındaki elementlere uygula */
+img:not(.pc__img):not(.cs-hero__photo) {
+  height: auto;
+}
+
+/* Kare çerçeve — tarayıcı ve global CSS'den gelen
+   height, min-height, max-height override'larını engelle */
+.pc__frame {
+  position: relative !important;
+  width: 100% !important;
+  height: 0 !important;
+  min-height: 0 !important;
+  max-height: none !important;
+  padding-bottom: 100% !important;
+  overflow: hidden !important;
+  flex-shrink: 0 !important;
+  background: #0c0b09;
+  display: block !important;
+}
+
+/* pc__frame içindeki HER çocuğu kareye doldur */
+.pc__frame>* {
+  position: absolute !important;
+  top: 0 !important;
+  left: 0 !important;
+  width: 100% !important;
+  height: 100% !important;
+}
+
+/* <img> için özel kurallar */
+.pc__img {
+  object-fit: cover !important;
+  object-position: center top !important;
+  display: block !important;
+  /* height: auto global resetini eziyoruz */
+  height: 100% !important;
+  max-width: none !important;
+}
+
+/* Eski .prt-card__visual kuralını override et */
+.prt-card__visual:has(.pc__frame) {
+  height: auto !important;
+  min-height: 0 !important;
+}
+
 .prt-card__visual {
   height: 240px;
   position: relative;
@@ -6585,7 +6638,6 @@ a.footer__contact-item:hover {
    Fonts: Cormorant Garamond (display) + DM Sans (body) + DM Mono
 ═══════════════════════════════════════════════════════════ */
 
-@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400&family=DM+Sans:wght@300;400;500;600;700&family=DM+Mono:wght@400;500&display=swap');
 
 /* ───────────────────────────────────────────────────────────
    TOKENS — DARK MODE (default)
@@ -6775,6 +6827,10 @@ a {
 img {
   display: block;
   max-width: 100%;
+}
+
+img:not(.pc__img):not(.cs-hero__photo) {
+  height: auto;
 }
 
 button {
@@ -8300,4 +8356,32 @@ select {
   color: #1a1205 !important;
   border: none;
   box-shadow: var(--sh-gold);
+}
+
+/* ════════════════════════════════════════
+   PORTFOLIO KART GÖRSEL — KARE OVERRIDE
+   .pc__frame üzerindeki tüm çakışmaları engelle
+════════════════════════════════════════ */
+.pc__frame {
+  position: relative !important;
+  width: 100% !important;
+  height: 0 !important;
+  padding-bottom: 100% !important;
+  overflow: hidden !important;
+  flex-shrink: 0 !important;
+  background: #0c0b09;
+}
+
+.pc__frame>* {
+  position: absolute !important;
+  top: 0 !important;
+  left: 0 !important;
+  width: 100% !important;
+  height: 100% !important;
+}
+
+.pc__img {
+  object-fit: cover !important;
+  object-position: center top !important;
+  display: block !important;
 }

@@ -7,10 +7,12 @@ import { fetchPublicPlans } from "../redux/maintenanceSlice";
 import {
     Check, ChevronDown, ChevronUp, Zap, Clock, Shield,
     Star, Package, Code2, Cpu, Layout, Server, Timer,
-    BarChart3, RefreshCw, AlertCircle
+    BarChart3, RefreshCw, AlertCircle, MessageCircle,
+    Building2, Home, Coffee, Wrench
 } from "lucide-react";
 import SEO from "../components/Seo";
 
+// ─── Video Hero ───────────────────────────────────────────────────────────────
 function VideoHero() {
     const videoRef = useRef(null);
     const [isLoaded, setIsLoaded] = useState(false);
@@ -21,11 +23,11 @@ function VideoHero() {
         if (!v) return;
         const handleLoad = () => { setIsLoaded(true); v.playbackRate = 0.75; };
         const handleError = () => { setHasError(true); };
-        v.addEventListener('loadeddata', handleLoad);
-        v.addEventListener('error', handleError);
+        v.addEventListener("loadeddata", handleLoad);
+        v.addEventListener("error", handleError);
         return () => {
-            v.removeEventListener('loadeddata', handleLoad);
-            v.removeEventListener('error', handleError);
+            v.removeEventListener("loadeddata", handleLoad);
+            v.removeEventListener("error", handleError);
         };
     }, []);
 
@@ -33,41 +35,40 @@ function VideoHero() {
         <div className="hero-video-wrap" aria-hidden>
             {!isLoaded && (
                 <div className="hero-video__poster" style={{
-                    backgroundImage: 'url(/hero-poster.jpg)', backgroundSize: 'cover',
-                    backgroundPosition: 'center', position: 'absolute', inset: 0, zIndex: 1
+                    backgroundImage: "url(/hero-poster.jpg)", backgroundSize: "cover",
+                    backgroundPosition: "center", position: "absolute", inset: 0, zIndex: 1
                 }} />
             )}
             <video ref={videoRef} className="hero-video" autoPlay muted loop playsInline
                 preload="auto" poster="/hero-poster.jpg"
-                style={{ opacity: isLoaded ? 1 : 0, transition: 'opacity 0.8s ease-in-out' }}>
+                style={{ opacity: isLoaded ? 1 : 0, transition: "opacity 0.8s ease-in-out" }}>
                 <source src="/hero-mobile.mp4" type="video/mp4" media="(max-width: 768px)" />
                 <source src="/hero.mp4" type="video/mp4" />
                 <source src="/hero.webm" type="video/webm" />
             </video>
             <div className="hero-video__overlay" style={{
-                background: 'linear-gradient(to bottom, rgba(0,0,0,0.3) 0%, rgba(0,0,0,0.5) 100%)',
-                position: 'absolute', inset: 0, zIndex: 2
+                background: "linear-gradient(to bottom, rgba(0,0,0,0.3) 0%, rgba(0,0,0,0.5) 100%)",
+                position: "absolute", inset: 0, zIndex: 2
             }} />
             <div className="hero-video__grain" style={{
-                backgroundImage: 'url("data:image/svg+xml,%3Csvg viewBox=\'0 0 200 200\' xmlns=\'http://www.w3.org/2000/svg\'%3E%3Cfilter id=\'noiseFilter\'%3E%3CfeTurbulence type=\'fractalNoise\' baseFrequency=\'0.9\' numOctaves=\'4\' stitchTiles=\'stitch\'/%3E%3C/filter%3E%3Crect width=\'100%25\' height=\'100%25\' filter=\'url(%23noiseFilter)\'/%3E%3C/svg%3E")',
-                opacity: 0.03, position: 'absolute', inset: 0, zIndex: 3, pointerEvents: 'none'
+                backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E")`,
+                opacity: 0.03, position: "absolute", inset: 0, zIndex: 3, pointerEvents: "none"
             }} />
             <div className="hero-video__fade-bottom" style={{
-                background: 'linear-gradient(to top, rgba(10,10,10,0.8) 0%, transparent 40%)',
-                position: 'absolute', bottom: 0, left: 0, right: 0, height: '40%', zIndex: 4
+                background: "linear-gradient(to top, rgba(10,10,10,0.8) 0%, transparent 40%)",
+                position: "absolute", bottom: 0, left: 0, right: 0, height: "40%", zIndex: 4
             }} />
             {!isLoaded && !hasError && (
                 <div style={{
-                    position: 'absolute', top: '50%', left: '50%',
-                    transform: 'translate(-50%, -50%)', zIndex: 5,
-                    color: 'rgba(255,255,255,0.6)', fontSize: '14px', fontWeight: 500
+                    position: "absolute", top: "50%", left: "50%",
+                    transform: "translate(-50%, -50%)", zIndex: 5,
+                    color: "rgba(255,255,255,0.6)", fontSize: "14px", fontWeight: 500
                 }}>
-                    <div className="loading-spinner" style={{
-                        width: '40px', height: '40px',
-                        border: '3px solid rgba(255,255,255,0.1)',
-                        borderTop: '3px solid rgba(200,168,75,0.8)',
-                        borderRadius: '50%', animation: 'spin 1s linear infinite',
-                        margin: '0 auto 12px'
+                    <div style={{
+                        width: "40px", height: "40px", margin: "0 auto 12px",
+                        border: "3px solid rgba(255,255,255,0.1)",
+                        borderTop: "3px solid rgba(200,168,75,0.8)",
+                        borderRadius: "50%", animation: "spin 1s linear infinite"
                     }} />
                     Video yükleniyor...
                 </div>
@@ -76,13 +77,16 @@ function VideoHero() {
     );
 }
 
+// ─── Icon Map ─────────────────────────────────────────────────────────────────
 const ICON_MAP = {
-    Layout, Package, Star, Cpu, Code2, Server, BarChart3, RefreshCw, Zap, Shield, Clock, Timer
+    Layout, Package, Star, Cpu, Code2, Server, BarChart3,
+    RefreshCw, Zap, Shield, Clock, Timer, Building2, Home, Coffee, Wrench
 };
 function resolveIcon(name) {
     return (name && ICON_MAP[name]) || Package;
 }
 
+// ─── Helpers ──────────────────────────────────────────────────────────────────
 function toNum(val) {
     if (val == null) return null;
     const n = parseFloat(val);
@@ -104,12 +108,16 @@ function resolveSectionKey(code) {
     if (!code) return null;
     const c = code.toUpperCase();
     if (c.includes("LANDING")) return "LANDING";
+    if (c.includes("INSAAT")) return "INSAAT";
+    if (c.includes("EMLAK")) return "EMLAK";
+    if (c.includes("KAFE")) return "KAFE";
     if (c.includes("STATIK") || c.includes("STATIC")) return "KURUMSAL_STATIK";
     if (c.includes("DINAMIK") || c.includes("DYNAMIC")) return "KURUMSAL_DINAMIK";
     if (c.includes("OZEL") || c.includes("CUSTOM") || c.includes("SPECIAL")) return "OZEL_YAZILIM";
     return null;
 }
 
+// ─── Plan Sections ────────────────────────────────────────────────────────────
 const PLAN_SECTIONS = {
     LANDING: {
         idealFor: "Yeni işletmeler, kampanyalar ve tek bir hizmeti öne çıkarmak isteyenler.",
@@ -120,35 +128,44 @@ const PLAN_SECTIONS = {
             { title: "İletişim Bölümü", desc: "Form + WhatsApp + Google Harita" },
             { title: "Footer", desc: "İletişim bilgileri ve yasal bağlantılar" },
         ],
-        extraPageNote: "Ek sayfa: ₺2.000/sayfa",
+        extraPageNote: "Ek sayfa ihtiyacı için görüşelim — projeye özel fiyatlandırılır",
     },
-    KURUMSAL_STATIK: {
-        idealFor: "Sabit hizmetleri olan, içerik güncellemesini nadiren yapan firmalar.",
+    INSAAT: {
+        idealFor: "Proje portföyünü dijitale taşımak isteyen inşaat ve yapı firmaları.",
         sections: [
-            { title: "Ana Sayfa", desc: "Kurumsal kimliği yansıtan, güven odaklı yapı" },
-            { title: "Hakkımızda", desc: "Firma hikayesi ve güven veren anlatım" },
-            { title: "Hizmetler / Ürünler", desc: "Net açıklamalar, sade sunum" },
-            { title: "Referanslar / Projeler", desc: "Güven artırıcı örnek çalışmalar" },
-            { title: "Blog (Statik)", desc: "5 adet SEO uyumlu içerik" },
-            { title: "İletişim", desc: "Form, harita ve iletişim bilgileri" },
+            { title: "Ana Sayfa", desc: "Kurumsal kimlik, öne çıkan projeler, güven veren yapı" },
+            { title: "Projeler (Admin Panelli)", desc: "Kategori bazlı portföy — konut, ticari, restorasyon" },
+            { title: "Hizmetler", desc: "Sunduğunuz hizmetleri net ve ikna edici şekilde listeler" },
+            { title: "Hakkımızda", desc: "Firma hikayesi, ekip, deneyim ve sertifikalar" },
+            { title: "İletişim", desc: "Form, harita, WhatsApp ve iletişim bilgileri" },
             { title: "KVKK & Gizlilik", desc: "Yasal uyumluluk sayfaları" },
         ],
-        extraPageNote: "Ek sayfa: ₺2.500/sayfa",
+        extraPageNote: "Ek modül (blog, referanslar, sertifikalar): projeye özel fiyatlandırılır",
     },
-    KURUMSAL_DINAMIK: {
-        idealFor: "Blog yazan, kampanya yapan, sürekli güncelleme ihtiyacı olan firmalar.",
+    EMLAK: {
+        idealFor: "Kendi ilanlarını yönetmek isteyen emlakçılar ve gayrimenkul firmaları.",
         sections: [
-            { title: "Ana Sayfa", desc: "Dinamik banner, kampanya ve duyuru alanları" },
-            { title: "Hakkımızda", desc: "Kolayca güncellenebilir içerik" },
-            { title: "Hizmetler / Ürünler", desc: "Sınırsız ekle-çıkar özelliği" },
-            { title: "Referanslar / Portfolyo", desc: "Projeleri panelden yönet" },
-            { title: "Blog Sistemi", desc: "Sınırsız yazı, kategori ve SEO alanları" },
-            { title: "Galeri", desc: "Fotoğraf & video yönetimi" },
-            { title: "İletişim & Teklif Formu", desc: "Otomatik e-posta bildirimleri" },
-            { title: "SSS & Duyurular", desc: "Müşteri sorularını azaltan yapı" },
-            { title: "KVKK & Yasal Sayfalar", desc: "" },
+            { title: "Ana Sayfa", desc: "Öne çıkan ilanlar, arama kutusu, istatistikler" },
+            { title: "İlan Listesi & Filtreleme", desc: "Fiyat, konum, oda sayısı, tip bazlı filtreleme" },
+            { title: "İlan Detay", desc: "Galeri, harita, özellikler, iletişim formu" },
+            { title: "Admin Paneli", desc: "İlan ekle / düzenle / sil — tarayıcıdan yönet" },
+            { title: "Mesaj Yönetimi", desc: "Gelen iletişim formlarını panelden takip et" },
+            { title: "Site Ayarları", desc: "Logo, iletişim bilgileri, sosyal medya — panelden güncelle" },
+            { title: "KVKK & Gizlilik", desc: "Yasal uyumluluk sayfaları" },
         ],
-        extraPageNote: "Ek sayfa: ₺3.000/sayfa",
+        extraPageNote: "Ek modül (blog, çok şubeli yönetim): projeye özel fiyatlandırılır",
+    },
+    KAFE: {
+        idealFor: "Dijital menü ve rezervasyon sistemi kurmak isteyen kafe & restoran işletmeleri.",
+        sections: [
+            { title: "Ana Sayfa", desc: "Atmosfer fotoğrafları, öne çıkan ürünler, çalışma saatleri" },
+            { title: "Dijital Menü (Admin Panelli)", desc: "Kategori bazlı — içecek, yemek, tatlı, özel" },
+            { title: "Galeri", desc: "Mekan ve ürün fotoğrafları" },
+            { title: "Rezervasyon / İletişim", desc: "Form + WhatsApp + Google Harita" },
+            { title: "Duyuru & Kampanya Yönetimi", desc: "Günlük menü, özel gün duyuruları panelden güncelle" },
+            { title: "KVKK & Gizlilik", desc: "Yasal uyumluluk sayfaları" },
+        ],
+        extraPageNote: "Ek modül (online sipariş, sadakat kartı, çok şube): projeye özel",
     },
     OZEL_YAZILIM: {
         idealFor: "Özel süreçleri olan, entegrasyon ihtiyacı bulunan işletmeler.",
@@ -163,79 +180,151 @@ const PLAN_SECTIONS = {
     },
 };
 
+// ─── Fallback Plans ───────────────────────────────────────────────────────────
 const FALLBACK_PLANS = [
+    // 1. LANDING PAGE
     {
         _fallback: true,
         packageCode: "LANDING",
         iconName: "Layout",
         badgeText: "Hızlı Başlangıç",
-        discountPercentage: 27,
+        discountPercentage: 0,
         isFeatured: false,
         name: "Landing Page",
         tagline: "Tek sayfa. Net mesaj. Hızlı dönüşüm.",
-        originalPrice: "10900",
-        currentPrice: "7900",
-        priceNote: "başlayan fiyatlarla",
+        originalPrice: null,
+        currentPrice: null,
+        priceNote: "iletişime geçin → ücretsiz teklif alın",
         deliveryTime: "5–7 iş günü",
         revisionCount: 1,
         supportDays: 30,
         features: [
             { featureText: "Markanıza özel modern tasarım", isMainFeature: true, displayOrder: 0 },
-            { featureText: "Mobil, tablet ve masaüstü uyumlu yapı", isMainFeature: true, displayOrder: 1 },
+            { featureText: "Mobil, tablet ve masaüstü uyumlu", isMainFeature: true, displayOrder: 1 },
             { featureText: "SEO uyumlu altyapı (Google görünürlüğü)", isMainFeature: true, displayOrder: 2 },
             { featureText: "WhatsApp hızlı iletişim butonu", isMainFeature: true, displayOrder: 3 },
-            { featureText: "Form entegrasyonu", isMainFeature: true, displayOrder: 4 },
+            { featureText: "İletişim formu entegrasyonu", isMainFeature: true, displayOrder: 4 },
+            { featureText: "🔒 SSL sertifikası bizden — ekstra ödeme yok", isMainFeature: true, displayOrder: 5 },
+            { featureText: "🖥️ Hosting kurulumu bizden — ekstra ödeme yok", isMainFeature: true, displayOrder: 6 },
+            { featureText: "📊 Google Analytics kurulumu dahil", isMainFeature: true, displayOrder: 7 },
+            { featureText: "⚡ Hız optimizasyonu (Lighthouse 90+)", isMainFeature: true, displayOrder: 8 },
+            { featureText: "📋 KVKK uyumluluk sayfası dahil", isMainFeature: true, displayOrder: 9 },
         ],
-        notes: [{ noteType: "NEUTRAL", noteText: "Dijitale ilk adımınızı atmak için ideal başlangıç." }],
+        notes: [
+            { noteType: "SUCCESS", noteText: "Hosting + SSL + Analytics kurulumu fiyata dahildir. Siz sadece domain alırsınız (~400₺/yıl)." },
+        ],
     },
+
+    // 2. İNŞAAT FİRMASI
     {
         _fallback: true,
-        packageCode: "KURUMSAL_STATIK",
-        iconName: "Package",
-        badgeText: "Bakım Derdi Yok",
-        discountPercentage: 21,
+        packageCode: "INSAAT",
+        iconName: "Building2",
+        badgeText: "İnşaat & Yapı",
+        discountPercentage: 0,
         isFeatured: false,
-        name: "Kurumsal Web – Statik",
-        tagline: "Kurumsal görünüm. Bakım derdi yok.",
-        originalPrice: "18900",
-        currentPrice: "14900",
-        priceNote: "başlayan fiyatlarla",
-        deliveryTime: "8–10 iş günü",
+        name: "İnşaat Firması Web Sitesi",
+        tagline: "Projelerinizi sergileyin, müşteri güvenini kazanın.",
+        originalPrice: null,
+        currentPrice: null,
+        priceNote: "iletişime geçin → ücretsiz teklif alın",
+        deliveryTime: "10–14 iş günü",
         revisionCount: 2,
         supportDays: 60,
         features: [
-            { featureText: "Kurumsal ve sade tasarım", isMainFeature: true, displayOrder: 0 },
-            { featureText: "Hızlı açılan sayfalar", isMainFeature: true, displayOrder: 1 },
-            { featureText: "SEO uyumlu yapı", isMainFeature: true, displayOrder: 2 },
-            { featureText: "Kurumsal e-posta & harita entegrasyonu", isMainFeature: true, displayOrder: 3 },
-            { featureText: "SSL sertifikası", isMainFeature: true, displayOrder: 4 },
+            { featureText: "Proje portföy yönetimi (admin paneli)", isMainFeature: true, displayOrder: 0 },
+            { featureText: "Proje kategori & filtreleme sistemi", isMainFeature: true, displayOrder: 1 },
+            { featureText: "Fotoğraf galerisi & lightbox", isMainFeature: true, displayOrder: 2 },
+            { featureText: "Hizmetler sayfası yönetimi", isMainFeature: true, displayOrder: 3 },
+            { featureText: "İletişim formu + mesaj yönetim paneli", isMainFeature: true, displayOrder: 4 },
+            { featureText: "WhatsApp entegrasyonu", isMainFeature: true, displayOrder: 5 },
+            { featureText: "🔒 SSL sertifikası bizden — ekstra ödeme yok", isMainFeature: true, displayOrder: 6 },
+            { featureText: "🖥️ Hosting kurulumu bizden — ekstra ödeme yok", isMainFeature: true, displayOrder: 7 },
+            { featureText: "📊 Google Analytics kurulumu dahil", isMainFeature: true, displayOrder: 8 },
+            { featureText: "⚡ Hız optimizasyonu (Lighthouse 90+)", isMainFeature: true, displayOrder: 9 },
+            { featureText: "📋 KVKK uyumluluk sayfası dahil", isMainFeature: true, displayOrder: 10 },
+            { featureText: "🌐 Domain seçimi & kurulum yardımı", isMainFeature: true, displayOrder: 11 },
         ],
-        notes: [{ noteType: "WARN", noteText: "İçerik güncellemeleri için geliştirici desteği gerekir (admin panel yok)." }],
+        notes: [
+            { noteType: "SUCCESS", noteText: "Müşteri; proje ekler, fotoğraf yükler, hizmetleri düzenler — geliştirici aramak yok." },
+            { noteType: "NEUTRAL", noteText: "Hosting + SSL + Analytics dahil. Siz sadece domain alırsınız (~400₺/yıl)." },
+        ],
     },
+
+    // 3. EMLAK (FEATURED)
     {
         _fallback: true,
-        packageCode: "KURUMSAL_DINAMIK",
-        iconName: "Star",
+        packageCode: "EMLAK",
+        iconName: "Home",
         badgeText: "En Çok Tercih Edilen",
-        discountPercentage: 24,
+        discountPercentage: 0,
         isFeatured: true,
-        name: "Kurumsal Web – Dinamik",
-        tagline: "Tam kontrol. Özgür içerik yönetimi.",
-        originalPrice: "24900",
-        currentPrice: "18900",
-        priceNote: "başlayan fiyatlarla",
-        deliveryTime: "12–15 iş günü",
+        name: "Emlak & Gayrimenkul Sitesi",
+        tagline: "İlanlarınızı yönetin, müşteri kazanın.",
+        originalPrice: null,
+        currentPrice: null,
+        priceNote: "iletişime geçin → ücretsiz teklif alın",
+        deliveryTime: "14–18 iş günü",
         revisionCount: 3,
         supportDays: 90,
         features: [
-            { featureText: "Kullanımı kolay admin panel", isMainFeature: true, displayOrder: 0 },
-            { featureText: "Tüm içerikleri bağımsız yönetme", isMainFeature: true, displayOrder: 1 },
-            { featureText: "Gelişmiş SEO araçları", isMainFeature: true, displayOrder: 2 },
-            { featureText: "Form & bildirim yönetimi", isMainFeature: true, displayOrder: 3 },
-            { featureText: "Panel kullanım eğitimi", isMainFeature: true, displayOrder: 4 },
+            { featureText: "Tam özellikli ilan yönetim paneli", isMainFeature: true, displayOrder: 0 },
+            { featureText: "Satılık / kiralık / kategori filtreleme", isMainFeature: true, displayOrder: 1 },
+            { featureText: "Harita üzerinde konum gösterimi", isMainFeature: true, displayOrder: 2 },
+            { featureText: "Fotoğraf galerisi & lightbox", isMainFeature: true, displayOrder: 3 },
+            { featureText: "İletişim formu + mesaj yönetim paneli", isMainFeature: true, displayOrder: 4 },
+            { featureText: "İlan görüntülenme istatistikleri", isMainFeature: true, displayOrder: 5 },
+            { featureText: "WhatsApp entegrasyonu", isMainFeature: true, displayOrder: 6 },
+            { featureText: "🔒 SSL sertifikası bizden — ekstra ödeme yok", isMainFeature: true, displayOrder: 7 },
+            { featureText: "🖥️ Hosting kurulumu bizden — ekstra ödeme yok", isMainFeature: true, displayOrder: 8 },
+            { featureText: "📊 Google Analytics kurulumu dahil", isMainFeature: true, displayOrder: 9 },
+            { featureText: "⚡ Hız optimizasyonu (Lighthouse 90+)", isMainFeature: true, displayOrder: 10 },
+            { featureText: "📋 KVKK uyumluluk sayfası dahil", isMainFeature: true, displayOrder: 11 },
+            { featureText: "🌐 Domain seçimi & kurulum yardımı", isMainFeature: true, displayOrder: 12 },
         ],
-        notes: [{ noteType: "SUCCESS", noteText: "Güncelleme için kimseye bağlı kalmazsınız. Uzun vadede en ekonomik çözümdür." }],
+        notes: [
+            { noteType: "SUCCESS", noteText: "İlan ekle, düzenle, sil — hepsi admin panelinden. Geliştirici bağımlılığı sıfır." },
+            { noteType: "NEUTRAL", noteText: "Hosting + SSL + Analytics dahil. Siz sadece domain alırsınız (~400₺/yıl)." },
+        ],
     },
+
+    // 4. KAFE & RESTORAN
+    {
+        _fallback: true,
+        packageCode: "KAFE",
+        iconName: "Coffee",
+        badgeText: "Kafe & Restoran",
+        discountPercentage: 0,
+        isFeatured: false,
+        name: "Kafe & Restoran Web Sitesi",
+        tagline: "Menünüzü dijitale taşıyın, rezervasyon alın.",
+        originalPrice: null,
+        currentPrice: null,
+        priceNote: "iletişime geçin → ücretsiz teklif alın",
+        deliveryTime: "8–12 iş günü",
+        revisionCount: 2,
+        supportDays: 60,
+        features: [
+            { featureText: "Dijital menü yönetimi (admin paneli)", isMainFeature: true, displayOrder: 0 },
+            { featureText: "Kategori bazlı menü (içecek, yemek, tatlı...)", isMainFeature: true, displayOrder: 1 },
+            { featureText: "Fotoğraf galerisi & atmosfer sunumu", isMainFeature: true, displayOrder: 2 },
+            { featureText: "Rezervasyon / iletişim formu", isMainFeature: true, displayOrder: 3 },
+            { featureText: "Google Harita entegrasyonu", isMainFeature: true, displayOrder: 4 },
+            { featureText: "WhatsApp sipariş / rezervasyon butonu", isMainFeature: true, displayOrder: 5 },
+            { featureText: "Çalışma saatleri & duyuru yönetimi", isMainFeature: true, displayOrder: 6 },
+            { featureText: "🔒 SSL sertifikası bizden — ekstra ödeme yok", isMainFeature: true, displayOrder: 7 },
+            { featureText: "🖥️ Hosting kurulumu bizden — ekstra ödeme yok", isMainFeature: true, displayOrder: 8 },
+            { featureText: "📊 Google Analytics kurulumu dahil", isMainFeature: true, displayOrder: 9 },
+            { featureText: "⚡ Hız optimizasyonu (Lighthouse 90+)", isMainFeature: true, displayOrder: 10 },
+            { featureText: "📋 KVKK uyumluluk sayfası dahil", isMainFeature: true, displayOrder: 11 },
+        ],
+        notes: [
+            { noteType: "SUCCESS", noteText: "Menü fiyatını değiştirmek için geliştirici aramak yok. Admin panelinden saniyeler içinde güncelle." },
+            { noteType: "NEUTRAL", noteText: "Hosting + SSL + Analytics dahil. Siz sadece domain alırsınız (~400₺/yıl)." },
+        ],
+    },
+
+    // 5. ÖZEL YAZILIM
     {
         _fallback: true,
         packageCode: "OZEL_YAZILIM",
@@ -252,16 +341,22 @@ const FALLBACK_PLANS = [
         revisionCount: 0,
         supportDays: 0,
         features: [
-            { featureText: "Tamamen size özel yazılım", isMainFeature: true, displayOrder: 0 },
-            { featureText: "API entegrasyonları (Ödeme, SMS vb.)", isMainFeature: true, displayOrder: 1 },
-            { featureText: "Özel CRM/ERP sistemleri", isMainFeature: true, displayOrder: 2 },
-            { featureText: "Tüm cihazlarda mükemmel performans", isMainFeature: true, displayOrder: 3 },
-            { featureText: "Süresiz premium destek", isMainFeature: true, displayOrder: 4 },
+            { featureText: "Tamamen size özel yazılım mimarisi", isMainFeature: true, displayOrder: 0 },
+            { featureText: "API entegrasyonları (ödeme, SMS, ERP...)", isMainFeature: true, displayOrder: 1 },
+            { featureText: "Özel CRM / ERP / stok sistemleri", isMainFeature: true, displayOrder: 2 },
+            { featureText: "Rol bazlı kullanıcı yönetimi", isMainFeature: true, displayOrder: 3 },
+            { featureText: "Raporlama & dashboard sistemleri", isMainFeature: true, displayOrder: 4 },
+            { featureText: "🔒 SSL + Hosting + Domain yardımı dahil", isMainFeature: true, displayOrder: 5 },
+            { featureText: "📊 Google Analytics & izleme kurulumu", isMainFeature: true, displayOrder: 6 },
+            { featureText: "⚡ Hız & güvenlik optimizasyonu", isMainFeature: true, displayOrder: 7 },
         ],
-        notes: [{ noteType: "NEUTRAL", noteText: "Detaylı analiz sonrası net teklif hazırlanır." }],
+        notes: [
+            { noteType: "NEUTRAL", noteText: "Detaylı analiz sonrası net kapsam ve fiyat belirlenir. Bağlayıcı değildir." },
+        ],
     },
 ];
 
+// ─── Fallback Maintenance Plans ───────────────────────────────────────────────
 const FALLBACK_MAINT = [
     {
         _fallback: true,
@@ -269,16 +364,18 @@ const FALLBACK_MAINT = [
         iconName: "Server",
         badgeText: "Başlangıç",
         name: "Bakım Lite",
-        monthlyPrice: "1500",
-        idealFor: "Sabit içerikli, bakımı az siteler için",
+        monthlyPrice: null,
+        idealFor: "Sabit içerikli, az güncelleme gerektiren siteler için ideal",
         isBestSeller: false,
         features: [
-            { featureText: "Hosting (bizim sunucumuzda)", displayOrder: 0 },
-            { featureText: "SSL yönetimi", displayOrder: 1 },
-            { featureText: "Günlük otomatik yedekleme", displayOrder: 2 },
-            { featureText: "Uptime takibi (7/24)", displayOrder: 3 },
-            { featureText: "Aylık 2 içerik güncellemesi", displayOrder: 4 },
-            { featureText: "Aylık durum raporu", displayOrder: 5 },
+            { featureText: "🖥️ Hosting bizden — siz ödemezsiniz", displayOrder: 0 },
+            { featureText: "🔒 SSL sertifikası bizden — siz ödemezsiniz", displayOrder: 1 },
+            { featureText: "💾 Günlük otomatik yedekleme", displayOrder: 2 },
+            { featureText: "📡 7/24 uptime izleme", displayOrder: 3 },
+            { featureText: "✏️ Aylık 2 içerik güncellemesi", displayOrder: 4 },
+            { featureText: "🛡️ Güvenlik taraması", displayOrder: 5 },
+            { featureText: "📋 Aylık teknik durum raporu", displayOrder: 6 },
+            { featureText: "💬 WhatsApp destek hattı", displayOrder: 7 },
         ],
     },
     {
@@ -287,46 +384,57 @@ const FALLBACK_MAINT = [
         iconName: "BarChart3",
         badgeText: "En Çok Tercih",
         name: "Bakım Pro",
-        monthlyPrice: "2500",
-        idealFor: "Aktif, sık güncellenen siteler için",
+        monthlyPrice: null,
+        idealFor: "Aktif yönetilen, sık güncellenen siteler için ideal",
         isBestSeller: true,
         features: [
-            { featureText: "Başlangıç paketindeki her şey", displayOrder: 0 },
-            { featureText: "Aylık 5 içerik güncellemesi", displayOrder: 1 },
-            { featureText: "Aylık SEO raporu (detaylı)", displayOrder: 2 },
-            { featureText: "PageSpeed optimizasyon takibi", displayOrder: 3 },
-            { featureText: "Öncelikli destek (24 saat yanıt)", displayOrder: 4 },
-            { featureText: "Küçük tasarım değişiklikleri", displayOrder: 5 },
+            { featureText: "🖥️ Hosting bizden — siz ödemezsiniz", displayOrder: 0 },
+            { featureText: "🔒 SSL sertifikası bizden — siz ödemezsiniz", displayOrder: 1 },
+            { featureText: "💾 Günlük otomatik yedekleme", displayOrder: 2 },
+            { featureText: "📡 7/24 uptime izleme", displayOrder: 3 },
+            { featureText: "✏️ Aylık 5 içerik güncellemesi", displayOrder: 4 },
+            { featureText: "📈 Aylık SEO raporu (detaylı)", displayOrder: 5 },
+            { featureText: "📊 Google Analytics raporlama", displayOrder: 6 },
+            { featureText: "⚡ PageSpeed optimizasyon takibi", displayOrder: 7 },
+            { featureText: "🎨 Küçük tasarım değişiklikleri", displayOrder: 8 },
+            { featureText: "💬 Öncelikli WhatsApp destek (24s yanıt)", displayOrder: 9 },
         ],
     },
     {
         _fallback: true,
-        planCode: "COMMERCE",
+        planCode: "PREMIUM",
         iconName: "RefreshCw",
-        badgeText: "Pro",
-        name: "Bakım Commerce",
-        monthlyPrice: "4000",
-        idealFor: "Büyüyen işletmeler, aktif geliştirme",
+        badgeText: "Premium",
+        name: "Bakım Premium",
+        monthlyPrice: null,
+        idealFor: "Büyüyen işletmeler — aktif geliştirme + tam destek",
         isBestSeller: false,
         features: [
-            { featureText: "Büyüme paketindeki her şey", displayOrder: 0 },
-            { featureText: "Aylık 10 içerik güncellemesi", displayOrder: 1 },
-            { featureText: "Aylık 5 saat geliştirme saati", displayOrder: 2 },
-            { featureText: "Google Search Console takibi", displayOrder: 3 },
-            { featureText: "Aylık 30 dk strateji görüşmesi", displayOrder: 4 },
-            { featureText: "Öncelikli destek (12 saat yanıt)", displayOrder: 5 },
+            { featureText: "🖥️ Hosting bizden — siz ödemezsiniz", displayOrder: 0 },
+            { featureText: "🔒 SSL sertifikası bizden — siz ödemezsiniz", displayOrder: 1 },
+            { featureText: "💾 Saatlik otomatik yedekleme", displayOrder: 2 },
+            { featureText: "📡 7/24 uptime izleme + anlık uyarı", displayOrder: 3 },
+            { featureText: "✏️ Aylık 10 içerik güncellemesi", displayOrder: 4 },
+            { featureText: "🛠️ Aylık 5 saat geliştirme saati", displayOrder: 5 },
+            { featureText: "📈 Detaylı SEO & Analytics raporu", displayOrder: 6 },
+            { featureText: "🔍 Google Search Console takibi", displayOrder: 7 },
+            { featureText: "🚀 Yeni özellik & modül eklemeleri", displayOrder: 8 },
+            { featureText: "🗓️ Aylık 30 dk strateji görüşmesi", displayOrder: 9 },
+            { featureText: "💬 Öncelikli destek (12s yanıt garantisi)", displayOrder: 10 },
         ],
     },
 ];
 
+// ─── Policy Items ─────────────────────────────────────────────────────────────
 const POLICY_ITEMS = [
-    "Paket fiyatları, tanımlı kapsamlar için belirlenmiştir",
-    "Projenize özel ihtiyaçlar görüşmede netleştirilir",
-    "Ek sayfa, özel entegrasyon ve modüller ayrıca planlanır",
-    "Nihai fiyat ve ödeme planı teklif görüşmesinde belirlenir",
+    "Fiyat belirtilmeyen paketlerde proje kapsamı görüşmede belirlenir",
+    "Hosting ve SSL tüm paketlerde bizden — ekstra ödeme yoktur",
+    "Ek modül ve özel entegrasyonlar ayrıca planlanır",
+    "Nihai fiyat ve ödeme planı teklif görüşmesinde netleştirilir",
+    "Domain ücreti (~400₺/yıl) müşteriye aittir — diğer her şey bizden",
 ];
 
-// ── Countdown — süre dolunca null döner, onExpire callback'i tetikler ──
+// ─── Countdown ────────────────────────────────────────────────────────────────
 function Countdown({ target, onExpire }) {
     const [t, setT] = useState({ d: 0, h: 0, m: 0, s: 0 });
     const [expired, setExpired] = useState(false);
@@ -370,6 +478,7 @@ function Countdown({ target, onExpire }) {
     );
 }
 
+// ─── Plan Sections Component ──────────────────────────────────────────────────
 function PlanSections({ sectionKey }) {
     const data = PLAN_SECTIONS[sectionKey];
     if (!data) return null;
@@ -419,18 +528,15 @@ function PlanSections({ sectionKey }) {
     );
 }
 
+// ─── Pricing Page ─────────────────────────────────────────────────────────────
 export default function Pricing() {
     const dispatch = useDispatch();
-
-    // pricing store'dan sadece paket verisi — activeCampaign artık campaign store'da
     const { packages: backendPackages, loading: pkgLoading } = useSelector(s => s.pricing);
-    // kampanya verisi campaign store'dan geliyor
     const { activeCampaign } = useSelector(s => s.campaign);
     const { plans: backendPlans, loading: maintLoading } = useSelector(s => s.maintenance);
 
     const [selected, setSelected] = useState(2);
     const [expanded, setExpanded] = useState({});
-    // Countdown dolunca barı gerçek zamanlı kaldırmak için
     const [campaignVisible, setCampaignVisible] = useState(true);
 
     useEffect(() => {
@@ -439,7 +545,6 @@ export default function Pricing() {
         dispatch(fetchPublicPlans());
     }, [dispatch]);
 
-    // activeCampaign değiştiğinde campaignVisible'ı sıfırla
     useEffect(() => {
         setCampaignVisible(true);
     }, [activeCampaign]);
@@ -447,8 +552,6 @@ export default function Pricing() {
     const packages = (backendPackages && backendPackages.length > 0) ? backendPackages : FALLBACK_PLANS;
     const maintPlans = (backendPlans && backendPlans.length > 0) ? backendPlans : FALLBACK_MAINT;
 
-    // Kampanya geçerlilik kontrolü:
-    // isActive true, endDate geçmemiş, ve campaignVisible (countdown dolmadı) olmalı
     const now = new Date();
     const campaignEnd = activeCampaign?.endDate ? new Date(activeCampaign.endDate) : null;
     const hasCampaign =
@@ -463,24 +566,27 @@ export default function Pricing() {
     return (
         <>
             <SEO
-                title="Web Sitesi Fiyatları 2026: Landing Page, Kurumsal Site & Bakım | Algorixa"
-                description="Şeffaf fiyatlarla web tasarım: Landing page 7.900₺, kurumsal statik site 14.900₺, admin panelli dinamik site 22.900₺, aylık bakım 1.500₺'den başlıyor. KDV hariç, gizli ücret yok. İstanbul'da net kapsam, net fiyat."
-                keywords="web sitesi fiyatları 2025, landing page kaç para, kurumsal web sitesi fiyatı, admin panelli site fiyatı, web tasarım fiyat listesi istanbul, web sitesi yaptırma maliyeti, aylık web bakım paketi fiyatı, hosting ssl yedekleme paketi, ucuz web tasarım istanbul, uygun fiyatlı web sitesi, web tasarım teklif al, web sitesi ne kadar tutar, şeffaf fiyatlı web tasarım, landing page 7900 tl, kurumsal site 14900 tl"
+                title="Web Sitesi Fiyatları 2026: İnşaat, Emlak, Kafe & Özel Yazılım | Algorixa"
+                description="Sektöre özel web sitesi çözümleri: İnşaat firması, emlak & gayrimenkul, kafe & restoran ve özel yazılım paketleri. Hosting + SSL + Google Analytics bizden. İstanbul'da net kapsam, ücretsiz teklif alın."
+                keywords="inşaat firması web sitesi fiyatı, emlak sitesi fiyatı, kafe web sitesi, gayrimenkul web sitesi, admin panelli web sitesi istanbul, hosting dahil web sitesi, ssl dahil web tasarım, web sitesi yaptırma 2026, web tasarım teklif al, kurumsal web sitesi istanbul, özel yazılım geliştirme istanbul"
                 url="https://www.algorixa.com.tr/fiyatlandirma"
                 canonical="https://www.algorixa.com.tr/fiyatlandirma"
             />
+
+            {/* ── Hero ── */}
             <section className="page-hero">
                 <VideoHero />
                 <div className="container">
                     <div className="page-hero__eyebrow"><span className="t-label">Fiyatlandırma</span></div>
                     <h1 className="page-hero__title">
-                        Şeffaf Fiyat,<br />
-                        <em>Net Kapsam,</em>
-                        Sürpriz Yok
+                        Sektörünüze Özel,<br />
+                        <em>Her Şey Dahil</em>
+                        Çözümler
                     </h1>
                     <p className="page-hero__desc">
-                        Tüm fiyatlar KDV hariçtir. Paket içerikleri nettir, gizli ücret yoktur.
-                        Ajans karmaşası olmadan, doğrudan geliştiriciyle çalışırsınız.
+                        Hosting, SSL, Google Analytics ve KVKK sayfası tüm paketlerde bizden.
+                        Siz sadece domaininizi alırsınız (~400₺/yıl).
+                        Gizli ücret yok, sürpriz yok.
                     </p>
                 </div>
             </section>
@@ -488,7 +594,40 @@ export default function Pricing() {
             <section className="page-section section-border-top" style={{ paddingTop: "60px" }}>
                 <div className="container">
 
-                    {/* ── Kampanya barı — sadece aktif + süresi dolmamış kampanya varsa göster ── */}
+                    {/* ── Her Şey Dahil Özet Bant ── */}
+                    <div style={{
+                        display: "flex", flexWrap: "wrap", gap: "10px",
+                        padding: "16px 20px", marginBottom: "40px",
+                        background: "rgba(200,168,75,0.06)",
+                        border: "1px solid rgba(200,168,75,0.2)",
+                        borderRadius: "12px",
+                    }}>
+                        <span style={{ fontSize: "11px", fontFamily: "var(--f-mono)", color: "var(--t-4)", textTransform: "uppercase", letterSpacing: "0.1em", marginRight: "4px", alignSelf: "center" }}>
+                            Her pakete dahil →
+                        </span>
+                        {[
+                            "🔒 SSL Sertifikası",
+                            "🖥️ Hosting",
+                            "📊 Google Analytics",
+                            "⚡ Hız Optimizasyonu",
+                            "📋 KVKK Sayfası",
+                            "🌐 Domain Yardımı",
+                            "📱 Mobil Uyumluluk",
+                            "💬 WhatsApp Entegrasyonu",
+                        ].map(item => (
+                            <span key={item} style={{
+                                display: "inline-flex", alignItems: "center", gap: "5px",
+                                padding: "5px 12px", borderRadius: "100px",
+                                background: "rgba(200,168,75,0.1)",
+                                border: "1px solid rgba(200,168,75,0.25)",
+                                fontSize: "12px", color: "var(--t-2)",
+                            }}>
+                                {item}
+                            </span>
+                        ))}
+                    </div>
+
+                    {/* ── Kampanya barı ── */}
                     {hasCampaign && (
                         <div className="prc-promo-bar">
                             <div className="prc-promo-bar__left">
@@ -498,10 +637,10 @@ export default function Pricing() {
                                 </div>
                                 <p className="prc-promo-bar__desc">
                                     {activeCampaign.promoBarDescription || activeCampaign.description ||
-                                        "Algorixa'da fiyatlar; proje kapsamı, uzun vadeli sürdürülebilirlik ve karşılıklı memnuniyet esas alınarak belirlenir. Bu dönemde seçili paketlerde avantajlı fiyatlar projenin referans olarak gösterilmesi karşılığında sunulmaktadır."}
+                                        "Bu dönemde seçili paketlerde avantajlı fiyatlar, projenin referans olarak gösterilmesi karşılığında sunulmaktadır."}
                                 </p>
                                 <div className="prc-promo-bar__highlights">
-                                    {["KDV hariç net fiyatlar", "Gizli ücret yok", "7 gün içinde proje başlangıcı"].map(h => (
+                                    {["Hosting dahil", "SSL dahil", "7 gün içinde başlangıç"].map(h => (
                                         <span key={h} className="prc-promo-highlight">
                                             <Check size={11} strokeWidth={2.5} style={{ color: "var(--gold)" }} />
                                             {h}
@@ -537,7 +676,7 @@ export default function Pricing() {
                                     (a, b) => (a.displayOrder || 0) - (b.displayOrder || 0)
                                 );
                                 const mainFeatures = sortedFeatures.filter(f => f.isMainFeature);
-                                const displayFeatures = mainFeatures.length > 0 ? mainFeatures : sortedFeatures.slice(0, 5);
+                                const displayFeatures = mainFeatures.length > 0 ? mainFeatures : sortedFeatures.slice(0, 6);
 
                                 const origNum = toNum(p.originalPrice);
                                 const currNum = toNum(p.currentPrice);
@@ -566,13 +705,24 @@ export default function Pricing() {
                                         <h3 className="prc-card__name">{p.name}</h3>
                                         <p className="prc-card__tagline">{p.tagline}</p>
 
+                                        {/* Fiyat Alanı */}
                                         <div className="prc-card__price-area">
                                             {origNum && (
                                                 <div className="prc-card__orig">{formatPrice(origNum)}</div>
                                             )}
-                                            <div className={`prc-card__price${p.isFeatured ? " prc-card__price--gold" : ""}`}>
-                                                {currNum ? formatPrice(currNum) : "Özel Teklif"}
-                                            </div>
+                                            {currNum ? (
+                                                <div className={`prc-card__price${p.isFeatured ? " prc-card__price--gold" : ""}`}>
+                                                    {formatPrice(currNum)}
+                                                </div>
+                                            ) : (
+                                                <div style={{
+                                                    fontSize: "15px", fontWeight: 700,
+                                                    color: "var(--gold)", marginBottom: "4px",
+                                                    fontFamily: "var(--f-display)",
+                                                }}>
+                                                    Ücretsiz Teklif Al
+                                                </div>
+                                            )}
                                             {p.priceNote && (
                                                 <div className="prc-card__note">{p.priceNote}</div>
                                             )}
@@ -584,6 +734,7 @@ export default function Pricing() {
                                             )}
                                         </div>
 
+                                        {/* Özellikler */}
                                         <ul className="prc-card__features">
                                             {displayFeatures.map((f, fi) => (
                                                 <li key={fi} className="prc-card__feature">
@@ -593,6 +744,7 @@ export default function Pricing() {
                                             ))}
                                         </ul>
 
+                                        {/* Detayları Gör */}
                                         <button
                                             className="prc-card__detail-toggle"
                                             onClick={e => { e.stopPropagation(); toggle(i); }}
@@ -604,6 +756,7 @@ export default function Pricing() {
                                             }
                                         </button>
 
+                                        {/* Genişletilmiş Detay */}
                                         {isOpen && (
                                             <div className="prc-card__expanded">
                                                 <PlanSections sectionKey={sectionKey} />
@@ -649,6 +802,7 @@ export default function Pricing() {
                                             </div>
                                         )}
 
+                                        {/* Notlar */}
                                         {(p.notes || []).map((note, ni) => {
                                             const nType = resolveNoteType(note.noteType);
                                             return (
@@ -660,14 +814,16 @@ export default function Pricing() {
                                             );
                                         })}
 
+                                        {/* CTA Butonu */}
                                         <Link
                                             to="/iletisim"
                                             className={`prc-card__cta btn ${p.isFeatured ? "btn--primary" : "btn--outline"}`}
                                             onClick={e => e.stopPropagation()}
                                         >
-                                            {p.isFeatured ? "Hemen Başla" : currNum ? "Bu Paketi Seç" : "Görüşelim"}
+                                            {p.isFeatured ? "Ücretsiz Teklif Al" : "Fiyat Teklifi İste"}
                                         </Link>
 
+                                        {/* Kart Footer */}
                                         <div className="prc-card__footer">
                                             {p.deliveryTime && (
                                                 <span>
@@ -694,6 +850,7 @@ export default function Pricing() {
                         </div>
                     )}
 
+                    {/* ── Politika ── */}
                     <div className="prc-policy">
                         <div className="prc-policy__label">
                             <Shield size={13} strokeWidth={1.5} style={{ color: "var(--gold)" }} />
@@ -707,13 +864,16 @@ export default function Pricing() {
                                 </li>
                             ))}
                         </ul>
-                        <p className="prc-policy__foot">Net kapsam, net fiyat. Sonradan sürpriz yok.</p>
+                        <p className="prc-policy__foot">
+                            Net kapsam, net fiyat. Sonradan sürpriz yok.
+                        </p>
                     </div>
 
+                    {/* ── CTA Bant ── */}
                     <div className="prc-cta-bar">
                         <div className="prc-cta-bar__text">
-                            <h2>Hangisi Sizin İçin Doğru?</h2>
-                            <p>24 saat içinde detaylı görüşme ve net teklif. Bağlayıcı değildir.</p>
+                            <h2>Hangi Paket Size Uygun?</h2>
+                            <p>24 saat içinde ücretsiz görüşme ve net teklif. Bağlayıcı değildir, baskı yoktur.</p>
                         </div>
                         <Link to="/iletisim" className="btn btn--primary btn--lg btn--mono">
                             Ücretsiz Görüşme →
@@ -722,16 +882,46 @@ export default function Pricing() {
                 </div>
             </section>
 
+            {/* ── Bakım Paketleri ── */}
             <section className="page-section page-section--alt section-border-top">
                 <div className="container">
                     <div className="t-section-label"><span className="t-label">Aylık Bakım Paketleri</span></div>
                     <h2 className="t-heading" style={{ marginBottom: "16px" }}>
                         Projeniz Bittikten Sonra da Yanınızdayız
                     </h2>
-                    <p style={{ color: "var(--t-2)", marginBottom: "52px", maxWidth: "540px", lineHeight: 1.8 }}>
-                        Hosting, güncelleme, SEO takibi ve teknik destek tek pakette.
-                        Aylık ödeme — her ayın 1'inde peşinen. 15 gün önceden iptal bildirimi yeterli.
+                    <p style={{ color: "var(--t-2)", marginBottom: "28px", maxWidth: "580px", lineHeight: 1.8 }}>
+                        Hosting, SSL, güncelleme, SEO takibi ve teknik destek tek pakette —
+                        hepsi bizden. Aylık ödeme, 15 gün önceden iptal bildirimi yeterli.
                     </p>
+
+                    {/* Bakım Dahil Olanlar Özet */}
+                    <div style={{
+                        display: "flex", flexWrap: "wrap", gap: "8px",
+                        marginBottom: "44px", padding: "14px 18px",
+                        background: "rgba(200,168,75,0.05)",
+                        border: "1px solid rgba(200,168,75,0.15)",
+                        borderRadius: "10px",
+                    }}>
+                        <span style={{ fontSize: "11px", fontFamily: "var(--f-mono)", color: "var(--t-4)", textTransform: "uppercase", letterSpacing: "0.1em", alignSelf: "center", marginRight: "4px" }}>
+                            Tüm paketlerde →
+                        </span>
+                        {[
+                            "🖥️ Hosting bizden",
+                            "🔒 SSL bizden",
+                            "💾 Otomatik yedekleme",
+                            "📡 7/24 uptime izleme",
+                            "💬 WhatsApp destek",
+                        ].map(item => (
+                            <span key={item} style={{
+                                padding: "4px 11px", borderRadius: "100px",
+                                background: "rgba(200,168,75,0.08)",
+                                border: "1px solid rgba(200,168,75,0.2)",
+                                fontSize: "12px", color: "var(--t-2)",
+                            }}>
+                                {item}
+                            </span>
+                        ))}
+                    </div>
 
                     {maintLoading ? (
                         <div style={{ textAlign: "center", padding: "40px 0" }}>
@@ -758,22 +948,36 @@ export default function Pricing() {
                                         </div>
                                         <span className="maint-card__badge">{m.badgeText}</span>
                                         <h3>{m.name}</h3>
+
+                                        {/* Fiyat — varsa göster, yoksa teklif al */}
                                         <div className="maint-card__price">
-                                            {priceNum ? formatPrice(priceNum) : "—"}<span>/ay</span>
+                                            {priceNum ? (
+                                                <>{formatPrice(priceNum)}<span>/ay</span></>
+                                            ) : (
+                                                <span style={{
+                                                    fontSize: "14px", fontWeight: 700,
+                                                    color: "var(--gold)", fontFamily: "var(--f-display)",
+                                                }}>
+                                                    Teklif için iletişime geçin
+                                                </span>
+                                            )}
                                         </div>
+
                                         <div className="maint-card__ideal">{m.idealFor}</div>
+
                                         {sortedFeatures.map((f, fi) => (
                                             <div key={fi} className="maint-card__feature">
                                                 <Check size={12} strokeWidth={2.5} style={{ color: "var(--gold)", flexShrink: 0 }} />
                                                 {f.featureText}
                                             </div>
                                         ))}
+
                                         <Link
                                             to="/iletisim"
                                             className={`btn ${isBest ? "btn--primary" : "btn--outline"} btn--full btn--mono btn--sm`}
                                             style={{ marginTop: "20px" }}
                                         >
-                                            Bu Paketi İstiyorum →
+                                            {isBest ? "Bu Paketi İstiyorum →" : "Teklif Al →"}
                                         </Link>
                                     </div>
                                 );
@@ -782,7 +986,12 @@ export default function Pricing() {
                     )}
 
                     <div className="maint-footer-note">
-                        {["Aylık ödeme", "15 gün önceden iptal", "Domain her zaman sizin adınıza"].map(t => (
+                        {[
+                            "Aylık ödeme — taahhüt yok",
+                            "15 gün önceden iptal yeterli",
+                            "Domain her zaman sizin adınıza",
+                            "Hosting & SSL bizden — ekstra ödeme yok",
+                        ].map(t => (
                             <span key={t}>
                                 <Check size={11} strokeWidth={2.5} style={{ color: "var(--gold)", display: "inline", marginRight: 5 }} />
                                 {t}

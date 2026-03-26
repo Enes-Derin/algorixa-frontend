@@ -6,11 +6,477 @@ import { fetchActiveCampaign } from "../redux/campaignSlice";
 import { fetchPublicPlans } from "../redux/maintenanceSlice";
 import {
     Check, ChevronDown, ChevronUp, Zap, Clock, Shield,
-    Star, Package, Code2, Cpu, Layout, Server, Timer,
-    BarChart3, RefreshCw, AlertCircle, MessageCircle,
-    Building2, Home, Coffee, Wrench
+    Timer, BarChart3, RefreshCw, AlertCircle,
 } from "lucide-react";
 import SEO from "../components/Seo";
+
+// ─── Inline Styles ────────────────────────────────────────────────────────────
+const inlineStyles = `
+  @keyframes spin { to { transform: rotate(360deg); } }
+
+  .prc-plans {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+    margin-bottom: 48px;
+  }
+  @media (max-width: 1024px) {
+    .prc-plans { grid-template-columns: repeat(2, 1fr); }
+  }
+  @media (max-width: 640px) {
+    .prc-plans { grid-template-columns: 1fr; }
+  }
+
+  .prc-card {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    padding: 24px;
+    background: var(--bg-1);
+    border: 1px solid var(--b-faint);
+    border-radius: 14px;
+    cursor: pointer;
+    transition: border-color 0.2s, box-shadow 0.2s;
+  }
+  .prc-card:hover {
+    border-color: rgba(200,168,75,0.35);
+    box-shadow: 0 4px 24px rgba(0,0,0,0.18);
+  }
+  .prc-card--selected {
+    border-color: rgba(200,168,75,0.55);
+    box-shadow: 0 0 0 1px rgba(200,168,75,0.25), 0 6px 32px rgba(0,0,0,0.22);
+  }
+
+  .prc-card__discount {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    position: absolute;
+    top: 16px;
+    right: 16px;
+    padding: 3px 8px;
+    border-radius: 100px;
+    background: rgba(200,168,75,0.15);
+    border: 1px solid rgba(200,168,75,0.3);
+    font-size: 11px;
+    font-weight: 600;
+    color: var(--gold);
+    font-family: var(--f-mono);
+  }
+
+  .prc-card__badge {
+    display: inline-block;
+    font-size: 10px;
+    font-family: var(--f-mono);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 10px;
+  }
+
+  .prc-card__name {
+    font-size: 18px;
+    font-weight: 700;
+    color: var(--t-1);
+    margin: 0 0 6px;
+    font-family: var(--f-display);
+    line-height: 1.3;
+  }
+
+  .prc-card__tagline {
+    font-size: 13px;
+    color: var(--t-3);
+    margin: 0 0 18px;
+    line-height: 1.5;
+  }
+
+  .prc-card__price-area {
+    margin-bottom: 18px;
+    padding-bottom: 16px;
+    border-bottom: 1px solid var(--b-faint);
+  }
+
+  .prc-card__orig {
+    font-size: 13px;
+    color: var(--t-4);
+    text-decoration: line-through;
+    margin-bottom: 2px;
+    font-family: var(--f-mono);
+  }
+
+  .prc-card__price {
+    font-size: 26px;
+    font-weight: 800;
+    color: var(--t-1);
+    font-family: var(--f-display);
+    line-height: 1.1;
+    margin-bottom: 4px;
+  }
+
+  .prc-card__note {
+    font-size: 11px;
+    color: var(--t-4);
+    font-family: var(--f-mono);
+    letter-spacing: 0.03em;
+  }
+
+  .prc-card__savings {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    margin-top: 6px;
+    padding: 3px 8px;
+    background: rgba(200,168,75,0.1);
+    border-radius: 100px;
+    font-size: 11px;
+    color: var(--gold);
+    font-family: var(--f-mono);
+  }
+
+  .prc-card__features {
+    list-style: none;
+    padding: 0;
+    margin: 0 0 14px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    flex: 1;
+  }
+
+  .prc-card__feature {
+    display: flex;
+    align-items: flex-start;
+    gap: 8px;
+    font-size: 13px;
+    color: var(--t-2);
+    line-height: 1.45;
+  }
+
+  .prc-card__detail-toggle {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: 12px;
+    color: var(--t-4);
+    font-family: var(--f-mono);
+    letter-spacing: 0.04em;
+    padding: 6px 0;
+    margin-bottom: 8px;
+    transition: color 0.15s;
+  }
+  .prc-card__detail-toggle:hover { color: var(--gold); }
+
+  .prc-card__expanded {
+    padding: 14px;
+    background: rgba(255,255,255,0.02);
+    border: 1px solid var(--b-faint);
+    border-radius: 8px;
+    margin-bottom: 14px;
+  }
+
+  .prc-card__expanded-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 7px;
+    font-size: 12px;
+    color: var(--t-2);
+    line-height: 1.5;
+    margin-bottom: 6px;
+  }
+
+  .prc-card__note-box {
+    display: flex;
+    align-items: flex-start;
+    gap: 7px;
+    padding: 9px 11px;
+    border-radius: 8px;
+    font-size: 12px;
+    line-height: 1.55;
+    margin-bottom: 10px;
+  }
+  .prc-card__note-box--success {
+    background: rgba(34,197,94,0.06);
+    border: 1px solid rgba(34,197,94,0.18);
+    color: rgba(134,239,172,0.9);
+  }
+  .prc-card__note-box--warn {
+    background: rgba(234,179,8,0.07);
+    border: 1px solid rgba(234,179,8,0.2);
+    color: rgba(253,224,71,0.9);
+  }
+  .prc-card__note-box--neutral {
+    background: rgba(255,255,255,0.03);
+    border: 1px solid var(--b-faint);
+    color: var(--t-3);
+  }
+
+  .prc-card__cta {
+    display: block;
+    text-align: center;
+    margin-top: auto;
+    margin-bottom: 0;
+  }
+
+  .prc-card__meta-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-top: 14px;
+    padding-top: 12px;
+    border-top: 1px solid var(--b-faint);
+  }
+
+  .prc-card__meta-item {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    font-size: 11px;
+    font-family: var(--f-mono);
+    color: var(--t-4);
+    letter-spacing: 0.03em;
+  }
+
+  /* ── Promo Bar ── */
+  .prc-promo-bar {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 20px;
+    padding: 20px 24px;
+    margin-bottom: 36px;
+    background: rgba(200,168,75,0.06);
+    border: 1px solid rgba(200,168,75,0.25);
+    border-radius: 12px;
+  }
+  .prc-promo-bar__left { flex: 1; min-width: 240px; }
+  .prc-promo-bar__title {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 15px;
+    font-weight: 700;
+    color: var(--t-1);
+    margin-bottom: 6px;
+    font-family: var(--f-display);
+  }
+  .prc-promo-bar__desc {
+    font-size: 13px;
+    color: var(--t-3);
+    margin: 0 0 10px;
+    line-height: 1.6;
+  }
+  .prc-promo-bar__highlights {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+  .prc-promo-highlight {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    font-size: 11px;
+    font-family: var(--f-mono);
+    color: var(--t-3);
+  }
+
+  /* ── Countdown ── */
+  .prc-countdown {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    flex-shrink: 0;
+  }
+  .prc-countdown__item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 3px;
+  }
+  .prc-countdown__box {
+    min-width: 42px;
+    padding: 6px 8px;
+    background: rgba(200,168,75,0.1);
+    border: 1px solid rgba(200,168,75,0.25);
+    border-radius: 6px;
+    font-size: 18px;
+    font-weight: 800;
+    color: var(--gold);
+    font-family: var(--f-mono);
+    text-align: center;
+    line-height: 1;
+  }
+  .prc-countdown__label {
+    font-size: 9px;
+    font-family: var(--f-mono);
+    color: var(--t-4);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+  }
+  .prc-countdown__sep {
+    font-size: 18px;
+    font-weight: 800;
+    color: var(--gold);
+    font-family: var(--f-mono);
+    margin-bottom: 14px;
+    opacity: 0.6;
+  }
+
+  /* ── Policy ── */
+  .prc-policy {
+    padding: 24px;
+    border: 1px solid var(--b-faint);
+    border-radius: 12px;
+    margin-bottom: 40px;
+  }
+  .prc-policy__label {
+    display: flex;
+    align-items: center;
+    gap: 7px;
+    font-size: 11px;
+    font-family: var(--f-mono);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--t-4);
+    margin-bottom: 14px;
+  }
+  .prc-policy__list {
+    list-style: none;
+    padding: 0;
+    margin: 0 0 12px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+  .prc-policy__item {
+    display: flex;
+    align-items: flex-start;
+    gap: 8px;
+    font-size: 13px;
+    color: var(--t-2);
+    line-height: 1.5;
+  }
+  .prc-policy__foot {
+    font-size: 12px;
+    color: var(--t-4);
+    font-family: var(--f-mono);
+    margin: 0;
+  }
+
+  /* ── CTA Bar ── */
+  .prc-cta-bar {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 20px;
+    padding: 28px 32px;
+    background: rgba(200,168,75,0.06);
+    border: 1px solid rgba(200,168,75,0.2);
+    border-radius: 14px;
+  }
+  .prc-cta-bar__text h2 {
+    font-size: 20px;
+    font-weight: 700;
+    color: var(--t-1);
+    margin: 0 0 6px;
+    font-family: var(--f-display);
+  }
+  .prc-cta-bar__text p {
+    font-size: 13px;
+    color: var(--t-3);
+    margin: 0;
+    line-height: 1.6;
+  }
+
+  /* ── Maintenance Grid ── */
+  .maint-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+    margin-bottom: 32px;
+  }
+  @media (max-width: 1024px) {
+    .maint-grid { grid-template-columns: repeat(2, 1fr); }
+  }
+  @media (max-width: 640px) {
+    .maint-grid { grid-template-columns: 1fr; }
+  }
+
+  .maint-card {
+    padding: 22px;
+    background: var(--bg-1);
+    border: 1px solid var(--b-faint);
+    border-radius: 14px;
+    display: flex;
+    flex-direction: column;
+  }
+  .maint-card--best {
+    border-color: rgba(200,168,75,0.4);
+    box-shadow: 0 0 0 1px rgba(200,168,75,0.15);
+  }
+  .maint-card__badge {
+    display: inline-block;
+    font-size: 10px;
+    font-family: var(--f-mono);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 8px;
+  }
+  .maint-card h3 {
+    font-size: 17px;
+    font-weight: 700;
+    color: var(--t-1);
+    margin: 0 0 10px;
+    font-family: var(--f-display);
+  }
+  .maint-card__price {
+    font-size: 24px;
+    font-weight: 800;
+    color: var(--t-1);
+    font-family: var(--f-display);
+    margin-bottom: 6px;
+    line-height: 1.1;
+  }
+  .maint-card__price span {
+    font-size: 14px;
+    font-weight: 400;
+    color: var(--t-4);
+  }
+  .maint-card__ideal {
+    font-size: 12px;
+    color: var(--t-4);
+    line-height: 1.55;
+    margin-bottom: 14px;
+    padding-bottom: 14px;
+    border-bottom: 1px solid var(--b-faint);
+  }
+  .maint-card__feature {
+    display: flex;
+    align-items: flex-start;
+    gap: 8px;
+    font-size: 12px;
+    color: var(--t-2);
+    line-height: 1.5;
+    margin-bottom: 7px;
+  }
+
+  /* ── Maintenance Footer Note ── */
+  .maint-footer-note {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 16px;
+    padding: 14px 0 0;
+    border-top: 1px solid var(--b-faint);
+    font-size: 12px;
+    color: var(--t-4);
+    font-family: var(--f-mono);
+  }
+`;
 
 // ─── Video Hero ───────────────────────────────────────────────────────────────
 function VideoHero() {
@@ -62,7 +528,8 @@ function VideoHero() {
                 <div style={{
                     position: "absolute", top: "50%", left: "50%",
                     transform: "translate(-50%, -50%)", zIndex: 5,
-                    color: "rgba(255,255,255,0.6)", fontSize: "14px", fontWeight: 500
+                    color: "rgba(255,255,255,0.6)", fontSize: "14px", fontWeight: 500,
+                    textAlign: "center",
                 }}>
                     <div style={{
                         width: "40px", height: "40px", margin: "0 auto 12px",
@@ -75,15 +542,6 @@ function VideoHero() {
             )}
         </div>
     );
-}
-
-// ─── Icon Map ─────────────────────────────────────────────────────────────────
-const ICON_MAP = {
-    Layout, Package, Star, Cpu, Code2, Server, BarChart3,
-    RefreshCw, Zap, Shield, Clock, Timer, Building2, Home, Coffee, Wrench
-};
-function resolveIcon(name) {
-    return (name && ICON_MAP[name]) || Package;
 }
 
 // ─── Helpers ──────────────────────────────────────────────────────────────────
@@ -182,11 +640,9 @@ const PLAN_SECTIONS = {
 
 // ─── Fallback Plans ───────────────────────────────────────────────────────────
 const FALLBACK_PLANS = [
-    // 1. LANDING PAGE
     {
         _fallback: true,
         packageCode: "LANDING",
-        iconName: "Layout",
         badgeText: "Hızlı Başlangıç",
         discountPercentage: 0,
         isFeatured: false,
@@ -214,12 +670,9 @@ const FALLBACK_PLANS = [
             { noteType: "SUCCESS", noteText: "Hosting + SSL + Analytics kurulumu fiyata dahildir. Siz sadece domain alırsınız." },
         ],
     },
-
-    // 2. İNŞAAT FİRMASI
     {
         _fallback: true,
         packageCode: "INSAAT",
-        iconName: "Building2",
         badgeText: "İnşaat & Yapı",
         discountPercentage: 0,
         isFeatured: false,
@@ -247,15 +700,11 @@ const FALLBACK_PLANS = [
         ],
         notes: [
             { noteType: "SUCCESS", noteText: "Müşteri; proje ekler, fotoğraf yükler, hizmetleri düzenler — geliştirici aramak yok." },
-            { noteType: "NEUTRAL", noteText: "Hosting + SSL + Analytics dahil. Siz sadece domain alırsınız." },
         ],
     },
-
-    // 3. EMLAK (FEATURED)
     {
         _fallback: true,
         packageCode: "EMLAK",
-        iconName: "Home",
         badgeText: "Emlak & Gayrimenkul",
         discountPercentage: 0,
         isFeatured: false,
@@ -284,15 +733,11 @@ const FALLBACK_PLANS = [
         ],
         notes: [
             { noteType: "SUCCESS", noteText: "İlan ekle, düzenle, sil — hepsi admin panelinden. Geliştirici bağımlılığı sıfır." },
-            { noteType: "NEUTRAL", noteText: "Hosting + SSL + Analytics dahil. Siz sadece domain alırsınız." },
         ],
     },
-
-    // 4. KAFE & RESTORAN
     {
         _fallback: true,
         packageCode: "KAFE",
-        iconName: "Coffee",
         badgeText: "Kafe & Restoran",
         discountPercentage: 0,
         isFeatured: false,
@@ -320,15 +765,11 @@ const FALLBACK_PLANS = [
         ],
         notes: [
             { noteType: "SUCCESS", noteText: "Menü fiyatını değiştirmek için geliştirici aramak yok. Admin panelinden saniyeler içinde güncelle." },
-            { noteType: "NEUTRAL", noteText: "Hosting + SSL + Analytics dahil. Siz sadece domain alırsınız." },
         ],
     },
-
-    // 5. ÖZEL YAZILIM
     {
         _fallback: true,
         packageCode: "OZEL_YAZILIM",
-        iconName: "Cpu",
         badgeText: "Bana Özel",
         discountPercentage: 0,
         isFeatured: false,
@@ -336,7 +777,7 @@ const FALLBACK_PLANS = [
         tagline: "Standart paketler yetmiyorsa.",
         originalPrice: null,
         currentPrice: null,
-        priceNote: "projeye özel fiyatlandırma",
+        priceNote: "Projeye özel fiyatlandırma",
         deliveryTime: "1–3 ay (proje bazlı)",
         revisionCount: 0,
         supportDays: 0,
@@ -361,7 +802,6 @@ const FALLBACK_MAINT = [
     {
         _fallback: true,
         planCode: "LITE",
-        iconName: "Server",
         badgeText: "Başlangıç",
         name: "Bakım Lite",
         monthlyPrice: null,
@@ -381,12 +821,11 @@ const FALLBACK_MAINT = [
     {
         _fallback: true,
         planCode: "PRO",
-        iconName: "BarChart3",
         badgeText: "En Çok Tercih",
         name: "Bakım Pro",
         monthlyPrice: null,
         idealFor: "Aktif yönetilen, sık güncellenen siteler için ideal",
-        isBestSeller: true,
+        isBestSeller: false,
         features: [
             { featureText: "Hosting bizden — siz ödemezsiniz", displayOrder: 0 },
             { featureText: "SSL sertifikası bizden — siz ödemezsiniz", displayOrder: 1 },
@@ -403,7 +842,6 @@ const FALLBACK_MAINT = [
     {
         _fallback: true,
         planCode: "PREMIUM",
-        iconName: "RefreshCw",
         badgeText: "Premium",
         name: "Bakım Premium",
         monthlyPrice: null,
@@ -489,7 +927,6 @@ function PlanSections({ sectionKey }) {
                 fontFamily: "var(--f-mono)", fontSize: "10px", letterSpacing: "0.12em",
                 textTransform: "uppercase", color: "var(--t-4)", marginBottom: "10px",
                 paddingBottom: "8px", borderBottom: "1px solid var(--b-faint)",
-                display: "flex", alignItems: "center", gap: "6px"
             }}>
                 Paket İçeriği ({sections.length} Bölüm)
             </div>
@@ -498,7 +935,7 @@ function PlanSections({ sectionKey }) {
                     fontSize: "12px", color: "var(--t-3)", lineHeight: 1.6,
                     marginBottom: "10px", padding: "7px 10px",
                     background: "rgba(200,168,75,0.04)",
-                    borderLeft: "2px solid var(--gold)", borderRadius: "0 4px 4px 0"
+                    borderLeft: "2px solid var(--gold)", borderRadius: "0 4px 4px 0",
                 }}>
                     <Check size={11} strokeWidth={2.5} style={{ color: "var(--gold)", display: "inline", marginRight: 5 }} />
                     {idealFor}
@@ -519,7 +956,7 @@ function PlanSections({ sectionKey }) {
                 <div style={{
                     fontSize: "11px", color: "var(--t-4)", padding: "5px 10px",
                     background: "var(--bg-1)", borderRadius: "6px",
-                    fontFamily: "var(--f-mono)", letterSpacing: "0.04em"
+                    fontFamily: "var(--f-mono)", letterSpacing: "0.04em",
                 }}>
                     {extraPageNote}
                 </div>
@@ -535,7 +972,7 @@ export default function Pricing() {
     const { activeCampaign } = useSelector(s => s.campaign);
     const { plans: backendPlans, loading: maintLoading } = useSelector(s => s.maintenance);
 
-    const [selected, setSelected] = useState(2);
+    const [selected, setSelected] = useState(null);
     const [expanded, setExpanded] = useState({});
     const [campaignVisible, setCampaignVisible] = useState(true);
 
@@ -565,6 +1002,8 @@ export default function Pricing() {
 
     return (
         <>
+            <style>{inlineStyles}</style>
+
             <SEO
                 title="Web Sitesi Fiyatları 2026: İnşaat, Emlak, Kafe & Özel Yazılım | Algorixa"
                 description="Sektöre özel web sitesi çözümleri: İnşaat firması, emlak & gayrimenkul, kafe & restoran ve özel yazılım paketleri. Hosting + SSL + Google Analytics bizden. İstanbul'da net kapsam, ücretsiz teklif alın."
@@ -580,13 +1019,11 @@ export default function Pricing() {
                     <div className="page-hero__eyebrow"><span className="t-label">Fiyatlandırma</span></div>
                     <h1 className="page-hero__title">
                         Sektörünüze Özel,<br />
-                        <em>Her Şey Dahil</em>
-                        Çözümler
+                        <em>Her Şey Dahil</em> Çözümler
                     </h1>
                     <p className="page-hero__desc">
                         Hosting, SSL, Google Analytics ve KVKK sayfası tüm paketlerde bizden.
-                        Siz sadece domaininizi alırsınız.
-                        Gizli ücret yok, sürpriz yok.
+                        Siz sadece domaininizi alırsınız. Gizli ücret yok, sürpriz yok.
                     </p>
                 </div>
             </section>
@@ -596,38 +1033,36 @@ export default function Pricing() {
 
                     {/* ── Her Şey Dahil Özet Bant ── */}
                     <div style={{
-                        display: "flex", flexWrap: "wrap", gap: "10px",
-                        padding: "16px 20px", marginBottom: "40px",
+                        display: "flex", flexWrap: "wrap", gap: "8px",
+                        padding: "14px 18px", marginBottom: "40px",
                         background: "rgba(200,168,75,0.06)",
                         border: "1px solid rgba(200,168,75,0.2)",
-                        borderRadius: "12px",
+                        borderRadius: "12px", alignItems: "center",
                     }}>
-                        <span style={{ fontSize: "11px", fontFamily: "var(--f-mono)", color: "var(--t-4)", textTransform: "uppercase", letterSpacing: "0.1em", marginRight: "4px", alignSelf: "center" }}>
+                        <span style={{
+                            fontSize: "11px", fontFamily: "var(--f-mono)", color: "var(--t-4)",
+                            textTransform: "uppercase", letterSpacing: "0.1em",
+                            marginRight: "4px", whiteSpace: "nowrap",
+                        }}>
                             Her pakete dahil →
                         </span>
-                        {[
-                            "SSL Sertifikası",
-                            "Hosting",
-                            "Google Analytics",
-                            "Hız Optimizasyonu",
-                            "KVKK Sayfası",
-                            "Domain Yardımı",
-                            "Mobil Uyumluluk",
-                            "WhatsApp Entegrasyonu",
+                        {["SSL Sertifikası", "Hosting", "Google Analytics", "Hız Optimizasyonu",
+                            "KVKK Sayfası", "Domain Yardımı", "Mobil Uyumluluk", "WhatsApp Entegrasyonu",
                         ].map(item => (
                             <span key={item} style={{
-                                display: "inline-flex", alignItems: "center", gap: "5px",
-                                padding: "5px 12px", borderRadius: "100px",
+                                display: "inline-flex", alignItems: "center", gap: "4px",
+                                padding: "4px 10px", borderRadius: "100px",
                                 background: "rgba(200,168,75,0.1)",
-                                border: "1px solid rgba(200,168,75,0.25)",
-                                fontSize: "12px", color: "var(--t-2)",
+                                border: "1px solid rgba(200,168,75,0.22)",
+                                fontSize: "12px", color: "var(--t-2)", whiteSpace: "nowrap",
                             }}>
+                                <Check size={10} strokeWidth={2.5} style={{ color: "var(--gold)" }} />
                                 {item}
                             </span>
                         ))}
                     </div>
 
-                    {/* ── Kampanya barı ── */}
+                    {/* ── Kampanya Barı ── */}
                     {hasCampaign && (
                         <div className="prc-promo-bar">
                             <div className="prc-promo-bar__left">
@@ -655,39 +1090,42 @@ export default function Pricing() {
                         </div>
                     )}
 
-                    {/* ── Paket kartları ── */}
+                    {/* ── Paket Kartları ── */}
                     {pkgLoading ? (
                         <div style={{ textAlign: "center", padding: "60px 0" }}>
                             <div style={{
                                 width: "40px", height: "40px", margin: "0 auto",
                                 border: "3px solid rgba(255,255,255,0.1)",
                                 borderTop: "3px solid rgba(200,168,75,0.8)",
-                                borderRadius: "50%", animation: "spin 1s linear infinite"
+                                borderRadius: "50%", animation: "spin 1s linear infinite",
                             }} />
                         </div>
                     ) : (
                         <div className="prc-plans">
                             {packages.map((p, i) => {
-                                const PIcon = resolveIcon(p.iconName);
                                 const isOpen = !!expanded[i];
+                                const isSelected = selected === i;
                                 const sectionKey = resolveSectionKey(p.packageCode);
 
                                 const sortedFeatures = [...(p.features || [])].sort(
                                     (a, b) => (a.displayOrder || 0) - (b.displayOrder || 0)
                                 );
                                 const mainFeatures = sortedFeatures.filter(f => f.isMainFeature);
-                                const displayFeatures = mainFeatures.length > 0 ? mainFeatures : sortedFeatures.slice(0, 6);
+                                const displayFeatures = (mainFeatures.length > 0 ? mainFeatures : sortedFeatures).slice(0, 6);
+                                const hiddenCount = sortedFeatures.length - 6;
 
                                 const origNum = toNum(p.originalPrice);
                                 const currNum = toNum(p.currentPrice);
                                 const savingsNum = origNum && currNum ? origNum - currNum : null;
                                 const discount = p.discountPercentage > 0 ? `%${p.discountPercentage}` : null;
 
+                                const hasOzel = p.packageCode?.toUpperCase().includes("OZEL");
+
                                 return (
                                     <div
                                         key={p.id || p.packageCode || i}
-                                        className={`prc-card${p.isFeatured ? " prc-card--featured" : ""}${selected === i ? " prc-card--selected" : ""}`}
-                                        onClick={() => setSelected(i)}
+                                        className={`prc-card${isSelected ? " prc-card--selected" : ""}`}
+                                        onClick={() => setSelected(isSelected ? null : i)}
                                     >
                                         {discount && (
                                             <div className="prc-card__discount">
@@ -695,25 +1133,18 @@ export default function Pricing() {
                                                 {discount}
                                             </div>
                                         )}
-                                        {p.isFeatured && <div className="prc-card__featured-bar" />}
-
-                                        <div className="prc-card__icon-wrap">
-                                            <PIcon size={22} strokeWidth={1.4} />
-                                        </div>
 
                                         <div className="prc-card__badge">{p.badgeText}</div>
                                         <h3 className="prc-card__name">{p.name}</h3>
                                         <p className="prc-card__tagline">{p.tagline}</p>
 
-                                        {/* Fiyat Alanı */}
+                                        {/* ── Fiyat ── */}
                                         <div className="prc-card__price-area">
                                             {origNum && (
                                                 <div className="prc-card__orig">{formatPrice(origNum)}</div>
                                             )}
                                             {currNum ? (
-                                                <div className={`prc-card__price${p.isFeatured ? " prc-card__price--gold" : ""}`}>
-                                                    {formatPrice(currNum)}
-                                                </div>
+                                                <div className="prc-card__price">{formatPrice(currNum)}</div>
                                             ) : (
                                                 <div style={{
                                                     fontSize: "15px", fontWeight: 700,
@@ -734,7 +1165,7 @@ export default function Pricing() {
                                             )}
                                         </div>
 
-                                        {/* Özellikler */}
+                                        {/* ── Özellikler ── */}
                                         <ul className="prc-card__features">
                                             {displayFeatures.map((f, fi) => (
                                                 <li key={fi} className="prc-card__feature">
@@ -742,9 +1173,18 @@ export default function Pricing() {
                                                     {f.featureText}
                                                 </li>
                                             ))}
+                                            {hiddenCount > 0 && !isOpen && (
+                                                <li style={{
+                                                    fontSize: "11px", color: "var(--t-4)",
+                                                    fontFamily: "var(--f-mono)", paddingLeft: "20px",
+                                                    letterSpacing: "0.04em",
+                                                }}>
+                                                    +{hiddenCount} özellik daha →
+                                                </li>
+                                            )}
                                         </ul>
 
-                                        {/* Detayları Gör */}
+                                        {/* ── Detayları Gör ── */}
                                         <button
                                             className="prc-card__detail-toggle"
                                             onClick={e => { e.stopPropagation(); toggle(i); }}
@@ -752,23 +1192,22 @@ export default function Pricing() {
                                         >
                                             {isOpen
                                                 ? <><ChevronUp size={13} strokeWidth={2} /> Detayları Gizle</>
-                                                : <><ChevronDown size={13} strokeWidth={2} /> Detayları Gör</>
+                                                : <><ChevronDown size={13} strokeWidth={2} /> Tüm Detayları Gör</>
                                             }
                                         </button>
 
-                                        {/* Genişletilmiş Detay */}
+                                        {/* ── Genişletilmiş İçerik ── */}
                                         {isOpen && (
                                             <div className="prc-card__expanded">
                                                 <PlanSections sectionKey={sectionKey} />
-
-                                                {sortedFeatures.length > displayFeatures.length && (
-                                                    <div style={{ marginBottom: "14px" }}>
+                                                {hiddenCount > 0 && (
+                                                    <div style={{ marginBottom: "6px" }}>
                                                         <div style={{
                                                             fontFamily: "var(--f-mono)", fontSize: "10px",
                                                             letterSpacing: "0.12em", textTransform: "uppercase",
-                                                            color: "var(--t-4)", marginBottom: "8px"
+                                                            color: "var(--t-4)", marginBottom: "8px",
                                                         }}>
-                                                            Tüm Özellikler
+                                                            Tüm Özellikler ({sortedFeatures.length})
                                                         </div>
                                                         {sortedFeatures.map((f, fi) => (
                                                             <div key={fi} className="prc-card__expanded-item">
@@ -778,72 +1217,64 @@ export default function Pricing() {
                                                         ))}
                                                     </div>
                                                 )}
-
-                                                <div style={{ borderTop: "1px solid var(--b-faint)", paddingTop: "12px", display: "flex", flexDirection: "column", gap: "8px" }}>
-                                                    {p.deliveryTime && (
-                                                        <div className="prc-card__expanded-item">
-                                                            <Timer size={11} strokeWidth={1.5} style={{ color: "var(--t-4)", flexShrink: 0 }} />
-                                                            Teslim: {p.deliveryTime}
-                                                        </div>
-                                                    )}
-                                                    {p.revisionCount > 0 && (
-                                                        <div className="prc-card__expanded-item">
-                                                            <Clock size={11} strokeWidth={1.5} style={{ color: "var(--t-4)", flexShrink: 0 }} />
-                                                            {p.revisionCount} revizyon turu dahil
-                                                        </div>
-                                                    )}
-                                                    {p.supportDays > 0 && (
-                                                        <div className="prc-card__expanded-item">
-                                                            <Shield size={11} strokeWidth={1.5} style={{ color: "var(--t-4)", flexShrink: 0 }} />
-                                                            {p.supportDays} gün teknik destek
-                                                        </div>
-                                                    )}
-                                                </div>
                                             </div>
                                         )}
 
-                                        {/* Notlar */}
-                                        {(p.notes || []).map((note, ni) => {
-                                            const nType = resolveNoteType(note.noteType);
-                                            return (
-                                                <div key={ni} className={`prc-card__note-box prc-card__note-box--${nType}`}>
-                                                    {nType === "warn" && <AlertCircle size={13} strokeWidth={1.5} style={{ flexShrink: 0 }} />}
-                                                    {nType === "success" && <Check size={13} strokeWidth={2} style={{ flexShrink: 0 }} />}
-                                                    {note.noteText}
-                                                </div>
-                                            );
-                                        })}
+                                        {/* ── Notlar ── */}
+                                        {(p.notes || [])
+                                            .filter(n => {
+                                                const t = resolveNoteType(n.noteType);
+                                                return t === "success" || t === "warn" || t === "neutral";
+                                            })
+                                            .map((note, ni) => {
+                                                const nType = resolveNoteType(note.noteType);
+                                                return (
+                                                    <div key={ni} className={`prc-card__note-box prc-card__note-box--${nType}`}>
+                                                        {nType === "warn" && <AlertCircle size={13} strokeWidth={1.5} style={{ flexShrink: 0 }} />}
+                                                        {nType === "success" && <Check size={13} strokeWidth={2} style={{ flexShrink: 0 }} />}
+                                                        {note.noteText}
+                                                    </div>
+                                                );
+                                            })}
 
-                                        {/* CTA Butonu */}
+                                        {/* ── CTA ── */}
                                         <Link
                                             to="/iletisim"
-                                            className={`prc-card__cta btn ${p.isFeatured ? "btn--primary" : "btn--outline"}`}
+                                            className="prc-card__cta btn btn--outline"
                                             onClick={e => e.stopPropagation()}
                                         >
-                                            {p.isFeatured ? "Ücretsiz Teklif Al" : "Fiyat Teklifi İste"}
+                                            Fiyat Teklifi İste
                                         </Link>
 
-                                        {/* Kart Footer */}
-                                        <div className="prc-card__footer">
-                                            {p.deliveryTime && (
-                                                <span>
-                                                    <Timer size={10} strokeWidth={2} style={{ color: "var(--gold)", display: "inline", marginRight: 4 }} />
-                                                    {p.deliveryTime}
-                                                </span>
-                                            )}
-                                            {p.supportDays > 0 && (
-                                                <span>
-                                                    <Shield size={10} strokeWidth={2} style={{ color: "var(--gold)", display: "inline", marginRight: 4 }} />
-                                                    {p.supportDays} Gün Destek
-                                                </span>
-                                            )}
-                                            {p.packageCode?.toUpperCase().includes("OZEL") && (
-                                                <span>
-                                                    <Check size={10} strokeWidth={2.5} style={{ color: "var(--gold)", display: "inline", marginRight: 3 }} />
-                                                    Süresiz Premium Destek
-                                                </span>
-                                            )}
-                                        </div>
+                                        {/* ── Meta Bilgiler — CTA altında ── */}
+                                        {(p.deliveryTime || p.revisionCount > 0 || p.supportDays > 0 || hasOzel) && (
+                                            <div className="prc-card__meta-row">
+                                                {p.deliveryTime && (
+                                                    <span className="prc-card__meta-item">
+                                                        <Timer size={10} strokeWidth={2} style={{ color: "var(--gold)" }} />
+                                                        Teslim: {p.deliveryTime}
+                                                    </span>
+                                                )}
+                                                {p.revisionCount > 0 && (
+                                                    <span className="prc-card__meta-item">
+                                                        <Clock size={10} strokeWidth={2} style={{ color: "var(--gold)" }} />
+                                                        {p.revisionCount} revizyon hakkı
+                                                    </span>
+                                                )}
+                                                {p.supportDays > 0 && (
+                                                    <span className="prc-card__meta-item">
+                                                        <Shield size={10} strokeWidth={2} style={{ color: "var(--gold)" }} />
+                                                        {p.supportDays} gün teknik destek
+                                                    </span>
+                                                )}
+                                                {hasOzel && (
+                                                    <span className="prc-card__meta-item">
+                                                        <Check size={10} strokeWidth={2.5} style={{ color: "var(--gold)" }} />
+                                                        Süresiz premium destek
+                                                    </span>
+                                                )}
+                                            </div>
+                                        )}
                                     </div>
                                 );
                             })}
@@ -864,9 +1295,7 @@ export default function Pricing() {
                                 </li>
                             ))}
                         </ul>
-                        <p className="prc-policy__foot">
-                            Net kapsam, net fiyat. Sonradan sürpriz yok.
-                        </p>
+                        <p className="prc-policy__foot">Net kapsam, net fiyat. Sonradan sürpriz yok.</p>
                     </div>
 
                     {/* ── CTA Bant ── */}
@@ -894,29 +1323,27 @@ export default function Pricing() {
                         hepsi bizden. Aylık ödeme, 15 gün önceden iptal bildirimi yeterli.
                     </p>
 
-                    {/* Bakım Dahil Olanlar Özet */}
+                    {/* Bakım Dahil Olanlar */}
                     <div style={{
                         display: "flex", flexWrap: "wrap", gap: "8px",
-                        marginBottom: "44px", padding: "14px 18px",
+                        marginBottom: "44px", padding: "12px 16px",
                         background: "rgba(200,168,75,0.05)",
                         border: "1px solid rgba(200,168,75,0.15)",
-                        borderRadius: "10px",
+                        borderRadius: "10px", alignItems: "center",
                     }}>
-                        <span style={{ fontSize: "11px", fontFamily: "var(--f-mono)", color: "var(--t-4)", textTransform: "uppercase", letterSpacing: "0.1em", alignSelf: "center", marginRight: "4px" }}>
+                        <span style={{
+                            fontSize: "11px", fontFamily: "var(--f-mono)", color: "var(--t-4)",
+                            textTransform: "uppercase", letterSpacing: "0.1em",
+                            marginRight: "4px", whiteSpace: "nowrap",
+                        }}>
                             Tüm paketlerde →
                         </span>
-                        {[
-                            "Hosting bizden",
-                            "SSL bizden",
-                            "Otomatik yedekleme",
-                            "7/24 uptime izleme",
-                            "WhatsApp destek",
-                        ].map(item => (
+                        {["Hosting bizden", "SSL bizden", "Otomatik yedekleme", "7/24 uptime izleme", "WhatsApp destek"].map(item => (
                             <span key={item} style={{
-                                padding: "4px 11px", borderRadius: "100px",
+                                padding: "3px 10px", borderRadius: "100px",
                                 background: "rgba(200,168,75,0.08)",
                                 border: "1px solid rgba(200,168,75,0.2)",
-                                fontSize: "12px", color: "var(--t-2)",
+                                fontSize: "12px", color: "var(--t-2)", whiteSpace: "nowrap",
                             }}>
                                 {item}
                             </span>
@@ -929,13 +1356,12 @@ export default function Pricing() {
                                 width: "36px", height: "36px", margin: "0 auto",
                                 border: "3px solid rgba(255,255,255,0.1)",
                                 borderTop: "3px solid rgba(200,168,75,0.8)",
-                                borderRadius: "50%", animation: "spin 1s linear infinite"
+                                borderRadius: "50%", animation: "spin 1s linear infinite",
                             }} />
                         </div>
                     ) : (
                         <div className="maint-grid">
                             {maintPlans.map((m, mi) => {
-                                const MIcon = resolveIcon(m.iconName);
                                 const isBest = m.isBestSeller;
                                 const priceNum = toNum(m.monthlyPrice);
                                 const sortedFeatures = [...(m.features || [])].sort(
@@ -943,13 +1369,8 @@ export default function Pricing() {
                                 );
                                 return (
                                     <div key={m.id || m.planCode || mi} className={`maint-card${isBest ? " maint-card--best" : ""}`}>
-                                        <div className="maint-card__icon">
-                                            <MIcon size={20} strokeWidth={1.4} />
-                                        </div>
                                         <span className="maint-card__badge">{m.badgeText}</span>
                                         <h3>{m.name}</h3>
-
-                                        {/* Fiyat — varsa göster, yoksa teklif al */}
                                         <div className="maint-card__price">
                                             {priceNum ? (
                                                 <>{formatPrice(priceNum)}<span>/ay</span></>
@@ -962,16 +1383,13 @@ export default function Pricing() {
                                                 </span>
                                             )}
                                         </div>
-
                                         <div className="maint-card__ideal">{m.idealFor}</div>
-
                                         {sortedFeatures.map((f, fi) => (
                                             <div key={fi} className="maint-card__feature">
                                                 <Check size={12} strokeWidth={2.5} style={{ color: "var(--gold)", flexShrink: 0 }} />
                                                 {f.featureText}
                                             </div>
                                         ))}
-
                                         <Link
                                             to="/iletisim"
                                             className={`btn ${isBest ? "btn--primary" : "btn--outline"} btn--full btn--mono btn--sm`}

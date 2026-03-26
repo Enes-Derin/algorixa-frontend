@@ -290,14 +290,14 @@ function BlogList() {
             <section className="page-section section-border-top" style={{ paddingTop: "60px" }}>
                 <div className="container">
                     {/* Filters */}
-                    <div className="blg-filters">
+                    {/* <div className="blg-filters">
                         {CATS.map(c => (
                             <button key={c} className={`blg-filter-btn${cat === c ? " active" : ""}`} onClick={() => setCat(c)}>
                                 {cat === c && <Sparkles size={11} strokeWidth={2} />}
                                 {c}
                             </button>
                         ))}
-                    </div>
+                    </div> */}
 
                     {/* Featured */}
                     {featured && (

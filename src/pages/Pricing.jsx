@@ -204,14 +204,14 @@ const FALLBACK_PLANS = [
             { featureText: "SEO uyumlu altyapı (Google görünürlüğü)", isMainFeature: true, displayOrder: 2 },
             { featureText: "WhatsApp hızlı iletişim butonu", isMainFeature: true, displayOrder: 3 },
             { featureText: "İletişim formu entegrasyonu", isMainFeature: true, displayOrder: 4 },
-            { featureText: "🔒 SSL sertifikası bizden — ekstra ödeme yok", isMainFeature: true, displayOrder: 5 },
-            { featureText: "🖥️ Hosting kurulumu bizden — ekstra ödeme yok", isMainFeature: true, displayOrder: 6 },
-            { featureText: "📊 Google Analytics kurulumu dahil", isMainFeature: true, displayOrder: 7 },
-            { featureText: "⚡ Hız optimizasyonu (Lighthouse 90+)", isMainFeature: true, displayOrder: 8 },
-            { featureText: "📋 KVKK uyumluluk sayfası dahil", isMainFeature: true, displayOrder: 9 },
+            { featureText: "SSL sertifikası bizden — ekstra ödeme yok", isMainFeature: true, displayOrder: 5 },
+            { featureText: "Hosting kurulumu bizden — ekstra ödeme yok", isMainFeature: true, displayOrder: 6 },
+            { featureText: "Google Analytics kurulumu dahil", isMainFeature: true, displayOrder: 7 },
+            { featureText: "Hız optimizasyonu (Lighthouse 90+)", isMainFeature: true, displayOrder: 8 },
+            { featureText: "KVKK uyumluluk sayfası dahil", isMainFeature: true, displayOrder: 9 },
         ],
         notes: [
-            { noteType: "SUCCESS", noteText: "Hosting + SSL + Analytics kurulumu fiyata dahildir. Siz sadece domain alırsınız (~400₺/yıl)." },
+            { noteType: "SUCCESS", noteText: "Hosting + SSL + Analytics kurulumu fiyata dahildir. Siz sadece domain alırsınız." },
         ],
     },
 
@@ -238,16 +238,16 @@ const FALLBACK_PLANS = [
             { featureText: "Hizmetler sayfası yönetimi", isMainFeature: true, displayOrder: 3 },
             { featureText: "İletişim formu + mesaj yönetim paneli", isMainFeature: true, displayOrder: 4 },
             { featureText: "WhatsApp entegrasyonu", isMainFeature: true, displayOrder: 5 },
-            { featureText: "🔒 SSL sertifikası bizden — ekstra ödeme yok", isMainFeature: true, displayOrder: 6 },
-            { featureText: "🖥️ Hosting kurulumu bizden — ekstra ödeme yok", isMainFeature: true, displayOrder: 7 },
-            { featureText: "📊 Google Analytics kurulumu dahil", isMainFeature: true, displayOrder: 8 },
-            { featureText: "⚡ Hız optimizasyonu (Lighthouse 90+)", isMainFeature: true, displayOrder: 9 },
-            { featureText: "📋 KVKK uyumluluk sayfası dahil", isMainFeature: true, displayOrder: 10 },
-            { featureText: "🌐 Domain seçimi & kurulum yardımı", isMainFeature: true, displayOrder: 11 },
+            { featureText: "SSL sertifikası bizden — ekstra ödeme yok", isMainFeature: true, displayOrder: 6 },
+            { featureText: "Hosting kurulumu bizden — ekstra ödeme yok", isMainFeature: true, displayOrder: 7 },
+            { featureText: "Google Analytics kurulumu dahil", isMainFeature: true, displayOrder: 8 },
+            { featureText: "Hız optimizasyonu (Lighthouse 90+)", isMainFeature: true, displayOrder: 9 },
+            { featureText: "KVKK uyumluluk sayfası dahil", isMainFeature: true, displayOrder: 10 },
+            { featureText: "Domain seçimi & kurulum yardımı", isMainFeature: true, displayOrder: 11 },
         ],
         notes: [
             { noteType: "SUCCESS", noteText: "Müşteri; proje ekler, fotoğraf yükler, hizmetleri düzenler — geliştirici aramak yok." },
-            { noteType: "NEUTRAL", noteText: "Hosting + SSL + Analytics dahil. Siz sadece domain alırsınız (~400₺/yıl)." },
+            { noteType: "NEUTRAL", noteText: "Hosting + SSL + Analytics dahil. Siz sadece domain alırsınız." },
         ],
     },
 
@@ -258,7 +258,7 @@ const FALLBACK_PLANS = [
         iconName: "Home",
         badgeText: "En Çok Tercih Edilen",
         discountPercentage: 0,
-        isFeatured: true,
+        isFeatured: false,
         name: "Emlak & Gayrimenkul Sitesi",
         tagline: "İlanlarınızı yönetin, müşteri kazanın.",
         originalPrice: null,
@@ -275,16 +275,16 @@ const FALLBACK_PLANS = [
             { featureText: "İletişim formu + mesaj yönetim paneli", isMainFeature: true, displayOrder: 4 },
             { featureText: "İlan görüntülenme istatistikleri", isMainFeature: true, displayOrder: 5 },
             { featureText: "WhatsApp entegrasyonu", isMainFeature: true, displayOrder: 6 },
-            { featureText: "🔒 SSL sertifikası bizden — ekstra ödeme yok", isMainFeature: true, displayOrder: 7 },
-            { featureText: "🖥️ Hosting kurulumu bizden — ekstra ödeme yok", isMainFeature: true, displayOrder: 8 },
-            { featureText: "📊 Google Analytics kurulumu dahil", isMainFeature: true, displayOrder: 9 },
-            { featureText: "⚡ Hız optimizasyonu (Lighthouse 90+)", isMainFeature: true, displayOrder: 10 },
-            { featureText: "📋 KVKK uyumluluk sayfası dahil", isMainFeature: true, displayOrder: 11 },
-            { featureText: "🌐 Domain seçimi & kurulum yardımı", isMainFeature: true, displayOrder: 12 },
+            { featureText: "SSL sertifikası bizden — ekstra ödeme yok", isMainFeature: true, displayOrder: 7 },
+            { featureText: "Hosting kurulumu bizden — ekstra ödeme yok", isMainFeature: true, displayOrder: 8 },
+            { featureText: "Google Analytics kurulumu dahil", isMainFeature: true, displayOrder: 9 },
+            { featureText: "Hız optimizasyonu (Lighthouse 90+)", isMainFeature: true, displayOrder: 10 },
+            { featureText: "KVKK uyumluluk sayfası dahil", isMainFeature: true, displayOrder: 11 },
+            { featureText: "Domain seçimi & kurulum yardımı", isMainFeature: true, displayOrder: 12 },
         ],
         notes: [
             { noteType: "SUCCESS", noteText: "İlan ekle, düzenle, sil — hepsi admin panelinden. Geliştirici bağımlılığı sıfır." },
-            { noteType: "NEUTRAL", noteText: "Hosting + SSL + Analytics dahil. Siz sadece domain alırsınız (~400₺/yıl)." },
+            { noteType: "NEUTRAL", noteText: "Hosting + SSL + Analytics dahil. Siz sadece domain alırsınız." },
         ],
     },
 
@@ -312,15 +312,15 @@ const FALLBACK_PLANS = [
             { featureText: "Google Harita entegrasyonu", isMainFeature: true, displayOrder: 4 },
             { featureText: "WhatsApp sipariş / rezervasyon butonu", isMainFeature: true, displayOrder: 5 },
             { featureText: "Çalışma saatleri & duyuru yönetimi", isMainFeature: true, displayOrder: 6 },
-            { featureText: "🔒 SSL sertifikası bizden — ekstra ödeme yok", isMainFeature: true, displayOrder: 7 },
-            { featureText: "🖥️ Hosting kurulumu bizden — ekstra ödeme yok", isMainFeature: true, displayOrder: 8 },
-            { featureText: "📊 Google Analytics kurulumu dahil", isMainFeature: true, displayOrder: 9 },
-            { featureText: "⚡ Hız optimizasyonu (Lighthouse 90+)", isMainFeature: true, displayOrder: 10 },
-            { featureText: "📋 KVKK uyumluluk sayfası dahil", isMainFeature: true, displayOrder: 11 },
+            { featureText: "SSL sertifikası bizden — ekstra ödeme yok", isMainFeature: true, displayOrder: 7 },
+            { featureText: "Hosting kurulumu bizden — ekstra ödeme yok", isMainFeature: true, displayOrder: 8 },
+            { featureText: "Google Analytics kurulumu dahil", isMainFeature: true, displayOrder: 9 },
+            { featureText: "Hız optimizasyonu (Lighthouse 90+)", isMainFeature: true, displayOrder: 10 },
+            { featureText: "KVKK uyumluluk sayfası dahil", isMainFeature: true, displayOrder: 11 },
         ],
         notes: [
             { noteType: "SUCCESS", noteText: "Menü fiyatını değiştirmek için geliştirici aramak yok. Admin panelinden saniyeler içinde güncelle." },
-            { noteType: "NEUTRAL", noteText: "Hosting + SSL + Analytics dahil. Siz sadece domain alırsınız (~400₺/yıl)." },
+            { noteType: "NEUTRAL", noteText: "Hosting + SSL + Analytics dahil. Siz sadece domain alırsınız." },
         ],
     },
 
@@ -346,9 +346,9 @@ const FALLBACK_PLANS = [
             { featureText: "Özel CRM / ERP / stok sistemleri", isMainFeature: true, displayOrder: 2 },
             { featureText: "Rol bazlı kullanıcı yönetimi", isMainFeature: true, displayOrder: 3 },
             { featureText: "Raporlama & dashboard sistemleri", isMainFeature: true, displayOrder: 4 },
-            { featureText: "🔒 SSL + Hosting + Domain yardımı dahil", isMainFeature: true, displayOrder: 5 },
-            { featureText: "📊 Google Analytics & izleme kurulumu", isMainFeature: true, displayOrder: 6 },
-            { featureText: "⚡ Hız & güvenlik optimizasyonu", isMainFeature: true, displayOrder: 7 },
+            { featureText: "SSL + Hosting + Domain yardımı dahil", isMainFeature: true, displayOrder: 5 },
+            { featureText: "Google Analytics & izleme kurulumu", isMainFeature: true, displayOrder: 6 },
+            { featureText: "Hız & güvenlik optimizasyonu", isMainFeature: true, displayOrder: 7 },
         ],
         notes: [
             { noteType: "NEUTRAL", noteText: "Detaylı analiz sonrası net kapsam ve fiyat belirlenir. Bağlayıcı değildir." },
@@ -368,14 +368,14 @@ const FALLBACK_MAINT = [
         idealFor: "Sabit içerikli, az güncelleme gerektiren siteler için ideal",
         isBestSeller: false,
         features: [
-            { featureText: "🖥️ Hosting bizden — siz ödemezsiniz", displayOrder: 0 },
-            { featureText: "🔒 SSL sertifikası bizden — siz ödemezsiniz", displayOrder: 1 },
-            { featureText: "💾 Günlük otomatik yedekleme", displayOrder: 2 },
-            { featureText: "📡 7/24 uptime izleme", displayOrder: 3 },
-            { featureText: "✏️ Aylık 2 içerik güncellemesi", displayOrder: 4 },
-            { featureText: "🛡️ Güvenlik taraması", displayOrder: 5 },
-            { featureText: "📋 Aylık teknik durum raporu", displayOrder: 6 },
-            { featureText: "💬 WhatsApp destek hattı", displayOrder: 7 },
+            { featureText: "Hosting bizden — siz ödemezsiniz", displayOrder: 0 },
+            { featureText: "SSL sertifikası bizden — siz ödemezsiniz", displayOrder: 1 },
+            { featureText: "Günlük otomatik yedekleme", displayOrder: 2 },
+            { featureText: "7/24 uptime izleme", displayOrder: 3 },
+            { featureText: "Aylık 2 içerik güncellemesi", displayOrder: 4 },
+            { featureText: "Güvenlik taraması", displayOrder: 5 },
+            { featureText: "Aylık teknik durum raporu", displayOrder: 6 },
+            { featureText: "WhatsApp destek hattı", displayOrder: 7 },
         ],
     },
     {
@@ -388,16 +388,16 @@ const FALLBACK_MAINT = [
         idealFor: "Aktif yönetilen, sık güncellenen siteler için ideal",
         isBestSeller: true,
         features: [
-            { featureText: "🖥️ Hosting bizden — siz ödemezsiniz", displayOrder: 0 },
-            { featureText: "🔒 SSL sertifikası bizden — siz ödemezsiniz", displayOrder: 1 },
-            { featureText: "💾 Günlük otomatik yedekleme", displayOrder: 2 },
-            { featureText: "📡 7/24 uptime izleme", displayOrder: 3 },
-            { featureText: "✏️ Aylık 5 içerik güncellemesi", displayOrder: 4 },
-            { featureText: "📈 Aylık SEO raporu (detaylı)", displayOrder: 5 },
-            { featureText: "📊 Google Analytics raporlama", displayOrder: 6 },
-            { featureText: "⚡ PageSpeed optimizasyon takibi", displayOrder: 7 },
-            { featureText: "🎨 Küçük tasarım değişiklikleri", displayOrder: 8 },
-            { featureText: "💬 Öncelikli WhatsApp destek (24s yanıt)", displayOrder: 9 },
+            { featureText: "Hosting bizden — siz ödemezsiniz", displayOrder: 0 },
+            { featureText: "SSL sertifikası bizden — siz ödemezsiniz", displayOrder: 1 },
+            { featureText: "Günlük otomatik yedekleme", displayOrder: 2 },
+            { featureText: "7/24 uptime izleme", displayOrder: 3 },
+            { featureText: "Aylık 5 içerik güncellemesi", displayOrder: 4 },
+            { featureText: "Aylık SEO raporu (detaylı)", displayOrder: 5 },
+            { featureText: "Google Analytics raporlama", displayOrder: 6 },
+            { featureText: "PageSpeed optimizasyon takibi", displayOrder: 7 },
+            { featureText: "Küçük tasarım değişiklikleri", displayOrder: 8 },
+            { featureText: "Öncelikli WhatsApp destek (24s yanıt)", displayOrder: 9 },
         ],
     },
     {
@@ -410,17 +410,17 @@ const FALLBACK_MAINT = [
         idealFor: "Büyüyen işletmeler — aktif geliştirme + tam destek",
         isBestSeller: false,
         features: [
-            { featureText: "🖥️ Hosting bizden — siz ödemezsiniz", displayOrder: 0 },
-            { featureText: "🔒 SSL sertifikası bizden — siz ödemezsiniz", displayOrder: 1 },
-            { featureText: "💾 Saatlik otomatik yedekleme", displayOrder: 2 },
-            { featureText: "📡 7/24 uptime izleme + anlık uyarı", displayOrder: 3 },
-            { featureText: "✏️ Aylık 10 içerik güncellemesi", displayOrder: 4 },
-            { featureText: "🛠️ Aylık 5 saat geliştirme saati", displayOrder: 5 },
-            { featureText: "📈 Detaylı SEO & Analytics raporu", displayOrder: 6 },
-            { featureText: "🔍 Google Search Console takibi", displayOrder: 7 },
-            { featureText: "🚀 Yeni özellik & modül eklemeleri", displayOrder: 8 },
-            { featureText: "🗓️ Aylık 30 dk strateji görüşmesi", displayOrder: 9 },
-            { featureText: "💬 Öncelikli destek (12s yanıt garantisi)", displayOrder: 10 },
+            { featureText: "Hosting bizden — siz ödemezsiniz", displayOrder: 0 },
+            { featureText: "SSL sertifikası bizden — siz ödemezsiniz", displayOrder: 1 },
+            { featureText: "Saatlik otomatik yedekleme", displayOrder: 2 },
+            { featureText: "7/24 uptime izleme + anlık uyarı", displayOrder: 3 },
+            { featureText: "Aylık 10 içerik güncellemesi", displayOrder: 4 },
+            { featureText: "Aylık 5 saat geliştirme saati", displayOrder: 5 },
+            { featureText: "Detaylı SEO & Analytics raporu", displayOrder: 6 },
+            { featureText: "Google Search Console takibi", displayOrder: 7 },
+            { featureText: "Yeni özellik & modül eklemeleri", displayOrder: 8 },
+            { featureText: "Aylık 30 dk strateji görüşmesi", displayOrder: 9 },
+            { featureText: "Öncelikli destek (12s yanıt garantisi)", displayOrder: 10 },
         ],
     },
 ];
@@ -431,7 +431,7 @@ const POLICY_ITEMS = [
     "Hosting ve SSL tüm paketlerde bizden — ekstra ödeme yoktur",
     "Ek modül ve özel entegrasyonlar ayrıca planlanır",
     "Nihai fiyat ve ödeme planı teklif görüşmesinde netleştirilir",
-    "Domain ücreti (~400₺/yıl) müşteriye aittir — diğer her şey bizden",
+    "Domain ücreti müşteriye aittir — diğer her şey bizden",
 ];
 
 // ─── Countdown ────────────────────────────────────────────────────────────────
@@ -491,7 +491,7 @@ function PlanSections({ sectionKey }) {
                 paddingBottom: "8px", borderBottom: "1px solid var(--b-faint)",
                 display: "flex", alignItems: "center", gap: "6px"
             }}>
-                📋 Paket İçeriği ({sections.length} Bölüm)
+                Paket İçeriği ({sections.length} Bölüm)
             </div>
             {idealFor && (
                 <p style={{
@@ -521,7 +521,7 @@ function PlanSections({ sectionKey }) {
                     background: "var(--bg-1)", borderRadius: "6px",
                     fontFamily: "var(--f-mono)", letterSpacing: "0.04em"
                 }}>
-                    💡 {extraPageNote}
+                    {extraPageNote}
                 </div>
             )}
         </div>
@@ -585,7 +585,7 @@ export default function Pricing() {
                     </h1>
                     <p className="page-hero__desc">
                         Hosting, SSL, Google Analytics ve KVKK sayfası tüm paketlerde bizden.
-                        Siz sadece domaininizi alırsınız (~400₺/yıl).
+                        Siz sadece domaininizi alırsınız.
                         Gizli ücret yok, sürpriz yok.
                     </p>
                 </div>
@@ -606,14 +606,14 @@ export default function Pricing() {
                             Her pakete dahil →
                         </span>
                         {[
-                            "🔒 SSL Sertifikası",
-                            "🖥️ Hosting",
-                            "📊 Google Analytics",
-                            "⚡ Hız Optimizasyonu",
-                            "📋 KVKK Sayfası",
-                            "🌐 Domain Yardımı",
-                            "📱 Mobil Uyumluluk",
-                            "💬 WhatsApp Entegrasyonu",
+                            "SSL Sertifikası",
+                            "Hosting",
+                            "Google Analytics",
+                            "Hız Optimizasyonu",
+                            "KVKK Sayfası",
+                            "Domain Yardımı",
+                            "Mobil Uyumluluk",
+                            "WhatsApp Entegrasyonu",
                         ].map(item => (
                             <span key={item} style={{
                                 display: "inline-flex", alignItems: "center", gap: "5px",
@@ -906,11 +906,11 @@ export default function Pricing() {
                             Tüm paketlerde →
                         </span>
                         {[
-                            "🖥️ Hosting bizden",
-                            "🔒 SSL bizden",
-                            "💾 Otomatik yedekleme",
-                            "📡 7/24 uptime izleme",
-                            "💬 WhatsApp destek",
+                            "Hosting bizden",
+                            "SSL bizden",
+                            "Otomatik yedekleme",
+                            "7/24 uptime izleme",
+                            "WhatsApp destek",
                         ].map(item => (
                             <span key={item} style={{
                                 padding: "4px 11px", borderRadius: "100px",

@@ -21,7 +21,7 @@ const SEO = ({
         "logo": "https://www.algorixa.com.tr/logo.png",
         "image": "https://www.algorixa.com.tr/og-image.jpg",
         "telephone": "+905469705451",
-        "email": "enesderin.contact@gmail.com",
+        "email": "enes.derin@algorixa.com.tr",
         "priceRange": "₺₺",
         "currenciesAccepted": "TRY",
         "paymentAccepted": "Nakit, Havale/EFT, Kredi Kartı",

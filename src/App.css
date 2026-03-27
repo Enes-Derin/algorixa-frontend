@@ -8385,3 +8385,184 @@ select {
   object-position: center top !important;
   display: block !important;
 }
+
+/* ════════════════════════════════════════════════════════
+   PRICING PAGE — LIGHT MODE OKUNABILIRLIK FIXLERİ
+════════════════════════════════════════════════════════ */
+
+/* ── Paket kartı notlar ── */
+[data-theme="light"] .prc-card__note-box--success {
+  background: rgba(22, 163, 74, 0.08);
+  border-color: rgba(22, 163, 74, 0.25);
+  color: #14532d;
+}
+
+[data-theme="light"] .prc-card__note-box--warn {
+  background: rgba(180, 120, 0, 0.08);
+  border-color: rgba(180, 120, 0, 0.25);
+  color: #78350f;
+}
+
+[data-theme="light"] .prc-card__note-box--neutral {
+  background: rgba(100, 80, 20, 0.06);
+  border-color: rgba(100, 80, 20, 0.14);
+  color: #3d3525;
+}
+
+/* ── Promo bar açıklama metni ── */
+[data-theme="light"] .prc-promo-bar__desc {
+  color: #3d3525;
+}
+
+[data-theme="light"] .prc-promo-highlight {
+  color: #6e6248;
+}
+
+/* ── Bakım kartı ideal for metni ── */
+[data-theme="light"] .maint-card__ideal {
+  color: #6e6248;
+}
+
+/* ── Paket kartı genel metin renkleri ── */
+[data-theme="light"] .prc-card__tagline {
+  color: #6e6248;
+}
+
+[data-theme="light"] .prc-card__note {
+  color: #a09070;
+}
+
+[data-theme="light"] .prc-card__feature {
+  color: #3d3525;
+}
+
+[data-theme="light"] .prc-card__expanded-item {
+  color: #6e6248;
+}
+
+[data-theme="light"] .prc-card__footer {
+  color: #a09070;
+}
+
+[data-theme="light"] .prc-card__detail-toggle {
+  color: #a09070;
+}
+
+[data-theme="light"] .prc-card__detail-toggle:hover {
+  color: #a8863a;
+}
+
+/* ── Plan sections bölümü ── */
+[data-theme="light"] .plan-section__ideal {
+  color: #3d3525;
+  background: rgba(168, 134, 58, 0.06);
+}
+
+[data-theme="light"] .plan-section__section-desc {
+  color: #6e6248;
+}
+
+[data-theme="light"] .plan-section__extra-note {
+  color: #6e6248;
+  background: var(--bg-2);
+}
+
+/* ── Politika bölümü ── */
+[data-theme="light"] .prc-policy {
+  background: #ffffff;
+}
+
+[data-theme="light"] .prc-policy__item {
+  color: #3d3525;
+}
+
+[data-theme="light"] .prc-policy__foot {
+  color: #6e6248;
+}
+
+/* ── CTA bar ── */
+[data-theme="light"] .prc-cta-bar {
+  background: #ffffff;
+}
+
+[data-theme="light"] .prc-cta-bar__text h2 {
+  color: #1a1510;
+}
+
+[data-theme="light"] .prc-cta-bar__text p {
+  color: #6e6248;
+}
+
+/* ── Bakım kartları ── */
+[data-theme="light"] .maint-card {
+  background: #faf6ee;
+}
+
+[data-theme="light"] .maint-card--best {
+  background: #f3ede1;
+}
+
+[data-theme="light"] .maint-card h3 {
+  color: #1a1510;
+}
+
+[data-theme="light"] .maint-card__feature {
+  color: #3d3525;
+}
+
+[data-theme="light"] .maint-footer-note {
+  color: #a09070;
+}
+
+/* ── Her şey dahil pill bantları ── */
+[data-theme="light"] .prc-plans+div span,
+[data-theme="light"] [style*="rgba(200,168,75"] span {
+  color: #3d3525;
+}
+
+/* ── Countdown kutuları ── */
+[data-theme="light"] .prc-countdown__box {
+  background: #f3ede1;
+  border-color: rgba(100, 80, 20, 0.2);
+  color: #a8863a;
+}
+
+[data-theme="light"] .prc-countdown__label {
+  color: #a09070;
+}
+
+[data-theme="light"] .prc-countdown__sep {
+  color: #a09070;
+}
+
+/* ── Promo bar ── */
+[data-theme="light"] .prc-promo-bar {
+  background: #ffffff;
+  border-color: rgba(100, 80, 20, 0.2);
+  border-left-color: #a8863a;
+}
+
+[data-theme="light"] .prc-promo-bar__title {
+  color: #1a1510;
+}
+
+/* ── Inline style overrideları ── */
+/* "Her pakete dahil" bant */
+[data-theme="light"] .prc-plans {
+  /* grid normal */
+}
+
+/* Prc card selected durumu */
+[data-theme="light"] .prc-card--selected,
+[data-theme="light"] .prc-card:hover {
+  background: #f3ede1;
+}
+
+[data-theme="light"] .prc-card__price-area {
+  border-bottom-color: rgba(100, 80, 20, 0.1);
+}
+
+[data-theme="light"] .prc-card__expanded {
+  background: rgba(100, 80, 20, 0.03);
+  border-color: rgba(100, 80, 20, 0.1);
+}

@@ -21,7 +21,7 @@ const COMPANY_LINKS = [
 ];
 
 const CONTACT_ITEMS = [
-    { Icon: Mail, href: "mailto:enesderin.contact@gmail.com", label: "enesderin.contact@gmail.com" },
+    { Icon: Mail, href: "mailto:enes.derin@algorixa.com.tr", label: "enes.derin@algorixa.com.tr" },
     { Icon: Phone, href: "tel:+905469705451", label: "+90 546 970 54 51" },
     { Icon: MapPin, href: null, label: "İstanbul, Türkiye" },
     { Icon: Clock, href: null, label: "24 saat içinde yanıt" },
@@ -30,7 +30,7 @@ const CONTACT_ITEMS = [
 const SOCIALS = [
     { Icon: Instagram, href: "https://www.instagram.com/algorixa_/", label: "Instagram" },
     { Icon: MessageCircle, href: "https://wa.me/905469705451", label: "WhatsApp" },
-    { Icon: Mail, href: "mailto:enesderin.contact@gmail.com", label: "E-posta" },
+    { Icon: Mail, href: "mailto:enes.derin@algorixa.com.tr", label: "E-posta" },
 ];
 
 

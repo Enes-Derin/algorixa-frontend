@@ -77,7 +77,7 @@ const SECTORS = [
 ];
 
 const CONTACTS = [
-    { Icon: Mail, href: "mailto:enesderin.contact@gmail.com", label: "E-posta" },
+    { Icon: Mail, href: "mailto:enes.derin@algorixa.com.tr", label: "E-posta" },
     { Icon: Phone, href: "tel:+905469705451", label: "+90 546 970 54 51" },
     { Icon: Instagram, href: "https://www.instagram.com/algorixa_/", label: "Instagram" },
     { Icon: MessageCircle, href: "https://wa.me/905469705451", label: "WhatsApp" },

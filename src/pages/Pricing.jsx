@@ -200,17 +200,32 @@ const inlineStyles = `
   .prc-card__note-box--success {
     background: rgba(34,197,94,0.06);
     border: 1px solid rgba(34,197,94,0.18);
-    color: rgba(134,239,172,0.9);
+    color: rgba(22,163,74,0.95);
+  }
+  @media (prefers-color-scheme: dark) {
+    .prc-card__note-box--success {
+      color: rgba(134,239,172,0.9);
+    }
   }
   .prc-card__note-box--warn {
     background: rgba(234,179,8,0.07);
     border: 1px solid rgba(234,179,8,0.2);
-    color: rgba(253,224,71,0.9);
+    color: rgba(161,98,7,0.95);
+  }
+  @media (prefers-color-scheme: dark) {
+    .prc-card__note-box--warn {
+      color: rgba(253,224,71,0.9);
+    }
   }
   .prc-card__note-box--neutral {
     background: rgba(255,255,255,0.03);
     border: 1px solid var(--b-faint);
-    color: var(--t-3);
+    color: rgba(71,85,105,0.95);
+  }
+  @media (prefers-color-scheme: dark) {
+    .prc-card__note-box--neutral {
+      color: var(--t-3);
+    }
   }
 
   .prc-card__cta {
@@ -265,9 +280,14 @@ const inlineStyles = `
   }
   .prc-promo-bar__desc {
     font-size: 13px;
-    color: var(--t-3);
+    color: rgba(71,85,105,0.95);
     margin: 0 0 10px;
     line-height: 1.6;
+  }
+  @media (prefers-color-scheme: dark) {
+    .prc-promo-bar__desc {
+      color: var(--t-2);
+    }
   }
   .prc-promo-bar__highlights {
     display: flex;
@@ -449,11 +469,16 @@ const inlineStyles = `
   }
   .maint-card__ideal {
     font-size: 12px;
-    color: var(--t-4);
+    color: rgba(71,85,105,0.95);
     line-height: 1.55;
     margin-bottom: 14px;
     padding-bottom: 14px;
     border-bottom: 1px solid var(--b-faint);
+  }
+  @media (prefers-color-scheme: dark) {
+    .maint-card__ideal {
+      color: var(--t-4);
+    }
   }
   .maint-card__feature {
     display: flex;
@@ -475,6 +500,48 @@ const inlineStyles = `
     font-size: 12px;
     color: var(--t-4);
     font-family: var(--f-mono);
+  }
+
+  /* ── Plan Section Ideal For ── */
+  .plan-section__ideal {
+    font-size: 12px;
+    color: rgba(71,85,105,0.95);
+    line-height: 1.6;
+    margin-bottom: 10px;
+    padding: 7px 10px;
+    background: rgba(200,168,75,0.04);
+    border-left: 2px solid var(--gold);
+    border-radius: 0 4px 4px 0;
+  }
+  @media (prefers-color-scheme: dark) {
+    .plan-section__ideal {
+      color: var(--t-3);
+    }
+  }
+
+  .plan-section__section-desc {
+    color: rgba(107,114,128,0.95);
+    font-size: 12px;
+  }
+  @media (prefers-color-scheme: dark) {
+    .plan-section__section-desc {
+      color: var(--t-4);
+    }
+  }
+
+  .plan-section__extra-note {
+    font-size: 11px;
+    color: rgba(107,114,128,0.95);
+    padding: 5px 10px;
+    background: var(--bg-1);
+    border-radius: 6px;
+    font-family: var(--f-mono);
+    letter-spacing: 0.04em;
+  }
+  @media (prefers-color-scheme: dark) {
+    .plan-section__extra-note {
+      color: var(--t-4);
+    }
   }
 `;
 
@@ -931,12 +998,7 @@ function PlanSections({ sectionKey }) {
                 Paket İçeriği ({sections.length} Bölüm)
             </div>
             {idealFor && (
-                <p style={{
-                    fontSize: "12px", color: "var(--t-3)", lineHeight: 1.6,
-                    marginBottom: "10px", padding: "7px 10px",
-                    background: "rgba(200,168,75,0.04)",
-                    borderLeft: "2px solid var(--gold)", borderRadius: "0 4px 4px 0",
-                }}>
+                <p className="plan-section__ideal">
                     <Check size={11} strokeWidth={2.5} style={{ color: "var(--gold)", display: "inline", marginRight: 5 }} />
                     {idealFor}
                 </p>
@@ -947,17 +1009,13 @@ function PlanSections({ sectionKey }) {
                         <span style={{ width: "5px", height: "5px", borderRadius: "50%", background: "var(--gold)", flexShrink: 0, marginTop: "6px" }} />
                         <span>
                             <strong>{s.title}</strong>
-                            {s.desc && <span style={{ color: "var(--t-4)", fontSize: "12px" }}>: {s.desc}</span>}
+                            {s.desc && <span className="plan-section__section-desc">: {s.desc}</span>}
                         </span>
                     </li>
                 ))}
             </ul>
             {extraPageNote && (
-                <div style={{
-                    fontSize: "11px", color: "var(--t-4)", padding: "5px 10px",
-                    background: "var(--bg-1)", borderRadius: "6px",
-                    fontFamily: "var(--f-mono)", letterSpacing: "0.04em",
-                }}>
+                <div className="plan-section__extra-note">
                     {extraPageNote}
                 </div>
             )}

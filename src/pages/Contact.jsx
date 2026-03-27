@@ -30,7 +30,7 @@ const BUDGET_OPTS = [
 ];
 
 const CONTACT_INFO = [
-    { Icon: Mail, label: "E-Posta", value: "enesderin.contact@gmail.com", href: "mailto:enesderin.contact@gmail.com" },
+    { Icon: Mail, label: "E-Posta", value: "enes.derin@algorixa.com.tr", href: "mailto:enes.derin@algorixa.com.tr" },
     { Icon: Phone, label: "Telefon", value: "+90 546 970 54 51", href: "tel:+905469705451" },
     { Icon: Clock, label: "Yanıt Süresi", value: "24 saat içinde net teklif", href: null },
 ];
@@ -38,7 +38,7 @@ const CONTACT_INFO = [
 const SOCIALS = [
     { Icon: Instagram, label: "Instagram", href: "#" },
     { Icon: MessageCircle, label: "WhatsApp", href: "https://wa.me/905469705451" },
-    { Icon: Mail, label: "E-posta", href: "mailto:enesderin.contact@gmail.com" },
+    { Icon: Mail, label: "E-posta", href: "mailto:enes.derin@algorixa.com.tr" },
 ];
 
 // ─── Telefon formatlama ───────────────────────────────────────────────────────
@@ -167,7 +167,7 @@ export default function Contact() {
                     from { opacity: 0; transform: scale(0.85); }
                     to   { opacity: 1; transform: scale(1); }
                 }
-                @keyframes pulse {
+                @keyframes cntPulse {
                     0%,100% { box-shadow: 0 0 0 0 rgba(200,168,75,0.4); }
                     50%     { box-shadow: 0 0 0 10px rgba(200,168,75,0); }
                 }
@@ -203,14 +203,15 @@ export default function Contact() {
                 .cnt-info-item {
                     display: flex; align-items: center; gap: 14px;
                     padding: 14px 16px; border-radius: 12px;
-                    background: rgba(255,255,255,0.025);
-                    border: 1px solid rgba(255,255,255,0.07);
+                    background: var(--bg-card);
+                    border: 1px solid var(--b-faint);
                     transition: border-color 0.2s;
                 }
-                .cnt-info-item:hover { border-color: rgba(200,168,75,0.25); }
+                .cnt-info-item:hover { border-color: var(--b-mid); }
                 .cnt-info-item__icon {
                     width: 36px; height: 36px; border-radius: 10px;
-                    background: rgba(200,168,75,0.1);
+                    background: var(--gold-glow);
+                    border: 1px solid var(--b-soft);
                     display: flex; align-items: center; justify-content: center;
                     color: var(--gold); flex-shrink: 0;
                 }
@@ -227,25 +228,26 @@ export default function Contact() {
                 .cnt-social-btn {
                     display: inline-flex; align-items: center; gap: 7px;
                     padding: 9px 16px; border-radius: 50px;
-                    border: 1px solid rgba(255,255,255,0.1);
+                    border: 1px solid var(--b-soft);
                     color: var(--t-3); font-size: 12px; text-decoration: none;
+                    background: var(--bg-card);
                     transition: all 0.2s;
                 }
-                .cnt-social-btn:hover { border-color: rgba(200,168,75,0.5); color: var(--gold); }
+                .cnt-social-btn:hover { border-color: var(--b-mid); color: var(--gold); }
 
                 /* ── Garanti bandı ── */
                 .cnt-guarantee-band {
                     display: flex; align-items: center; gap: 10px;
                     padding: 12px 16px; border-radius: 10px;
-                    background: rgba(200,168,75,0.06);
-                    border: 1px solid rgba(200,168,75,0.18);
+                    background: var(--gold-glow);
+                    border: 1px solid var(--b-soft);
                     font-size: 12px; color: var(--t-3);
                 }
 
                 /* ── Form kartı ── */
                 .cnt-form-card {
-                    background: rgba(255,255,255,0.02);
-                    border: 1px solid rgba(255,255,255,0.09);
+                    background: var(--bg-card);
+                    border: 1px solid var(--b-soft);
                     border-radius: 20px; padding: 40px;
                     position: relative; overflow: hidden;
                 }
@@ -260,7 +262,7 @@ export default function Contact() {
                     font-family: var(--f-display); margin: 0 0 6px;
                 }
                 .cnt-form-subtitle {
-                    font-size: 13px; color: var(--t-4); margin: 0 0 28px; line-height: 1.5;
+                    font-size: 13px; color: var(--t-3); margin: 0 0 28px; line-height: 1.5;
                 }
 
                 /* ── Field ── */
@@ -277,24 +279,44 @@ export default function Contact() {
                 }
                 .form-label__req { color: var(--gold); font-size: 13px; line-height: 1; }
 
-                .form-input {
+                /* ── Input — Dark Mode ── */
+                .cnt-form-input {
                     width: 100%; padding: 12px 14px;
-                    background: rgba(255,255,255,0.035);
-                    border: 1px solid rgba(255,255,255,0.09);
-                    border-radius: 10px; color: var(--t-1);
+                    background: var(--bg-2);
+                    border: 1px solid var(--b-soft);
+                    border-radius: 10px;
+                    color: var(--t-1);
                     font-size: 14px; outline: none;
                     transition: border-color 0.18s, background 0.18s, box-shadow 0.18s;
                     font-family: inherit; box-sizing: border-box;
                 }
-                .form-input:focus {
-                    border-color: rgba(200,168,75,0.45);
-                    background: rgba(200,168,75,0.03);
-                    box-shadow: 0 0 0 3px rgba(200,168,75,0.07);
+                .cnt-form-input:focus {
+                    border-color: var(--gold);
+                    background: var(--bg-1);
+                    box-shadow: 0 0 0 3px var(--gold-glow);
                 }
-                .form-input::placeholder { color: rgba(255,255,255,0.18); }
-                textarea.form-input { resize: vertical; min-height: 110px; line-height: 1.65; }
-                select.form-input { cursor: pointer; appearance: none; padding-right: 36px; }
-                select.form-input option { background: #1a1a1a; color: #fff; }
+                .cnt-form-input::placeholder { color: var(--t-4); }
+                textarea.cnt-form-input { resize: vertical; min-height: 110px; line-height: 1.65; }
+                select.cnt-form-input { cursor: pointer; appearance: none; padding-right: 36px; }
+
+                /* ── Input — Light Mode ── */
+                [data-theme="light"] .cnt-form-input {
+                    background: #ffffff;
+                    border-color: rgba(100, 80, 20, 0.18);
+                    color: #1a1510;
+                }
+                [data-theme="light"] .cnt-form-input:focus {
+                    border-color: #a8863a;
+                    background: #faf6ee;
+                    box-shadow: 0 0 0 3px rgba(168, 134, 58, 0.1);
+                }
+                [data-theme="light"] .cnt-form-input::placeholder {
+                    color: #a09070;
+                }
+                [data-theme="light"] select.cnt-form-input option {
+                    background: #ffffff;
+                    color: #1a1510;
+                }
 
                 .select-wrap { position: relative; }
                 .select-wrap::after {
@@ -315,19 +337,43 @@ export default function Contact() {
                 .service-opt {
                     display: flex; align-items: center; gap: 10px;
                     padding: 11px 14px; border-radius: 10px;
-                    border: 1px solid rgba(255,255,255,0.08);
+                    border: 1px solid var(--b-faint);
                     cursor: pointer; transition: all 0.18s;
-                    background: rgba(255,255,255,0.015);
+                    background: var(--bg-1);
                     user-select: none;
                 }
-                .service-opt:hover { border-color: rgba(200,168,75,0.3); background: rgba(200,168,75,0.04); }
-                .service-opt--active {
-                    border-color: rgba(200,168,75,0.55);
-                    background: rgba(200,168,75,0.08);
+                .service-opt:hover {
+                    border-color: var(--b-mid);
+                    background: var(--bg-2);
                 }
+                .service-opt--active {
+                    border-color: var(--gold);
+                    background: var(--gold-glow);
+                }
+
+                /* Light mode service-opt */
+                [data-theme="light"] .service-opt {
+                    background: #f3ede1;
+                    border-color: rgba(100, 80, 20, 0.12);
+                }
+                [data-theme="light"] .service-opt:hover {
+                    background: #ebe3d4;
+                    border-color: rgba(100, 80, 20, 0.25);
+                }
+                [data-theme="light"] .service-opt--active {
+                    background: rgba(168, 134, 58, 0.1);
+                    border-color: #a8863a;
+                }
+                [data-theme="light"] .service-opt__label {
+                    color: #3d3525;
+                }
+                [data-theme="light"] .service-opt--active .service-opt__label {
+                    color: #1a1510;
+                }
+
                 .service-opt__dot {
                     width: 16px; height: 16px; border-radius: 50%; flex-shrink: 0;
-                    border: 2px solid rgba(255,255,255,0.15);
+                    border: 2px solid var(--b-mid);
                     display: flex; align-items: center; justify-content: center;
                     transition: all 0.18s;
                 }
@@ -340,6 +386,32 @@ export default function Contact() {
 
                 /* "Diğer" tek sütun */
                 .service-opt--wide { grid-column: 1 / -1; }
+
+                /* ── Form kartı light mode ── */
+                [data-theme="light"] .cnt-form-card {
+                    background: #ffffff;
+                    border-color: rgba(100, 80, 20, 0.14);
+                }
+                [data-theme="light"] .cnt-form-title { color: #1a1510; }
+                [data-theme="light"] .cnt-form-subtitle { color: #6e6248; }
+                [data-theme="light"] .form-label { color: #6e6248; }
+
+                /* ── Info kartlar light mode ── */
+                [data-theme="light"] .cnt-info-item {
+                    background: #ffffff;
+                    border-color: rgba(100, 80, 20, 0.1);
+                }
+                [data-theme="light"] .cnt-info-item__value { color: #3d3525; }
+                [data-theme="light"] .cnt-social-btn {
+                    background: #ffffff;
+                    border-color: rgba(100, 80, 20, 0.14);
+                    color: #6e6248;
+                }
+                [data-theme="light"] .cnt-guarantee-band {
+                    background: rgba(168, 134, 58, 0.08);
+                    border-color: rgba(168, 134, 58, 0.2);
+                    color: #6e6248;
+                }
 
                 /* ── Submit butonu ── */
                 .cnt-btn {
@@ -365,7 +437,6 @@ export default function Contact() {
                 .cnt-btn:active:not(:disabled) { transform: translateY(0); }
                 .cnt-btn:disabled { opacity: 0.65; cursor: not-allowed; }
 
-                /* spinner küçük */
                 .cnt-btn__spinner {
                     width: 16px; height: 16px; border-radius: 50%;
                     border: 2px solid rgba(0,0,0,0.2);
@@ -381,6 +452,10 @@ export default function Contact() {
                     border: 1px solid rgba(239,68,68,0.22);
                     color: #fca5a5; font-size: 13px; margin-top: 12px;
                     line-height: 1.5; animation: fadeUp 0.3s ease;
+                }
+                [data-theme="light"] .cnt-form-err {
+                    color: #b91c1c;
+                    background: rgba(239,68,68,0.06);
                 }
 
                 /* ── Yasal not ── */
@@ -399,11 +474,11 @@ export default function Contact() {
                 }
                 .cnt-success__ring {
                     width: 80px; height: 80px; border-radius: 50%;
-                    background: rgba(200,168,75,0.1);
-                    border: 1px solid rgba(200,168,75,0.25);
+                    background: var(--gold-glow);
+                    border: 1px solid var(--b-soft);
                     display: flex; align-items: center; justify-content: center;
                     margin-bottom: 24px;
-                    animation: scaleIn 0.4s ease, pulse 2s ease 0.6s infinite;
+                    animation: scaleIn 0.4s ease, cntPulse 2s ease 0.6s infinite;
                 }
                 .cnt-success__title {
                     font-size: 22px; font-weight: 800; color: var(--t-1);
@@ -420,8 +495,8 @@ export default function Contact() {
                 .cnt-success__chip {
                     display: inline-flex; align-items: center; gap: 6px;
                     padding: 6px 14px; border-radius: 100px;
-                    background: rgba(200,168,75,0.08);
-                    border: 1px solid rgba(200,168,75,0.2);
+                    background: var(--gold-glow);
+                    border: 1px solid var(--b-soft);
                     font-size: 12px; color: var(--t-2);
                     font-family: var(--f-mono);
                 }
@@ -547,7 +622,7 @@ export default function Contact() {
                                                     <User size={10} strokeWidth={1.5} />
                                                     Ad Soyad <span className="form-label__req">*</span>
                                                 </label>
-                                                <input className="form-input" type="text" placeholder="Ad Soyad"
+                                                <input className="cnt-form-input" type="text" placeholder="Ad Soyad"
                                                     value={form.name} onChange={e => set("name", e.target.value)} required />
                                             </div>
                                             <div className="form-field" style={{ marginBottom: 0 }}>
@@ -555,7 +630,7 @@ export default function Contact() {
                                                     <Mail size={10} strokeWidth={1.5} />
                                                     E-Posta <span className="form-label__req">*</span>
                                                 </label>
-                                                <input className="form-input" type="email" placeholder="ornek@sirket.com"
+                                                <input className="cnt-form-input" type="email" placeholder="ornek@sirket.com"
                                                     value={form.email} onChange={e => set("email", e.target.value)} required />
                                             </div>
                                         </div>
@@ -567,7 +642,7 @@ export default function Contact() {
                                                     <Phone size={10} strokeWidth={1.5} />
                                                     Telefon
                                                 </label>
-                                                <input className="form-input" type="tel"
+                                                <input className="cnt-form-input" type="tel"
                                                     placeholder="0555 555 55 55"
                                                     value={phoneRaw} onChange={handlePhoneChange}
                                                     maxLength={14} inputMode="numeric" />
@@ -577,12 +652,12 @@ export default function Contact() {
                                                     <Building2 size={10} strokeWidth={1.5} />
                                                     Şirket / Marka
                                                 </label>
-                                                <input className="form-input" type="text" placeholder="Şirket Adı"
+                                                <input className="cnt-form-input" type="text" placeholder="Şirket Adı"
                                                     value={form.company} onChange={e => set("company", e.target.value)} />
                                             </div>
                                         </div>
 
-                                        {/* Hizmet seçimi — 2 kolonlu grid */}
+                                        {/* Hizmet seçimi */}
                                         <div className="form-field">
                                             <label className="form-label">
                                                 <ChevronRight size={10} strokeWidth={1.5} />
@@ -617,7 +692,7 @@ export default function Contact() {
                                                 Bütçe Aralığı
                                             </label>
                                             <div className="select-wrap">
-                                                <select className="form-input" value={form.budget}
+                                                <select className="cnt-form-input" value={form.budget}
                                                     onChange={e => set("budget", e.target.value)}>
                                                     <option value="">Seçiniz...</option>
                                                     {BUDGET_OPTS.map(o => (
@@ -633,7 +708,7 @@ export default function Contact() {
                                                 <Send size={10} strokeWidth={1.5} />
                                                 Proje Detayları <span className="form-label__req">*</span>
                                             </label>
-                                            <textarea className="form-input" rows={5}
+                                            <textarea className="cnt-form-input" rows={5}
                                                 placeholder="Projenizi kısaca anlatın — hedef kitle, istenen özellikler, referans siteler, süre beklentisi..."
                                                 value={form.message} onChange={e => set("message", e.target.value)} required />
                                         </div>
